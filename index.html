@@ -3,90 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abdulrahman Hisham's CV</title>
+    <meta name="description" content="Abdulrahman Hisham Kamel's CV">
+    <title>Abdulrahman Hisham Kamel - CV</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            color: #4CAF50;
-        }
-        h2 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #E3F2FD; /* Soft blue background */
             color: #333;
+            overflow-x: hidden;
         }
+
+        header {
+            background-color: #1a1a2e;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            animation: fadeIn 1s ease-in;
+        }
+
+        header p {
+            margin: 5px 0;
+        }
+
+        section {
+            margin: 40px auto;
+            max-width: 900px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        section:hover {
+            transform: scale(1.02);
+        }
+
+        h2 {
+            color: #1a1a2e;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #ff2e63;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            animation: slideInLeft 1s ease-in-out;
+        }
+
         ul {
             list-style-type: none;
+            padding: 0;
         }
-        .contact-info {
+
+        ul li {
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: #ff2e63;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #1a1a2e;
+            text-decoration: underline;
+        }
+
+        p {
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        footer {
+            background-color: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
             margin-top: 20px;
         }
-        .contact-info p {
-            font-size: 16px;
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
-        .skills-section, .experience-section {
-            background-color: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            section {
+                padding: 15px;
+                margin: 20px auto;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Abdulrahman Hisham Kamel Mahmoud</h1>
 
+<header>
+    <h1>Abdulrahman Hisham Kamel</h1>
+    <p>Senior NSST Student | Machine Learning Engineer | Aerospace Engineer</p>
+    <p>Email: abdulrahmanhishamk@gmail.com | Phone: 01503347799</p>
+</header>
+
+<section>
     <h2>Education</h2>
-    <p>Senior student at the Faculty of Navigation Science and Space Technology - Beni-suef University with a CGPA of 3.67.</p>
+    <p>Senior student at the Faculty of Navigation Science and Space Technology, Beni-Suef University.</p>
+    <p>CGPA: 3.67</p>
+</section>
 
+<section>
     <h2>Skills</h2>
-    <div class="skills-section">
-        <h3>Programming Skills</h3>
-        <ul>
-            <li>C / C++</li>
-            <li>Python</li>
-            <li>MATLAB</li>
-            <li>MySQL</li>
-        </ul>
+    <ul>
+        <li><strong>Programming Languages:</strong> C, C++, Python, MATLAB, MySQL</li>
+        <li><strong>Software Skills:</strong> FreeFlyer, SOLIDWORKS, ArcGIS, Proteus</li>
+        <li><strong>Soft Skills:</strong> C1 English, Customer Service, Leadership</li>
+    </ul>
+</section>
 
-        <h3>Software Skills</h3>
-        <ul>
-            <li>FreeFlyer</li>
-            <li>SOLIDWORKS</li>
-            <li>ArcGIS</li>
-            <li>Proteus</li>
-        </ul>
+<section>
+    <h2>Training & Courses</h2>
+    <ul>
+        <li>Space keys and space environment training at EgSA</li>
+        <li>National Research Institute of Astronomy and Geophysics (NRIAG)</li>
+        <li>Egyptian Petrochemicals Holding Co (ECHEM) - Summer Training</li>
+        <li>EgyptAir Training Academy - Practical training for IT section</li>
+    </ul>
+</section>
 
-        <h3>Soft Skills</h3>
-        <ul>
-            <li>English (C1 level)</li>
-            <li>Customer Service</li>
-        </ul>
-    </div>
+<section>
+    <h2>Professional Experience</h2>
+    <ul>
+        <li>Cashier</li>
+        <li>Waiter</li>
+        <li>Call center representative</li>
+    </ul>
+</section>
 
-    <h2>Training Courses</h2>
-    <div class="experience-section">
-        <ul>
-            <li>Space Keys and Space Environment Training at EgSA</li>
-            <li>National Research Institute of Astronomy and Geophysics (NRIAG)</li>
-            <li>Egyptian Petrochemicals Holding Co (ECHEM) (summer training)</li>
-            <li>EgyptAir Training Academy (Practical training in Communication at the IT Section)</li>
-        </ul>
-    </div>
+<section>
+    <h2>Top Projects</h2>
+    <ul>
+        <li><a href="https://github.com/abdohisham12/robotic-arm-manipulator" target="_blank">Robotic Arm Manipulator</a></li>
+        <li><a href="https://github.com/EGSA-AI-TEAM/Ionospheric-Forecasting-Using-GNSS-Observation" target="_blank">Ionospheric Forecasting Using GNSS Observation</a></li>
+    </ul>
+</section>
 
-    <h2>Extra Job Experience</h2>
-    <div class="experience-section">
-        <ul>
-            <li>Cashier</li>
-            <li>Waiter</li>
-            <li>Call Center</li>
-        </ul>
-    </div>
+<section>
+    <h2>Contact</h2>
+    <p>Feel free to reach out to me for any opportunities in the space or machine learning fields.</p>
+    <p>Email: abdulrahmanhishamk@gmail.com | Phone: 01503347799</p>
+</section>
 
-    <div class="contact-info">
-        <h2>Contact Me</h2>
-        <p>Phone: 01503347799</p>
-        <p>Email: <a href="mailto:abdulrahmanhishamk@gmail.com">abdulrahmanhishamk@gmail.com</a></p>
-    </div>
+<footer>
+    <p>&copy; 2024 Abdulrahman Hisham Kamel. All Rights Reserved.</p>
+</footer>
+
 </body>
 </html>
