@@ -1,0 +1,45 @@
+{
+    "featuredCategories": [
+        {
+            "id": "RMaV6sMVR7QlEBwimDvW",
+            "name_en": "Chalet",
+            "name_ar": "شاليه",
+            "prop_count": 2
+        },
+        {
+            "id": "kVS7krjWwDCKLUJMgyYU",
+            "name_en": "Villa",
+            "name_ar": "فيلا",
+            "prop_count": 0
+        }
+    ],
+    "featuredCities": [],
+    "popularProperties": [
+        {
+            "id": "I9Bj4p78tNt8A7Lqa4li",
+            "mainImage": "https://firebasestorage.googleapis.com/v0/b/anwani-3b514/o/images%2F132dfced-e85c-427f-a39f-d68db0fa709b_WhatsApp%20Image%202024-10-12%20at%204.13.49%20PM.jpeg?alt=media&token=b47d587f-8dbd-4b53-856a-8d697c249fc9",
+            "price": 37000,
+            "title_ar": "شاليه فى city gate & hyde park",
+            "title_en": "Chalet in city gate & hyde park",
+            "type": {
+                "id": "YWM57q8c2ZpFbsNGHaAN",
+                "name_en": "Rent",
+                "name_ar": "للإيجار"
+            },
+            "propertyType": {
+                "id": "RMaV6sMVR7QlEBwimDvW",
+                "name_en": "Chalet",
+                "name_ar": "شاليه"
+            },
+            "city": {
+                "name_en": "city gate & hyde park",
+                "name_ar": "city gate & hyde park"
+            },
+            "bedrooms": "1",
+            "bathrooms": "2",
+            "area": 83
+        }
+      
+    ],
+    "footerCities": []
+}

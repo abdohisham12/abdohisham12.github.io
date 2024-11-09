@@ -1,0 +1,66 @@
+/* Responsive design for mobile devices */
+@media only screen and (max-width: 768px) {
+
+    /* Adjust the layout for mobile devices */
+    .header {
+        flex-direction: column;
+    }
+
+    .navbar {
+        flex-direction: column;
+    }
+
+    .menu-list {
+        flex-direction: column;
+    }
+
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-card {
+        margin-bottom: 20px;
+    }
+}
+
+/* Responsive design for tablets */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+
+    /* Adjust the layout for tablets */
+    .header {
+        flex-direction: row;
+    }
+
+    .navbar {
+        flex-direction: row;
+    }
+
+    .menu-list {
+        flex-direction: row;
+    }
+
+    .project-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Responsive design for desktops */
+@media only screen and (min-width: 1025px) {
+
+    /* Adjust the layout for desktops */
+    .header {
+        flex-direction: row;
+    }
+
+    .navbar {
+        flex-direction: row;
+    }
+
+    .menu-list {
+        flex-direction: row;
+    }
+
+    .project-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
