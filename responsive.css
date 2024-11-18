@@ -1,66 +1,94 @@
-/* Responsive design for mobile devices */
-@media only screen and (max-width: 768px) {
+/* Mobile-first styles (default for small screens) */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
 
-    /* Adjust the layout for mobile devices */
-    .header {
-        flex-direction: column;
-    }
+/* General mobile styles */
+.header, .navbar, .menu-list {
+    display: flex;
+    flex-direction: column; /* Stack items vertically on mobile */
+    align-items: center;
+}
 
-    .navbar {
-        flex-direction: column;
-    }
+.project-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column for small screens */
+    gap: 20px;
+}
 
-    .menu-list {
-        flex-direction: column;
+.project-card {
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.job {
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.company-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.company-logo {
+    width: 50px;
+    margin-bottom: 10px;
+}
+
+/* Responsive design for tablets (768px - 1024px) */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+
+    .header, .navbar, .menu-list {
+        flex-direction: row; /* Row layout for tablets */
+        justify-content: space-between;
     }
 
     .project-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr; /* Two columns for tablets */
     }
 
     .project-card {
         margin-bottom: 20px;
     }
-}
 
-/* Responsive design for tablets */
-@media only screen and (min-width: 769px) and (max-width: 1024px) {
-
-    /* Adjust the layout for tablets */
-    .header {
-        flex-direction: row;
+    .company-info {
+        flex-direction: row; /* Horizontal layout for company info */
+        align-items: center;
     }
 
-    .navbar {
-        flex-direction: row;
-    }
-
-    .menu-list {
-        flex-direction: row;
-    }
-
-    .project-grid {
-        grid-template-columns: 1fr 1fr;
+    .company-logo {
+        width: 40px; /* Slightly smaller logo on tablets */
+        margin-right: 10px; /* Space between logo and company name */
     }
 }
 
-/* Responsive design for desktops */
+/* Responsive design for desktops (1025px and above) */
 @media only screen and (min-width: 1025px) {
 
-    /* Adjust the layout for desktops */
-    .header {
-        flex-direction: row;
-    }
-
-    .navbar {
-        flex-direction: row;
-    }
-
-    .menu-list {
-        flex-direction: row;
+    .header, .navbar, .menu-list {
+        flex-direction: row; /* Row layout for desktops */
+        justify-content: space-between;
     }
 
     .project-grid {
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr; /* Three columns for desktop */
+    }
+
+    .project-card {
+        margin-bottom: 30px;
+    }
+
+    .company-info {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .company-logo {
+        width: 50px; /* Standard size for logo on desktop */
+        margin-right: 15px;
     }
 }
