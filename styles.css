@@ -348,10 +348,64 @@ a:hover {
     transform-origin: center; /* Set the rotation pivot to the center */
 }
 
-/* Specific adjustments for vertical images */
-.certificate img.vertical {
-    transform: rotate(-90deg); /* Rotate vertical images to appear horizontal */
+.company-date {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between logo and company name */
 }
+
+.company-logo {
+    width: 40px; /* Adjust size based on the logo's dimensions */
+    height: auto;
+    object-fit: contain; /* Ensure the logo fits within its box without distortion */
+}
+
+h4 {
+    margin: 0; /* No margin for job title */
+    font-size: 18px; /* Adjust as needed */
+    font-weight: bold;
+}
+
+h5 {
+    margin: 0; /* Remove margin for company name */
+    font-size: 16px; /* Adjust company name size */
+    color: #555; /* Light color for the company name */
+}
+
+.job-header p {
+    font-size: 14px; /* Adjust the date font size */
+    color: #888; /* Lighter color for date */
+    margin: 0; /* No margin around the date */
+}
+
+
+.job-header {
+    display: flex;
+    flex-direction: column; /* Stack the job title and date vertically */
+    margin-bottom: 10px; /* Space between job title and company information */
+}
+
+h4 {
+    font-size: 18px; /* Adjust job title size */
+    margin: 0; /* Remove any default margin */
+    font-weight: bold;
+}
+
+p {
+    font-size: 14px; /* Adjust date font size */
+    color: #888; /* Lighter color for date */
+    margin: 0; /* Remove margin for dates */
+}
+
+.company-info {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between logo and company name */
+}
+
+
+
+
 
 
 
