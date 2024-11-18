@@ -257,15 +257,13 @@ a:hover {
 }
 
 /***************************************************/
-/* Experince Section */
+/* Experience Section */
 
 .experience {
     background-color: #09151a;
     padding: 30px;
     margin: 20px;
     border-radius: 10px;
-
-
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -276,14 +274,12 @@ a:hover {
 }
 
 .job {
-
     max-width: 800px;
     margin: 0 auto;
     margin-bottom: 20px;
     border: 1px solid #0092CC;
     padding: 50px;
     border-radius: 10px;
-
 }
 
 .job-header {
@@ -307,12 +303,60 @@ a:hover {
     color: #f7f7f7c5;
 }
 
-
 .job p {
-
     line-height: 1.5;
     color: #ffffffc7;
 }
+
+.show-cert-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #0092CC;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.show-cert-btn:hover {
+    background-color: #007bb5;
+}
+
+/* Style for the certificate container */
+.certificate {
+    width: 50%; /* Full width of the job section */
+    max-height: 300px; /* Limit the height to a reasonable size */
+    overflow: hidden; /* Hide overflow for large images */
+    position: relative; /* Ensure proper containment */
+    padding: 10px; /* Add some padding around the image */
+    box-sizing: border-box; /* Ensure padding is included in width/height calculations */
+    border: 1px solid #0092CC; /* Match the border color used in the job section */
+    background: #09151a; /* Use the same background color as the portfolio */
+    color: #ffffffc7; /* Optional: Adjust text color if necessary */
+    display: none; /* Hide the certificate by default */
+}
+
+
+/* Style for the certificate image */
+.certificate img {
+    width: auto; /* Adjust width dynamically */
+    height: auto; /* Adjust height dynamically */
+    max-height: 100%; /* Ensure image fits within the container */
+    max-width: 100%; /* Ensure image fits within the container */
+    object-fit: contain; /* Preserve aspect ratio */
+    transform-origin: center; /* Set the rotation pivot to the center */
+}
+
+/* Specific adjustments for vertical images */
+.certificate img.vertical {
+    transform: rotate(-90deg); /* Rotate vertical images to appear horizontal */
+}
+
+
+
+
+
 
 /***************************************************/
 /* Projects Section */

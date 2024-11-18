@@ -39,3 +39,23 @@ hamburgerMenu.addEventListener('click', () => {
     hamburgerMenu.classList.toggle('active');
     navLinks.classList.toggle('active');
 });
+
+function toggleCertificate(button) {
+    const certificateSection = button.nextElementSibling;
+    if (certificateSection.classList.contains('hidden')) {
+        certificateSection.classList.remove('hidden');
+        certificateSection.style.display = 'block';
+        button.textContent = 'Hide Certificate';
+    } else {
+        certificateSection.classList.add('hidden');
+        certificateSection.style.display = 'none';
+        button.textContent = 'Show Certificate';
+    }
+}
+document.querySelectorAll('.certificate img').forEach((img) => {
+    img.onload = () => {
+        if (img.naturalHeight > img.naturalWidth) {
+            img.classList.add('vertical');
+        }
+    };
+});
