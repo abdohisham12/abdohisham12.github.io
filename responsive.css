@@ -1,94 +1,140 @@
-/* Mobile-first styles (default for small screens) */
+/* General Mobile-first styles (default for small screens) */
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
-/* General mobile styles */
-.header, .navbar, .menu-list {
+header {
     display: flex;
-    flex-direction: column; /* Stack items vertically on mobile */
+    flex-direction: column; /* Stack header items vertically */
     align-items: center;
+    padding: 10px;
+    text-align: center;
+    max-width: 100%; /* Prevent overflow */
+}
+
+header .logo {
+    font-size: 5vw; /* Using viewport width for dynamic resizing */
+    padding: 10px 0;
+}
+
+.navbar {
+    display: flex;
+    flex-direction: column; /* Stack navbar items vertically */
+    align-items: center;
+    margin-top: 20px;
+}
+
+.menu-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-list li {
+    margin: 10px 0;
 }
 
 .project-grid {
     display: grid;
-    grid-template-columns: 1fr; /* Single column for small screens */
+    grid-template-columns: 1fr; /* Single column for mobile */
     gap: 20px;
+    padding: 20px;
 }
 
 .project-card {
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f4f4f4;
+    text-align: center;
+    border-radius: 8px;
+    width: 100%; /* Ensure card takes up full width */
+    box-sizing: border-box; /* Include padding and border in element's total width */
 }
 
-.job {
+.project-card img {
+    width: 100%;
+    height: auto;
+    max-width: 100%; /* Prevent images from overflowing */
+}
+
+footer {
+    text-align: center;
     padding: 10px;
-    margin-bottom: 20px;
 }
 
-.company-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+/* Adjustments for Mobile (max-width: 768px) */
+@media only screen and (max-width: 768px) {
+    header .logo {
+        font-size: 5vw; /* Adjust font size */
+    }
 
-.company-logo {
-    width: 50px;
-    margin-bottom: 10px;
-}
+    .navbar {
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+    }
 
-/* Responsive design for tablets (768px - 1024px) */
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-
-    .header, .navbar, .menu-list {
-        flex-direction: row; /* Row layout for tablets */
-        justify-content: space-between;
+    .menu-list {
+        display: flex;
+        flex-direction: column;
     }
 
     .project-grid {
-        grid-template-columns: 1fr 1fr; /* Two columns for tablets */
+        grid-template-columns: 1fr;
+        padding: 10px;
     }
 
     .project-card {
         margin-bottom: 20px;
-    }
-
-    .company-info {
-        flex-direction: row; /* Horizontal layout for company info */
-        align-items: center;
-    }
-
-    .company-logo {
-        width: 40px; /* Slightly smaller logo on tablets */
-        margin-right: 10px; /* Space between logo and company name */
+        padding: 10px;
     }
 }
 
-/* Responsive design for desktops (1025px and above) */
-@media only screen and (min-width: 1025px) {
+/* Adjustments for Tablets (769px - 1024px) */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+    .header .logo {
+        font-size: 22px;
+    }
 
-    .header, .navbar, .menu-list {
-        flex-direction: row; /* Row layout for desktops */
+    .navbar {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .menu-list {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .project-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .project-card {
+        padding: 15px;
+    }
+}
+
+/* Adjustments for Desktop (1025px and above) */
+@media only screen and (min-width: 1025px) {
+    .header .logo {
+        font-size: 28px;
+    }
+
+    .navbar {
+        flex-direction: row;
         justify-content: space-between;
     }
 
     .project-grid {
-        grid-template-columns: 1fr 1fr 1fr; /* Three columns for desktop */
+        grid-template-columns: 1fr 1fr 1fr;
     }
+}
 
-    .project-card {
-        margin-bottom: 30px;
-    }
-
-    .company-info {
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .company-logo {
-        width: 50px; /* Standard size for logo on desktop */
-        margin-right: 15px;
-    }
+html {
+    scroll-behavior: smooth;
 }
