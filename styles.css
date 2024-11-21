@@ -4,13 +4,13 @@ body {
     margin: 0;
     padding: 0;
     background-color: #09151a;
-
+    color: #f7f7f7; /* Light text for better readability */
 }
 
-h1,
-h2,
-h3 {
+
+h1, h2, h3 {
     color: #ffffffc7;
+    font-weight: 600; /* Bold headings */
 }
 
 a {
@@ -47,7 +47,9 @@ a:hover {
 .nav-links a.active {
     color: #ffffffc7;
     border-bottom: 2px solid #ffffffc7;
+    transition: border-color 0.3s ease-in-out;
 }
+
 
 @media (max-width: 768px) {
     .nav-links {
@@ -57,25 +59,26 @@ a:hover {
     .nav-links a {
         margin-right: 0;
     }
+
+    .projects .project-container {
+        width: 100%; /* Full width for small screens */
+        height: auto; /* Adjust height dynamically */
+    }
 }
 
 /***************************************************/
 /* Hero Section */
 .hero {
-
-
-
-    background-size: 100% 300px;
-    background-position: 0% 100%;
+    background-size: cover; /* Adjusts the image for responsiveness */
+    background-position: center; /* Centers the background */
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #ffffffc7;
     flex-direction: row;
-
-
 }
+
 
 .hero .nav-logo {
     display: flex;
@@ -139,6 +142,7 @@ a:hover {
     padding: 30px;
     margin: 20px;
     border-radius: 10px;
+    animation: fadeIn 0.5s ease-out;
 
 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -263,6 +267,7 @@ a:hover {
     background-color: #09151a;
     padding: 30px;
     margin: 20px;
+    animation: fadeIn 0.5s ease-out;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -317,10 +322,13 @@ a:hover {
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+    
 }
 
 .show-cert-btn:hover {
     background-color: #007bb5;
+    transform: scale(1.05); /* Slight scale on hover */
+    transition: all 0.3s ease;
 }
 
 /* Style for the certificate container */
@@ -422,6 +430,7 @@ p {
 .projects .container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 20px; /* Added padding for internal spacing */
     background-color: #09151a;
 
 
@@ -468,6 +477,7 @@ p {
 .card-back {
     position: absolute;
     width: 100%;
+    transition: transform 0.6s ease; /* Smooth transition for flipping */
     height: 100%;
     backface-visibility: hidden;
     /* Hides the back when facing front */
@@ -483,6 +493,7 @@ p {
     color: #ffffff;
     border-radius: 10px;
     border-color: 1px solid red;
+    transform: rotateY(0deg);
     /* Front card text color */
 }
 
