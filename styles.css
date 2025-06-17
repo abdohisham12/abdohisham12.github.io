@@ -4,9 +4,158 @@ body {
     margin: 0;
     padding: 0;
     background-color: #09151a;
-    color: #f7f7f7; /* Light text for better readability */
+    color: #f7f7f7;
 }
 
+/* Mobile-first approach */
+@media (max-width: 768px) {
+    /* Improved Navigation */
+    .nav-links a {
+        margin: 12px 0;
+        padding: 10px 15px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 5px;
+        width: 80%;
+    }
+    
+    .nav-links a.active {
+        border-bottom: none;
+        background: rgba(0,146,204,0.3);
+    }
+    
+    /* Hero Section Fixes */
+    .hero {
+        padding: 40px 20px;
+    }
+    
+    .hero .profile-picture {
+        margin-left: 0;
+        margin-bottom: 30px;
+    }
+    
+    .hero .container {
+        text-align: center;
+    }
+    
+    .hero .container button {
+        align-self: center;
+    }
+
+
+      /* Job/Education Section Fixes */
+    .job {
+        padding: 25px;
+    }
+    
+    .company-date {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    
+    .certificate {
+        width: 100%;
+        max-height: 200px;
+    }
+    
+    /* About Me */
+    #about-me {
+        width: auto;
+        padding: 15px;
+    }
+    
+    .icon {
+        width: 100%;
+        height: auto;
+        margin: 0 0 15px 0;
+    }
+    
+    .row {
+        flex-direction: column;
+    }
+
+     /* Project Card Fixes */
+    .projects .project-container {
+        height: auto;
+        min-height: 420px;
+    }
+    
+    .card {
+        height: auto;
+        transform: none !important;
+    }
+    
+    .card:hover {
+        transform: none !important;
+    }
+    
+    .card-back {
+        position: relative;
+        transform: rotateY(0deg);
+        backface-visibility: visible;
+        display: block;
+    }
+    
+    .card-front {
+        transform: rotateY(0deg);
+    }
+    
+    .projects .project-container ul {
+        flex-wrap: wrap;
+    }
+    
+    .projects .project-container li {
+        flex: 0 0 48%;
+        margin-bottom: 8px;
+    }
+
+    /* Skills */
+    .skill-row {
+        justify-content: center;
+    }
+    
+    .skill-container {
+        width: 40%;
+        margin: 10px;
+    }
+
+     /* Footer Improvements */
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .column {
+        margin: 15px 0;
+        align-items: center;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .hero .profile-picture {
+        margin-left: 40px;
+    }
+    
+    .projects .project-container {
+        width: calc(50% - 30px);
+    }
+}
+
+#about-me {
+    width: auto;
+    max-width: 1400px;
+}
+
+/* Ensure images are responsive */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Improve button touch targets */
+button, .show-repo-button {
+    min-height: 44px;
+    min-width: 44px;
+}
 
 h1, h2, h3 {
     color: #ffffffc7;
