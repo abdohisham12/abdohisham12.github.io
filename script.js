@@ -401,7 +401,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            // Check Content-Type header before parsing response
+            const contentType = response.headers.get('content-type');
+            const isJson = contentType && contentType.includes('application/json');
+
             if (response.ok) {
+                // If response is JSON, parse it to check for any warnings
+                if (isJson) {
+                    try {
+                        const data = await response.json();
+                        // Formspree may return JSON with success message
+                        if (data.error) {
+                            showFormMessage('There was an error with your submission. Please try again or email me directly at abdulrahmanhishamk@gmail.com', 'error');
+                            return;
+                        }
+                    } catch (e) {
+                        // If JSON parsing fails, assume success (Formspree HTML success page)
+                        console.warn('Could not parse response as JSON, assuming success');
+                    }
+                }
+                // Success - Formspree accepted the form
                 showFormMessage('Message sent successfully! I\'ll get back to you soon.', 'success');
                 contactForm.reset();
                 // Clear any error states
@@ -410,10 +429,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 hideError(emailError);
                 hideError(messageError);
             } else {
-                const data = await response.json();
-                if (data.errors) {
-                    showFormMessage('There was an error with your submission. Please try again or email me directly at abdulrahmanhishamk@gmail.com', 'error');
+                // Error response - try to parse JSON if available
+                if (isJson) {
+                    try {
+                        const data = await response.json();
+                        if (data.errors) {
+                            showFormMessage('There was an error with your submission. Please try again or email me directly at abdulrahmanhishamk@gmail.com', 'error');
+                        } else {
+                            showFormMessage('Failed to send message. Please try again or email me directly at abdulrahmanhishamk@gmail.com', 'error');
+                        }
+                    } catch (e) {
+                        // If JSON parsing fails, show generic error
+                        showFormMessage('Failed to send message. Please try again or email me directly at abdulrahmanhishamk@gmail.com', 'error');
+                    }
                 } else {
+                    // HTML error response
                     showFormMessage('Failed to send message. Please try again or email me directly at abdulrahmanhishamk@gmail.com', 'error');
                 }
             }
