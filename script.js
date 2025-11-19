@@ -1,5 +1,251 @@
 // Note: Download CV button now uses direct link, no JS needed
 
+// Hero Stats Carousel Animation
+function initStatsCarousel() {
+    const carousel = document.querySelector('.hero-stats-carousel');
+    if (!carousel) return;
+    
+    const statItems = carousel.querySelectorAll('.stat-item');
+    const statNumbers = carousel.querySelectorAll('.stat-number');
+    
+    // Animate numbers
+    function animateNumber(element) {
+        const target = parseInt(element.getAttribute('data-target'));
+        const duration = 2000;
+        const increment = target / (duration / 16);
+        let current = 0;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                element.textContent = target + (target === 95 ? '%' : target === 40 ? '%' : '+');
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current) + (target === 95 ? '%' : target === 40 ? '%' : '+');
+            }
+        }, 16);
+    }
+    
+    // Rotate through stats
+    let currentIndex = 0;
+    function rotateStats() {
+        statItems.forEach((item, index) => {
+            item.classList.remove('active');
+        });
+        statItems[currentIndex].classList.add('active');
+        animateNumber(statNumbers[currentIndex]);
+        currentIndex = (currentIndex + 1) % statItems.length;
+    }
+    
+    // Start rotation after initial animation
+    setTimeout(() => {
+        rotateStats();
+        setInterval(rotateStats, 3000);
+    }, 1000);
+}
+
+// Initialize stats carousel on page load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initStatsCarousel);
+} else {
+    initStatsCarousel();
+}
+
+// Quick Navigation Sidebar
+function initQuickNav() {
+    const quickNav = document.getElementById('quick-nav-sidebar');
+    if (!quickNav) return;
+    
+    const navLinks = quickNav.querySelectorAll('.quick-nav-link');
+    const sections = document.querySelectorAll('section[id]');
+    
+    // Show sidebar after scrolling
+    function toggleSidebar() {
+        if (window.scrollY > 300) {
+            quickNav.classList.add('visible');
+        } else {
+            quickNav.classList.remove('visible');
+        }
+    }
+    
+    // Update active link based on scroll position
+    function updateActiveLink() {
+        const scrollPosition = window.pageYOffset + 200;
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('data-section') === sectionId) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }
+    
+    // Smooth scroll on click
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('data-section');
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+    
+    window.addEventListener('scroll', () => {
+        toggleSidebar();
+        updateActiveLink();
+    });
+    
+    toggleSidebar();
+    updateActiveLink();
+}
+
+// Initialize quick nav on page load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initQuickNav);
+} else {
+    initQuickNav();
+}
+
+// Enhanced Skills Tooltips
+function initSkillTooltips() {
+    const skillContainers = document.querySelectorAll('.skill-container[data-skill-filter]');
+    
+    skillContainers.forEach(container => {
+        const skillName = container.querySelector('.skill-name .h3')?.textContent || '';
+        const projects = {
+            'TensorFlow': 'SIRB, Ionospheric Forecasting, Microsoft Malware Detection',
+            'Python': 'All projects - Core language for AI/ML development',
+            'LLM Technologies': 'Autonomous Mission Design (RAG)',
+            'RAG': 'Autonomous Mission Design - Graduation Project',
+            'Computer Vision': 'SIRB Project - 95%+ accuracy',
+            'PyTorch': 'Autonomous Mission Design',
+            'Microsoft Azure': 'CDF Project - Cloud deployment',
+            'MLflow': 'Microsoft Malware Detection - MLOps'
+        };
+        
+        const projectList = projects[skillName.split(' ')[0]] || 'Multiple projects';
+        
+        // Create tooltip
+        const tooltip = document.createElement('div');
+        tooltip.className = 'skill-tooltip';
+        tooltip.textContent = `Used in: ${projectList}`;
+        container.appendChild(tooltip);
+        
+        // Show/hide tooltip on hover
+        container.addEventListener('mouseenter', () => {
+            tooltip.classList.add('visible');
+        });
+        
+        container.addEventListener('mouseleave', () => {
+            tooltip.classList.remove('visible');
+        });
+    });
+}
+
+// Initialize skill tooltips
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSkillTooltips);
+} else {
+    initSkillTooltips();
+}
+
+// Animated Counters for Metrics Dashboard
+function initMetricCounters() {
+    const metricValues = document.querySelectorAll('.metric-value[data-target]');
+    
+    const animateCounter = (element) => {
+        const target = parseInt(element.getAttribute('data-target'));
+        const duration = 2000;
+        const increment = target / (duration / 16);
+        let current = 0;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                element.textContent = target;
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current);
+            }
+        }, 16);
+    };
+    
+    // Use Intersection Observer to trigger animation when section is visible
+    const observerOptions = {
+        threshold: 0.3,
+        rootMargin: '0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const metricCard = entry.target.closest('.metric-card');
+                const metricValue = metricCard.querySelector('.metric-value[data-target]');
+                if (metricValue && !metricValue.classList.contains('animated')) {
+                    metricValue.classList.add('animated');
+                    animateCounter(metricValue);
+                }
+            }
+        });
+    }, observerOptions);
+    
+    metricValues.forEach(value => {
+        const metricCard = value.closest('.metric-card');
+        if (metricCard) {
+            observer.observe(metricCard);
+        }
+    });
+}
+
+// Initialize metric counters
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMetricCounters);
+} else {
+    initMetricCounters();
+}
+
+// Enhanced fade-in for certifications section
+document.addEventListener('DOMContentLoaded', () => {
+    const certificationsSection = document.querySelector('.certifications-showcase');
+    if (certificationsSection) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        observer.observe(certificationsSection);
+    }
+    
+    // Also observe metrics dashboard
+    const metricsDashboard = document.querySelector('.metrics-dashboard');
+    if (metricsDashboard) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        observer.observe(metricsDashboard);
+    }
+});
+
 // Active Navigation Link Highlighting
 function updateActiveNavLink() {
     const sections = document.querySelectorAll('section[id]');
@@ -76,50 +322,6 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleBackToTop();
     }
     
-    // Copy Email Functionality
-    const copyEmailBtn = document.getElementById('copy-email-btn');
-    const copyFeedback = document.getElementById('copy-feedback');
-    const emailAddress = 'abdulrahmanhishamk@gmail.com';
-    
-    if (copyEmailBtn && copyFeedback) {
-        copyEmailBtn.addEventListener('click', async () => {
-            try {
-                await navigator.clipboard.writeText(emailAddress);
-                copyFeedback.textContent = '✓ Copied!';
-                copyFeedback.classList.add('show');
-                setTimeout(() => {
-                    copyFeedback.classList.remove('show');
-                    setTimeout(() => {
-                        copyFeedback.textContent = '';
-                    }, 300);
-                }, 2000);
-            } catch (err) {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = emailAddress;
-                textArea.style.position = 'fixed';
-                textArea.style.opacity = '0';
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    copyFeedback.textContent = '✓ Copied!';
-                    copyFeedback.classList.add('show');
-                    setTimeout(() => {
-                        copyFeedback.classList.remove('show');
-                        setTimeout(() => {
-                            copyFeedback.textContent = '';
-                        }, 300);
-                    }, 2000);
-                } catch (e) {
-                    copyFeedback.textContent = 'Copy failed';
-                    copyFeedback.classList.add('show', 'error');
-                }
-                document.body.removeChild(textArea);
-            }
-        });
-    }
-    
     // Smooth Scroll Animations with Intersection Observer
     const observerOptions = {
         threshold: 0.1,
@@ -161,36 +363,85 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Hamburger Menu Toggle
+// Hamburger Menu Toggle with Backdrop
 document.addEventListener('DOMContentLoaded', () => {
     const hamburgerMenu = document.querySelector('.hamburger-menu');
     const navLinks = document.querySelector('.nav-links');
+    const body = document.body;
     
-    if (hamburgerMenu && navLinks) {
-        hamburgerMenu.addEventListener('click', () => {
-            hamburgerMenu.classList.toggle('active');
-            navLinks.classList.toggle('active');
-            const isExpanded = hamburgerMenu.classList.contains('active');
-            hamburgerMenu.setAttribute('aria-expanded', isExpanded);
+    // Create backdrop element if it doesn't exist
+    let backdrop = document.querySelector('.nav-backdrop');
+    if (!backdrop) {
+        backdrop = document.createElement('div');
+        backdrop.className = 'nav-backdrop';
+        backdrop.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(backdrop);
+    }
+    
+    // Function to open menu
+    const openMenu = () => {
+        hamburgerMenu.classList.add('active');
+        navLinks.classList.add('active');
+        backdrop.classList.add('active');
+        hamburgerMenu.setAttribute('aria-expanded', 'true');
+        backdrop.setAttribute('aria-hidden', 'false');
+        // Prevent body scroll when menu is open
+        body.style.overflow = 'hidden';
+    };
+    
+    // Function to close menu
+    const closeMenu = () => {
+        hamburgerMenu.classList.remove('active');
+        navLinks.classList.remove('active');
+        backdrop.classList.remove('active');
+        hamburgerMenu.setAttribute('aria-expanded', 'false');
+        backdrop.setAttribute('aria-hidden', 'true');
+        // Restore body scroll
+        body.style.overflow = '';
+    };
+    
+    if (hamburgerMenu && navLinks && backdrop) {
+        // Toggle menu on hamburger click
+        hamburgerMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = hamburgerMenu.classList.contains('active');
+            if (isOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+        
+        // Close menu when clicking on backdrop
+        backdrop.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeMenu();
         });
         
         // Close menu when clicking on a nav link
         const navLinkElements = navLinks.querySelectorAll('.nav-link');
         navLinkElements.forEach(link => {
             link.addEventListener('click', () => {
-                hamburgerMenu.classList.remove('active');
-                navLinks.classList.remove('active');
-                hamburgerMenu.setAttribute('aria-expanded', 'false');
+                closeMenu();
             });
         });
         
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!hamburgerMenu.contains(e.target) && !navLinks.contains(e.target)) {
-                hamburgerMenu.classList.remove('active');
-                navLinks.classList.remove('active');
-                hamburgerMenu.setAttribute('aria-expanded', 'false');
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && hamburgerMenu.classList.contains('active')) {
+                closeMenu();
             }
+        });
+        
+        // Close menu when window is resized to desktop size
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth > 768 && hamburgerMenu.classList.contains('active')) {
+                    closeMenu();
+                }
+            }, 250);
         });
     }
 });
@@ -780,7 +1031,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (position.responsibilities && position.responsibilities.length > 0) {
                 responsibilitiesHTML = '<div class="work-history-responsibilities"><h4 style="color: #0092CC; margin-bottom: 15px; font-size: 1.2em;">Key Responsibilities:</h4><ul style="list-style: none; padding: 0; line-height: 1.8;">';
                 position.responsibilities.forEach(resp => {
-                    responsibilitiesHTML += `<li>• ${resp}</li>`;
+                    responsibilitiesHTML += `<li>${resp}</li>`;
                 });
                 responsibilitiesHTML += '</ul></div>';
             }
@@ -789,8 +1040,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="work-history-card-header">
                     <img src="${position.logo}" alt="${position.company} Logo" class="work-history-logo" onerror="this.style.display='none'">
                     <div class="work-history-title">
-                        <h4>${position.title}</h4>
-                        <p class="work-history-company">${position.company}</p>
+                        <h4>Inside ${position.company}</h4>
                     </div>
                 </div>
                 <div class="work-history-date">${position.date}</div>
@@ -798,18 +1048,22 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
 
             // Update back face
-            let detailsHTML = `<h3>${position.title} at ${position.company}</h3>`;
+            let detailsHTML = `<h3>Inside ${position.company}</h3>`;
             if (position.details.achievements) {
-                detailsHTML += '<p><strong>Key Achievements:</strong></p><ul>';
+                detailsHTML += '<p><strong>Key Achievements:</strong></p><ul style="list-style: none; padding: 0; line-height: 1.8;">';
                 position.details.achievements.forEach(achievement => {
-                    detailsHTML += `<li>${achievement}</li>`;
+                    // Remove checkmark emoji (✓) from achievement text (anywhere in the string)
+                    const cleanAchievement = achievement.replace(/✓/g, '').trim();
+                    detailsHTML += `<li>${cleanAchievement}</li>`;
                 });
                 detailsHTML += '</ul>';
             }
             if (position.details.projects) {
-                detailsHTML += '<p><strong>Key Projects:</strong></p><ul>';
+                detailsHTML += '<p><strong>Key Projects:</strong></p><ul style="list-style: none; padding: 0; line-height: 1.8;">';
                 position.details.projects.forEach(project => {
-                    detailsHTML += `<li>${project}</li>`;
+                    // Remove checkmark emoji (✓) from project text if present
+                    const cleanProject = project.replace(/✓/g, '').trim();
+                    detailsHTML += `<li>${cleanProject}</li>`;
                 });
                 detailsHTML += '</ul>';
             }
@@ -868,15 +1122,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (pauseBtn && pauseIcon) {
+            // SVG icons for pause and play
+            const pauseIconSVG = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
+            const playIconSVG = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+            
             pauseBtn.addEventListener('click', () => {
                 isPaused = !isPaused;
                 if (isPaused) {
                     stopAutoRotation();
-                    pauseIcon.textContent = '▶';
+                    pauseIcon.innerHTML = playIconSVG;
                     pauseBtn.setAttribute('aria-label', 'Resume auto-rotation');
                 } else {
                     startAutoRotation();
-                    pauseIcon.textContent = '⏸';
+                    pauseIcon.innerHTML = pauseIconSVG;
                     pauseBtn.setAttribute('aria-label', 'Pause auto-rotation');
                 }
             });
@@ -1020,6 +1278,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Projects Filter Functionality
     const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectRow = document.querySelector('.project-row');
     const projectContainers = document.querySelectorAll('.project-container');
     const projectsSearch = document.getElementById('projects-search');
     const projectsCountNumber = document.getElementById('projects-count-number');
@@ -1048,8 +1307,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Filter projects
-        let visibleCount = 0;
+        // Separate visible and hidden projects
+        const visibleProjects = [];
+        const hiddenProjects = [];
+        
         projectContainers.forEach(container => {
             const projectType = container.getAttribute('data-project-type');
             const projectTitle = container.querySelector('h3')?.textContent.toLowerCase() || '';
@@ -1072,14 +1333,71 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (shouldShow) {
                 container.classList.remove('filtered-out');
-                visibleCount++;
+                visibleProjects.push(container);
             } else {
                 container.classList.add('filtered-out');
+                hiddenProjects.push(container);
             }
         });
 
+        // Reorder projects: visible first, then hidden
+        if (projectRow) {
+            // Add reordering class for smooth transition
+            projectRow.classList.add('reordering');
+            
+            // Use DocumentFragment for efficient DOM manipulation
+            const fragment = document.createDocumentFragment();
+            
+            // Add visible projects first
+            visibleProjects.forEach(project => {
+                fragment.appendChild(project);
+            });
+            
+            // Add hidden projects at the end
+            hiddenProjects.forEach(project => {
+                fragment.appendChild(project);
+            });
+            
+            // Clear and repopulate the container
+            projectRow.innerHTML = '';
+            projectRow.appendChild(fragment);
+            
+            // Use requestAnimationFrame to ensure smooth reflow
+            requestAnimationFrame(() => {
+                // Trigger reflow for smooth animation
+                projectRow.offsetHeight;
+                
+                // Animate visible projects in with stagger effect
+                visibleProjects.forEach((project, index) => {
+                    // Reset any inline styles first
+                    project.style.opacity = '0';
+                    project.style.transform = 'translateY(20px)';
+                    
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            project.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                            project.style.opacity = '1';
+                            project.style.transform = 'translateY(0)';
+                        }, index * 30); // Stagger animation
+                    });
+                });
+                
+                // Clean up after animation completes
+                const animationDuration = visibleProjects.length * 30 + 300;
+                setTimeout(() => {
+                    projectRow.classList.remove('reordering');
+                    visibleProjects.forEach(project => {
+                        project.style.transition = '';
+                        project.style.opacity = '';
+                        project.style.transform = '';
+                    });
+                }, animationDuration);
+            });
+        }
+
+        // Update count
         if (projectsCountNumber) {
-            projectsCountNumber.textContent = visibleCount;
+            projectsCountNumber.textContent = visibleProjects.length;
         }
     }
 
@@ -1121,154 +1439,302 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Globe Initialization
+// Globe Initialization with Intersection Observer for lazy loading
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('globe-canvas');
-    if (!canvas) {
-        return; // Exit if canvas not available
+    const globeWrapper = document.querySelector('.globe-wrapper');
+    if (!canvas || !globeWrapper) {
+        return; // Exit if canvas or wrapper not available
     }
     
-    let retryCount = 0;
-    const maxRetries = 50; // Maximum 5 seconds of retries
+    let globe = null;
+    let isInitialized = false;
+    const MOVEMENT_DAMPING = 1400;
     
-    // Wait for cobe to be available (CDN might load after DOMContentLoaded)
-    const initGlobe = () => {
-        retryCount++;
-        if (retryCount > maxRetries) {
-            console.warn('Cobe library failed to load after maximum retries');
-            return;
+    function getCobeLibrary() {
+        // Try different ways cobe might be exposed from CDN
+        if (window.cobe && window.cobe.createGlobe) {
+            console.log('Cobe library found via window.cobe');
+            return window.cobe;
         }
+        if (window.createGlobe) {
+            console.log('Cobe library found via window.createGlobe');
+            return { createGlobe: window.createGlobe };
+        }
+        // Check if loaded as module
+        if (typeof cobe !== 'undefined' && cobe.createGlobe) {
+            console.log('Cobe library found via module');
+            return cobe;
+        }
+        console.warn('Cobe library not found');
+        return null;
+    }
+    
+    function initGlobe() {
+        if (isInitialized) return;
         
-        // Try different ways cobe might be exposed
-        let cobeLib = null;
-        if (typeof window !== 'undefined') {
-            if (window.cobe && window.cobe.createGlobe) {
-                cobeLib = window.cobe;
-            } else if (window.createGlobe) {
-                cobeLib = { createGlobe: window.createGlobe };
-            }
-        }
-        if (!cobeLib && typeof cobe !== 'undefined' && cobe.createGlobe) {
-            cobeLib = cobe;
-        }
-        if (!cobeLib && typeof createGlobe !== 'undefined') {
-            cobeLib = { createGlobe };
-        }
+        // Wait for cobe library to be available
+        let retryCount = 0;
+        const maxRetries = 100; // Increased retries
         
-        if (!cobeLib || !cobeLib.createGlobe) {
-            // Retry after a short delay if library not loaded yet
-            setTimeout(initGlobe, 100);
-            return;
-        }
-
-        let phi = 0;
-        let width = 0;
-        const pointerInteracting = { current: null };
-        const pointerInteractionMovement = { current: 0 };
-
-        const updatePointerInteraction = (value) => {
-            pointerInteracting.current = value;
-            if (canvas) {
-                canvas.style.cursor = value !== null ? 'grabbing' : 'grab';
-            }
-        };
-
-        const updateMovement = (clientX) => {
-            if (pointerInteracting.current !== null) {
-                const delta = clientX - pointerInteracting.current;
-                pointerInteractionMovement.current = delta;
-                phi += delta / 1400;
-            }
-        };
-
-        const onResize = () => {
-            if (canvas) {
-                width = canvas.offsetWidth;
-            }
-        };
-
-        window.addEventListener('resize', onResize);
-        onResize();
-
-        // Location markers: [latitude, longitude]
-        const markers = [
-            { location: [30.0444, 31.2357], size: 0.1 }, // Cairo, Egypt (base location)
-            { location: [52.5200, 13.4050], size: 0.08 }, // Berlin, Germany
-            { location: [40.7128, -74.0060], size: 0.1 }, // New York, USA
-            { location: [35.6762, 139.6503], size: 0.08 }, // Tokyo, Japan
-            { location: [51.5074, -0.1278], size: 0.07 }, // London, UK
-            { location: [48.8566, 2.3522], size: 0.07 }, // Paris, France
-            { location: [25.2048, 55.2708], size: 0.06 }, // Dubai, UAE
-            { location: [19.4326, -99.1332], size: 0.06 }, // Mexico City
-            { location: [-23.5505, -46.6333], size: 0.06 }, // São Paulo, Brazil
-            { location: [34.6937, 135.5022], size: 0.05 }, // Osaka, Japan
-        ];
-
-        const globe = cobeLib.createGlobe(canvas, {
-            devicePixelRatio: 2,
-            width: width * 2,
-            height: width * 2,
-            phi: 0,
-            theta: 0.3,
-            dark: 0,
-            diffuse: 0.4,
-            mapSamples: 16000,
-            mapBrightness: 1.2,
-            baseColor: [0.85, 0.85, 0.85],
-            markerColor: [0.85, 0.55, 0.15], // Orange/amber color
-            glowColor: [0.9, 0.9, 0.9],
-            markers: markers,
-            onRender: (state) => {
-                if (!pointerInteracting.current) {
-                    phi += 0.005;
+        const tryInit = () => {
+            retryCount++;
+            if (retryCount > maxRetries) {
+                console.warn('Cobe library failed to load after maximum retries');
+                // Show canvas with fallback styling if library fails to load
+                if (canvas) {
+                    canvas.style.opacity = '0.3';
+                    canvas.style.visibility = 'visible';
+                    console.warn('Globe canvas set to fallback visibility');
                 }
-                state.phi = phi + pointerInteractionMovement.current / 1400;
-                state.width = width * 2;
-                state.height = width * 2;
+                return;
             }
-        });
-
-        // Make canvas visible after initialization
-        setTimeout(() => {
-            if (canvas) {
-                canvas.style.opacity = '1';
+            
+            const cobeLib = getCobeLibrary();
+            if (!cobeLib || !cobeLib.createGlobe) {
+                if (retryCount % 10 === 0) {
+                    console.log(`Waiting for cobe library... (attempt ${retryCount}/${maxRetries})`);
+                }
+                setTimeout(tryInit, 100);
+                return;
             }
-        }, 0);
+            
+            console.log('Cobe library loaded successfully, initializing globe...');
+            
+            isInitialized = true;
+            
+            const phiRef = { current: 0 };
+            const widthRef = { current: 0 };
+            const pointerInteracting = { current: null };
+            const pointerInteractionMovement = { current: 0 };
+            let r = 0; // Rotation value for smooth interaction
 
-        // Pointer event handlers
-        canvas.addEventListener('pointerdown', (e) => {
-            pointerInteracting.current = e.clientX;
-            updatePointerInteraction(e.clientX);
-        });
+            const updatePointerInteraction = (value) => {
+                pointerInteracting.current = value;
+                if (canvas) {
+                    canvas.style.cursor = value !== null ? 'grabbing' : 'grab';
+                }
+            };
 
-        canvas.addEventListener('pointerup', () => {
-            updatePointerInteraction(null);
-        });
+            const updateMovement = (clientX) => {
+                if (pointerInteracting.current !== null) {
+                    const delta = clientX - pointerInteracting.current;
+                    pointerInteractionMovement.current = delta;
+                    r += delta / MOVEMENT_DAMPING;
+                }
+            };
 
-        canvas.addEventListener('pointerout', () => {
-            updatePointerInteraction(null);
-        });
+            const onResize = () => {
+                if (canvas) {
+                    const newWidth = canvas.offsetWidth || 400;
+                    if (newWidth > 0 && newWidth !== widthRef.current) {
+                        widthRef.current = newWidth;
+                        const canvasWidth = widthRef.current * 2;
+                        const canvasHeight = widthRef.current * 2;
+                        canvas.width = canvasWidth;
+                        canvas.height = canvasHeight;
+                    }
+                }
+            };
 
-        canvas.addEventListener('mousemove', (e) => {
-            updateMovement(e.clientX);
-        });
+            window.addEventListener('resize', onResize);
+            
+            // Get initial width - ensure we have dimensions
+            // Wait a bit for layout to settle
+            const initializeDimensions = () => {
+                // Force a layout calculation by checking multiple times
+                widthRef.current = canvas.offsetWidth || globeWrapper.offsetWidth || 400;
+                
+                if (widthRef.current === 0) {
+                    // Force a layout calculation
+                    canvas.style.display = 'block';
+                    canvas.style.width = '100%';
+                    canvas.style.height = 'auto';
+                    // Trigger reflow
+                    void canvas.offsetWidth;
+                    widthRef.current = canvas.offsetWidth || globeWrapper.offsetWidth || 400;
+                }
+                
+                // Ensure minimum width
+                if (widthRef.current < 300) {
+                    widthRef.current = 300;
+                }
+                
+                // Ensure maximum width for performance
+                if (widthRef.current > 500) {
+                    widthRef.current = 500;
+                }
+                
+                console.log(`Canvas dimensions set: ${widthRef.current}px`);
+                
+                // Set canvas internal dimensions (important for rendering)
+                const canvasWidth = widthRef.current * 2;
+                const canvasHeight = widthRef.current * 2;
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+                
+                // Verify dimensions were set
+                if (canvas.width === 0 || canvas.height === 0) {
+                    console.error('Canvas dimensions are zero, retrying...');
+                    setTimeout(initializeDimensions, 100);
+                    return;
+                }
+                
+                // Now create the globe with proper dimensions
+                createGlobeInstance();
+            };
+            
+            // Try multiple times to ensure layout is ready
+            setTimeout(initializeDimensions, 50);
+            setTimeout(initializeDimensions, 200);
+            setTimeout(initializeDimensions, 500);
+            
+            function createGlobeInstance() {
+                const canvasWidth = widthRef.current * 2;
+                const canvasHeight = widthRef.current * 2;
 
-        canvas.addEventListener('touchmove', (e) => {
-            if (e.touches[0]) {
-                updateMovement(e.touches[0].clientX);
+                // Verify canvas has valid dimensions
+                if (canvasWidth === 0 || canvasHeight === 0) {
+                    console.error('Invalid canvas dimensions:', canvasWidth, canvasHeight);
+                    return;
+                }
+
+                // Location markers: [latitude, longitude]
+                const markers = [
+                    { location: [30.0444, 31.2357], size: 0.1 }, // Cairo, Egypt (base location)
+                    { location: [52.5200, 13.4050], size: 0.08 }, // Berlin, Germany
+                    { location: [40.7128, -74.0060], size: 0.1 }, // New York, USA
+                    { location: [35.6762, 139.6503], size: 0.08 }, // Tokyo, Japan
+                    { location: [51.5074, -0.1278], size: 0.07 }, // London, UK
+                    { location: [48.8566, 2.3522], size: 0.07 }, // Paris, France
+                    { location: [25.2048, 55.2708], size: 0.06 }, // Dubai, UAE
+                    { location: [19.4326, -99.1332], size: 0.06 }, // Mexico City
+                    { location: [-23.5505, -46.6333], size: 0.06 }, // São Paulo, Brazil
+                    { location: [34.6937, 135.5022], size: 0.05 }, // Osaka, Japan
+                ];
+
+                try {
+                    console.log(`Creating globe with dimensions: ${canvasWidth}x${canvasHeight}`);
+                    globe = cobeLib.createGlobe(canvas, {
+                        devicePixelRatio: 2,
+                        width: canvasWidth,
+                        height: canvasHeight,
+                        phi: 0,
+                        theta: 0.3,
+                        dark: 0,
+                        diffuse: 0.4,
+                        mapSamples: 16000,
+                        mapBrightness: 1.2,
+                        baseColor: [0.85, 0.85, 0.85],
+                        markerColor: [0.85, 0.55, 0.15], // Orange/amber color
+                        glowColor: [0.9, 0.9, 0.9],
+                        markers: markers,
+                        onRender: (state) => {
+                            if (!pointerInteracting.current) {
+                                phiRef.current += 0.005;
+                            }
+                            state.phi = phiRef.current + r;
+                            state.width = canvasWidth;
+                            state.height = canvasHeight;
+                        }
+                    });
+
+                    console.log('Globe created successfully');
+                    
+                    // Make canvas visible immediately after globe creation
+                    if (canvas) {
+                        canvas.style.opacity = '1';
+                        canvas.style.visibility = 'visible';
+                        console.log('Canvas made visible');
+                    }
+                    
+                    // Pointer event handlers
+                    canvas.addEventListener('pointerdown', (e) => {
+                        pointerInteracting.current = e.clientX;
+                        updatePointerInteraction(e.clientX);
+                    });
+
+                    canvas.addEventListener('pointerup', () => {
+                        updatePointerInteraction(null);
+                    });
+
+                    canvas.addEventListener('pointerout', () => {
+                        updatePointerInteraction(null);
+                    });
+
+                    canvas.addEventListener('mousemove', (e) => {
+                        updateMovement(e.clientX);
+                    });
+
+                    canvas.addEventListener('touchmove', (e) => {
+                        if (e.touches[0]) {
+                            updateMovement(e.touches[0].clientX);
+                        }
+                    });
+
+                    // Cleanup on page unload
+                    window.addEventListener('beforeunload', () => {
+                        if (globe && globe.destroy) {
+                            globe.destroy();
+                        }
+                        window.removeEventListener('resize', onResize);
+                    });
+                } catch (error) {
+                    console.error('Error creating globe:', error);
+                    console.error('Error details:', {
+                        message: error.message,
+                        stack: error.stack,
+                        canvasWidth: canvasWidth,
+                        canvasHeight: canvasHeight,
+                        canvasExists: !!canvas
+                    });
+                    // Show canvas with reduced opacity as fallback
+                    if (canvas) {
+                        canvas.style.opacity = '0.2';
+                        canvas.style.visibility = 'visible';
+                        console.warn('Globe failed to initialize, showing fallback');
+                    }
+                    return;
+                }
             }
+        };
+        
+        tryInit();
+    }
+    
+    // Use Intersection Observer to lazy-load globe when it enters viewport
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !isInitialized) {
+                    initGlobe();
+                    observer.disconnect(); // Only initialize once
+                }
+            });
+        }, {
+            threshold: 0.1 // Trigger when 10% of the component is visible
         });
-
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            if (globe && globe.destroy) {
-                globe.destroy();
-            }
-            window.removeEventListener('resize', onResize);
-        });
+        
+        observer.observe(globeWrapper);
+    } else {
+        // Fallback for browsers without IntersectionObserver
+        initGlobe();
+    }
+    
+    // Also try to initialize immediately if already in viewport
+    const checkIfInViewport = () => {
+        const rect = globeWrapper.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        if (isVisible && !isInitialized) {
+            initGlobe();
+        }
     };
     
-    // Start initialization
-    initGlobe();
+    // Check immediately and after delays to ensure initialization
+    checkIfInViewport();
+    setTimeout(checkIfInViewport, 100);
+    setTimeout(checkIfInViewport, 500);
+    setTimeout(checkIfInViewport, 1000);
 });
+
 
