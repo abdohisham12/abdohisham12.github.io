@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Abdulrahman Hisham Kamel - Artificial Intelligence Engineer specializing in LLM technologies, computer vision, and AI-powered space mission planning. Building innovative AI solutions for aerospace.">
-    <meta name="keywords" content="AI Engineer, Machine Learning, LLM, Computer Vision, Space Technology, Aerospace AI, Python, TensorFlow, PyTorch, RAG, MLOps">
+    <meta name="description" content="Abdulrahman Hisham Kamel - Machine Learning Engineer & AI Software Engineer specializing in LLMs, computer vision, MLOps, and production AI systems. 3+ years building scalable AI solutions for aerospace and tech companies.">
+    <meta name="keywords" content="AI Engineer, Machine Learning Engineer, MLOps Engineer, AI Software Engineer, Deep Learning Specialist, LLM, Computer Vision, Space Technology, Aerospace AI, Python, TensorFlow, PyTorch, RAG, MLOps, Production AI Systems">
     <meta name="author" content="Abdulrahman Hisham Kamel">
     
     <!-- Open Graph / Facebook -->
@@ -50,8 +50,10 @@
     <title>Abdulrahman Hisham Kamel | AI Engineer | Space Technology Specialist</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="responsive.css">
+    <script src="https://unpkg.com/cobe@0.6.0/dist/cobe.umd.js"></script>
     <script src="script.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="assets/profile photo.jpg" as="image" importance="high">
     <style>
         /* Enhanced button hover effects */
         .download-cv:hover {
@@ -93,8 +95,16 @@
 </head>
 
 <body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scroll-progress" role="progressbar" aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+    
     <!-- Skip Navigation for Accessibility -->
     <a href="#main-content" class="skip-nav" style="position: absolute; left: -9999px; z-index: 999; padding: 1em; background-color: #0092CC; color: white; text-decoration: none;">Skip to main content</a>
+    
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" aria-label="Scroll to top" style="display: none;">
+        <span aria-hidden="true">↑</span>
+    </button>
     <style>
         .skip-nav:focus {
             left: 50%;
@@ -139,14 +149,14 @@
         <div class="hero-text-container">
             <h1 class="hero-name animate-fade-in-up" data-delay="0.1s">Abdulrahman Hisham Kamel</h1>
             <h2 class="hero-title animate-fade-in-up" data-delay="0.3s">
-                <span class="title-highlight">Artificial Intelligence Engineer</span>
+                <span class="title-highlight">Machine Learning Engineer & AI Software Engineer</span>
             </h2>
             <h3 class="hero-tagline animate-fade-in-up" data-delay="0.5s">
-                Building AI Solutions for Space & Aerospace
+                Building Production AI Systems for Space & Aerospace
             </h3>
             <p class="hero-description animate-fade-in-up" data-delay="0.7s">
-                Specializing in LLM technologies, computer vision, and AI-powered space mission planning. 
-                Transforming complex aerospace challenges into intelligent, scalable solutions.
+                Specializing in LLM technologies, computer vision, MLOps, and production AI systems. 
+                Transforming complex aerospace challenges into intelligent, scalable solutions deployed on Azure and cloud platforms.
             </p>
             
             <!-- Buttons Container -->
@@ -168,11 +178,53 @@
         <div class="hero-image-container">
             <div class="profile-picture-wrapper animate-scale-in" data-delay="0.5s">
                 <div class="profile-glow"></div>
-                <img src="assets/profile photo.jpg" alt="Abdulrahman Hisham Kamel - AI Engineer" class="profile-picture">
+                <img src="assets/profile photo.jpg" alt="Abdulrahman Hisham Kamel - AI Engineer" class="profile-picture" loading="eager" fetchpriority="high">
             </div>
         </div>
     </div>
 </section>
+
+    <!-- Executive Summary Section -->
+    <section id="executive-summary" class="executive-summary" aria-label="Executive summary">
+        <div class="container">
+            <div class="executive-summary-card">
+                <div class="executive-summary-header">
+                    <h2 style="color: #0092CC; margin: 0 0 20px 0; font-size: 2em;">At a Glance</h2>
+                    <p style="color: #b0b0b0; font-size: 1.1em; margin: 0;">Your 30-second snapshot of my qualifications</p>
+                </div>
+                <div class="executive-summary-grid">
+                    <div class="executive-summary-item">
+                        <div class="executive-icon">💼</div>
+                        <div class="executive-content">
+                            <h3>3+ Years Experience</h3>
+                            <p>AI Engineering & Production Systems</p>
+                        </div>
+                    </div>
+                    <div class="executive-summary-item">
+                        <div class="executive-icon">🎯</div>
+                        <div class="executive-content">
+                            <h3>Core Expertise</h3>
+                            <p>LLMs • Computer Vision • MLOps • AI/ML</p>
+                        </div>
+                    </div>
+                    <div class="executive-summary-item">
+                        <div class="executive-icon">🚀</div>
+                        <div class="executive-content">
+                            <h3>Key Achievement</h3>
+                            <p><strong>40% faster</strong> design cycles at AQMAAR.space</p>
+                        </div>
+                    </div>
+                    <div class="executive-summary-item">
+                        <div class="executive-icon">🌍</div>
+                        <div class="executive-content">
+                            <h3>Location & Availability</h3>
+                            <p>Cairo, Egypt | Available Worldwide (Remote)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Key Highlights Section -->
     <section id="key-highlights" class="key-highlights" aria-label="Key achievements and highlights">
@@ -207,85 +259,143 @@
         <div class="container">
             <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Education & Certifications</h2>
 
-            <div class="job">
-                <div class="job-header">
-
-                    <div class=" row">
-                        <img src="assets/logos/NSST cover.jpg" alt="Beni Suef University Logo" style="height: 60px;width: 60px;">
-
-                        <div class="company-date">
-                            <p> Beni Suef University</p>
-                            <h5>Navigation Science and Space Technology</h5>
+            <!-- Education Cards Grid -->
+            <div class="education-cards-grid">
+                <!-- Bachelor's Degree Card -->
+                <div class="education-card-container">
+                    <div class="education-card" data-card-type="education">
+                        <div class="education-card-front">
+                            <div class="education-card-header">
+                                <img src="assets/logos/NSST cover.jpg" alt="Beni Suef University Logo" class="education-logo">
+                                <div class="education-card-title">
+                                    <h3>Bachelor's Degree</h3>
+                                    <p class="education-institution">Beni Suef University</p>
+                                    <p class="education-field">Navigation Science and Space Technology</p>
+                                </div>
+                            </div>
+                            <div class="education-card-meta">
+                                <p class="education-date">Oct 2020 - July 2025</p>
+                                <div class="education-badge">
+                                    <img src="assets/logos/excellence.png" alt="Excellence Award Icon" style="height: 30px;width: 30px;">
+                                    <span>GPA: 3.69/4</span>
+                                </div>
+                            </div>
+                            <div class="education-responsibilities">
+                                <h4>Key Responsibilities & Coursework:</h4>
+                                <ul>
+                                    <li>• Advanced mathematics, probability and statistics</li>
+                                    <li>• Mechanical design and structural analysis</li>
+                                    <li>• Electromagnetics and advanced control systems</li>
+                                    <li>• Product Lifecycle Management (PLM)</li>
+                                    <li>• Electronics, robotics, and embedded systems</li>
+                                    <li>• Space navigation and orbital mechanics</li>
+                                    <li>• Space mission planning and optimization</li>
+                                    <li>• Research at NRIAG and EgSA</li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div class=" row">
-                        <h5> Oct 2020 - July 2025</h5>
+                        <div class="education-card-back">
+                            <div class="education-card-details">
+                                <h3>Bachelor's Degree Achievements</h3>
+                                <p><strong>Academic Excellence:</strong> <strong>GPA 3.69/4.0</strong> in CS, Space Navigation & Orbital Mechanics.</p>
+                                <p><strong>Capstone:</strong> RAG-powered AI solution for space mission planning optimization.</p>
+                                <p><strong>Research:</strong> Applied AI at NRIAG & EgSA for aerospace challenges.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="job-header">
-                    <div class=" row">
-                        
 
-                        <div class="company-date">
-                           
-
+                <!-- Nano Degree Card -->
+                <div class="education-card-container">
+                    <div class="education-card" data-card-type="education">
+                        <div class="education-card-front">
+                            <div class="education-card-header">
+                                <img src="assets/logos/microsoft-logo.png" alt="Microsoft Logo" class="education-logo">
+                                <div class="education-card-title">
+                                    <h3>Nano Degree</h3>
+                                    <p class="education-institution">Microsoft</p>
+                                    <p class="education-field">AI and Data Science</p>
+                                </div>
+                            </div>
+                            <div class="education-card-meta">
+                                <p class="education-date">April 2024 - Nov 2024</p>
+                            </div>
+                            <div class="education-responsibilities">
+                                <h4>Key Responsibilities & Training:</h4>
+                                <ul>
+                                    <li>• Machine learning algorithms and deep learning</li>
+                                    <li>• Attention-based NLP and prompt engineering</li>
+                                    <li>• MLOps with MLflow and Azure AI services</li>
+                                    <li>• GANs training and software development</li>
+                                    <li>• Supervised and unsupervised ML</li>
+                                    <li>• Industry-recognized AI and Data Science training</li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div class=" row">
-                        <img src="assets/logos/excellence.png" alt="Excellence Award Icon" style="height: 40px;width: 40px;">
-                        <div class="company-date">
-                            <p>GPA: 3.69/4</p>
-                            <p>Specialization in CS, Space navigation & Orbital Mechanics</p>
-
+                        <div class="education-card-back">
+                            <div class="education-card-details">
+                                <h3>Nano Degree Achievements</h3>
+                                <p><strong>Certification:</strong> Industry-recognized AI & Data Science training from Microsoft.</p>
+                                <p><strong>Mastery:</strong> Hands-on projects demonstrating expertise in cutting-edge AI technologies.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <p style="font-weight: 300; line-height: 1.8;">
-                    Currently completing a Bachelor's degree in <strong>Navigation Science and Space Technology</strong> at Beni Suef University, with a specialization in Computer Science, Space Navigation, and Orbital Mechanics.
-                    <br><br>
-                    <strong>Comprehensive Coursework:</strong> Advanced mathematics, probability and statistics, mechanical design, electromagnetics, advanced control systems, PLM, electronics, robotics, embedded systems, structural analysis, and space mission planning.
-                    <br><br>
-                    <strong>Capstone Project:</strong> "Enhancing Space Mission Planning Using Retrieval-Augmented Generation Models" - Developed an AI-powered solution to optimize space mission planning workflows using advanced RAG techniques.
-                    <br><br>
-                    <strong>Microsoft Nanodegree in AI and Data Science</strong> (April - November 2024): Industry-recognized training covering:
-                    <br>• Machine learning algorithms and deep learning
-                    <br>• Attention-based NLP and prompt engineering
-                    <br>• MLOps with MLflow and Azure AI services
-                    <br>• GANs training and software development
-                    <br><br>
-                    <strong>Research Experience:</strong> Actively involved in research at the National Research Institute of Astronomy & Geophysics (NRIAG) and the Egyptian Space Agency (EgSA), applying AI techniques to solve complex aerospace challenges.
-                </p>
-            </div>
-
-            <div class="job" style="background: linear-gradient(135deg, rgba(0,146,204,0.08) 0%, rgba(0,146,204,0.03) 100%); border-left: 4px solid #0092CC; padding: 25px; border-radius: 8px;">
-                <div class="job-header">
-                    <div class=" row">
-                        <img src="assets/logos/microsoft-logo.png" alt="Microsoft Logo" style="height: 60px;width: 60px;">
-
-                        <div class="company-date">
-                            <p style="font-weight: 600; color: #0092CC; font-size: 1.1em;">Microsoft</p>
-                            <h5 style="color: #0092CC;">Nano Degree in AI and Data Science</h5>
-                        </div>
-                    </div>
-                    <div class=" row">
-                        <h5>April 2024 - Nov 2024</h5>
-                    </div>
-                </div>
-                <p style="font-weight: 300; line-height: 1.8;">
-                    <strong>Professional Certification:</strong> Completed comprehensive, industry-recognized training program in AI and Data Science. <strong>Core Competencies:</strong> Machine learning algorithms, attention-based NLP, MLOps with MLflow, software development, Azure AI services, GANs training, prompt engineering, supervised and unsupervised ML, and deep learning. This certification demonstrates commitment to continuous learning and mastery of cutting-edge AI technologies.
-                </p>
             </div>
     </section>
     <!--About Me  Section ---------------------------------------------->
     <section id="about-me" aria-label="Professional summary">
         <div class="container">
             <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Professional Summary</h2>
+            
+            <!-- Quick Facts Card -->
+            <div class="quick-facts-card">
+                <h3 style="color: #0092CC; text-align: center; margin-bottom: 25px; font-size: 1.5em;">Quick Facts</h3>
+                <div class="quick-facts-grid">
+                    <div class="quick-fact-item">
+                        <span class="quick-fact-icon">📍</span>
+                        <div class="quick-fact-content">
+                            <strong>Location</strong>
+                            <p>Cairo, Egypt</p>
+                        </div>
+                    </div>
+                    <div class="quick-fact-item">
+                        <span class="quick-fact-icon">🌍</span>
+                        <div class="quick-fact-content">
+                            <strong>Availability</strong>
+                            <p>Available Worldwide (Remote)</p>
+                        </div>
+                    </div>
+                    <div class="quick-fact-item">
+                        <span class="quick-fact-icon">🎓</span>
+                        <div class="quick-fact-content">
+                            <strong>Education</strong>
+                            <p>Bachelor's (GPA 3.69/4.0)</p>
+                        </div>
+                    </div>
+                    <div class="quick-fact-item">
+                        <span class="quick-fact-icon">💼</span>
+                        <div class="quick-fact-content">
+                            <strong>Current</strong>
+                            <p>2 Active Positions</p>
+                        </div>
+                    </div>
+                    <div class="quick-fact-item">
+                        <span class="quick-fact-icon">🚀</span>
+                        <div class="quick-fact-content">
+                            <strong>Open to</strong>
+                            <p>Full-time, Contract, Remote</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div style="background: linear-gradient(135deg, rgba(0,146,204,0.1) 0%, rgba(0,146,204,0.05) 100%); padding: 30px; border-radius: 10px; margin-bottom: 40px; border-left: 4px solid #0092CC;">
                 <p style="font-size: 1.15em; line-height: 1.8; padding-right: 5%;padding-left: 5%; margin: 0;">
-                    <strong>Artificial Intelligence Engineer</strong> with expertise in building end-to-end AI solutions from concept to production. 
+                    <strong>Machine Learning Engineer & AI Software Engineer</strong> with expertise in building end-to-end AI solutions from concept to production. 
                     Currently leading AI initiatives at <strong>AQMAAR.space</strong>, where I develop intelligent systems for space mission planning and optimization. 
-                    My work combines cutting-edge LLM technologies, computer vision, and deep learning to solve complex aerospace challenges.
+                    My work combines cutting-edge LLM technologies, computer vision, MLOps, and deep learning to solve complex aerospace challenges.
                 </p>
             </div>
             
@@ -317,47 +427,6 @@
                 With hands-on experience deploying production-ready AI solutions on Azure and cloud platforms. My unique combination of aerospace engineering background and AI expertise enables me to bridge the gap between domain knowledge and cutting-edge technology.
             </p> 
 
-            <div class="row" style="display: flex; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
-                <img src="assets/images/orbit.gif" alt="Aerospace Engineering Visualization" class="icon" loading="lazy"
-                    style="max-width: 250px; height: 280px; flex: 1 1 300px; margin: 10px;">
-                <div class="col" style="flex: 1 1 300px; padding: 10px; text-align: left;">
-                    <h3 style="font-size: 1.5em;">Aerospace Engineering</h3>
-                    <p style="font-size: 1.1em;">
-                        As an aerospace engineer, I specialize in designing and analyzing advanced aerospace systems, with a focus on:
-                        <br>• Satellite communication and space environment modeling
-                        <br>• Flight dynamics and orbital mechanics
-                        <br>• End-to-end project development (conceptual design to implementation)
-                        <br><br>
-                        <strong>Industry-Standard Tools:</strong>
-                        <br>• SolidWorks (airflow design, mechanical modeling)
-                        <br>• OMNIWEB (satellite data acquisition)
-                        <br>• STK (comprehensive aerospace applications)
-                        <br>• FreeFlyer (precise orbit simulations)
-                        <br>• ArcGIS (geospatial analysis)
-                    </p>
-                </div>
-            </div>
-
-            <div class="row" style="display: flex; flex-wrap: wrap; justify-content: center; margin: 20px 0;">
-                <img src="assets/images/1_ltjx9ze971qwtha7gko3pa-1.gif" alt="AI and Machine Learning Visualization" class="icon" loading="lazy"
-                    style="max-width: 250px; flex: 1 1 300px; margin: 10px;">
-                <div class="col" style="flex: 1 1 300px; padding: 10px; text-align: left;">
-                    <h3 style="font-size: 1.5em;">Artificial Intelligence & Machine Learning</h3>
-                    <p style="font-size: 1.1em;">
-                        As an AI engineer, I specialize in building and deploying end-to-end AI solutions, from data collection to production deployment.
-                        <br><br>
-                        <strong>Core Expertise:</strong>
-                        <br>• Large Language Models (LLMs), prompt engineering, and RAG systems
-                        <br>• Computer vision and deep learning
-                        <br>• MLOps with MLflow for model lifecycle management
-                        <br>• Azure AI services and cloud platform integration
-                        <br><br>
-                        <strong>Frameworks & Tools:</strong> TensorFlow, PyTorch, LangChain
-                        <br><br>
-                        I apply AI to solve complex aerospace problems including space mission planning optimization, ionospheric forecasting, and autonomous mission design, combining advanced ML techniques with domain expertise.
-                    </p>
-                </div>
-            </div>
 
         </div>
     </section>
@@ -371,179 +440,118 @@
                 Building AI solutions at leading organizations, with a focus on space technology and innovation
             </p>
     
-            <div class="job">
-                <div class="job-header">
-                    <h4>AI Engineer</h4> 
-                    <p>July 2024 - Present</p>
+            <!-- Current Positions: AQMAAR & Invisibles -->
+            <div class="experience-section">
+                <h3 style="color: #0092CC; text-align: center; margin-bottom: 30px; font-size: 1.8em;">Current Positions</h3>
+                <div class="experience-cards-grid current-positions-grid">
+                    <!-- AQMAAR Card -->
+                    <div class="experience-card-container">
+                        <div class="experience-card" data-card-type="experience" data-company="aqmaar">
+                            <div class="experience-card-front">
+                                <div class="experience-card-header">
+                                    <img src="assets/logos/AQMAAR_LOGO.png" alt="AQMAAR Logo" class="experience-logo">
+                                    <div class="experience-card-title">
+                                        <h3>AI Engineer</h3>
+                                        <p class="experience-company">AQMAAR.space</p>
+                                    </div>
+                                </div>
+                                <div class="experience-card-meta">
+                                    <p class="experience-date">July 2024 - Present</p>
+                                </div>
+                                <div class="experience-responsibilities">
+                                    <h4>Key Responsibilities:</h4>
+                                    <ul>
+                                        <li>• Develop AI systems for space mission planning</li>
+                                        <li>• Lead cross-functional engineering teams</li>
+                                        <li>• Integrate multiple disciplines into AI platforms</li>
+                                        <li>• Build production AI systems on Azure</li>
+                                        <li>• Design computer vision algorithms</li>
+                                        <li>• Create real-time space debris dashboards</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="experience-card-back">
+                                <div class="experience-card-details">
+                                    <h3>AI Engineer Achievements</h3>
+                                    <p><strong>Impact:</strong> <strong>40% faster</strong> design iterations via AI. Led Azure production teams.</p>
+                                    <p><strong>Projects:</strong> CDF (<strong>30-50% faster</strong> cycles), SIRB (<strong>95%+ CV accuracy</strong>), DeepOrbit (<strong>10K+ objects</strong>).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Invisibles Card -->
+                    <div class="experience-card-container">
+                        <div class="experience-card" data-card-type="experience" data-company="invisibles">
+                            <div class="experience-card-front">
+                                <div class="experience-card-header">
+                                    <img src="assets/logos/invisible_primary_logo.png" alt="Invisible Technologies Logo" class="experience-logo">
+                                    <div class="experience-card-title">
+                                        <h3>AI Coding Trainer</h3>
+                                        <p class="experience-company">Invisible Technologies Inc</p>
+                                    </div>
+                                </div>
+                                <div class="experience-card-meta">
+                                    <p class="experience-date">May 2024 - Present</p>
+                                </div>
+                                <div class="experience-responsibilities">
+                                    <h4>Key Responsibilities:</h4>
+                                    <ul>
+                                        <li>• Generate high-quality code solutions (Python, SQL, C++)</li>
+                                        <li>• Ensure scientific accuracy of AI STEM content</li>
+                                        <li>• Improve code quality for 10,000+ students</li>
+                                        <li>• Enhance AI model performance</li>
+                                        <li>• Train Gemini AI for study features</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="experience-card-back">
+                                <div class="experience-card-details">
+                                    <h3>AI Coding Trainer Achievements</h3>
+                                    <p><strong>Impact:</strong> <strong>10%</strong> Gemini accuracy boost. <strong>500+ solutions</strong> for <strong>10K+ students</strong>.</p>
+                                    <p><strong>Quality:</strong> <strong>99%+</strong> STEM accuracy. <strong>15%</strong> AI performance improvement.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="company-info">
-                    <img src="assets/logos/AQMAAR_LOGO.png" alt="AQMAAR Logo" class="company-logo" loading="lazy">
-                    <h5>AQMAAR.space</h5>
-                </div>
-                <p>
-                    <strong>Key Achievements:</strong>
-                    <br>✓ <strong>40% reduction</strong> in design iteration time through AI-powered workflow optimization
-                    <br>✓ Led <strong>cross-functional teams of 5+ engineers</strong> to translate mission objectives into technical specifications
-                    <br>✓ Built <strong>production-ready AI systems</strong> integrating multiple engineering disciplines, deployed on Azure cloud infrastructure
-                    <br><br>
-                    <strong>Key Projects:</strong>
-                    <br>
-                    • <strong>CDF (Concurrent Design Facility):</strong> <strong>30-50% acceleration</strong> in spacecraft design cycles through AI-based concurrent design platform
-                    <br>
-                    • <strong>SIRB:</strong> <strong>95%+ accuracy</strong> in computer vision laser pattern detection; leading <strong>team of 3 engineers</strong> for mission testing
-                    <br>
-                    • <strong>DeepOrbit:</strong> Real-time dashboard processing <strong>10,000+ objects</strong> for space debris monitoring and mission safety analysis
-                </p>
             </div>
 
-            <div class="job">
-                <div class="job-header">
-                    <h4>AI Coding Trainer</h4> 
-                    <p>May 2024 - Present</p>
-                </div>
-                <div class="company-info">
-                    <img src="assets/logos/invisible_primary_logo.png" alt="Invisible Technologies Logo" class="company-logo" loading="lazy">
-                    <h5>Invisible Technologies Inc</h5>
-                </div>
-                <p>
-                    <strong>Key Achievements:</strong>
-                    <br>✓ <strong>10% improvement</strong> in Gemini teaching accuracy for study and learn feature
-                    <br>✓ Evaluated and generated <strong>500+ high-quality code solutions</strong> (Python, SQL, C++) for multilingual AI education platform serving <strong>10,000+ students</strong>
-                    <br>✓ Ensured <strong>99%+ scientific accuracy</strong> of AI-generated STEM content across Mathematics, Statistics, and Probability domains
-                    <br>✓ Contributed to <strong>15% improvement</strong> in AI model performance through systematic code quality assessment
+            <!-- Section 3: Professional History (Previous Positions, Training, Internships) -->
+            <div class="experience-section" style="margin-top: 60px;">
+                <h3 style="color: #0092CC; text-align: center; margin-bottom: 30px; font-size: 1.8em;">Professional History</h3>
+                <p style="text-align: center; color: #b0b0b0; margin-bottom: 40px; font-size: 1.05em;">
+                    Previous positions, training programs, and internships
                 </p>
-            </div>
-
-            <div class="job">
-                <div class="job-header">
-                    <h4>AI Software Engineer</h4> 
-                    <p>Sep 2024 - Nov 2024</p>
+                <div class="work-history-controls">
+                    <button class="work-history-nav-btn" id="work-history-prev" aria-label="Previous position">
+                        <span>←</span>
+                    </button>
+                    <div class="work-history-indicator">
+                        <span id="work-history-position">1</span> / <span id="work-history-total">6</span>
+                    </div>
+                    <button class="work-history-nav-btn" id="work-history-pause" aria-label="Pause auto-rotation">
+                        <span id="pause-icon">⏸</span>
+                    </button>
+                    <button class="work-history-nav-btn" id="work-history-next" aria-label="Next position">
+                        <span>→</span>
+                    </button>
                 </div>
-                <div class="company-info">
-                    <img src="assets/logos/outlier_logo.png" alt="Outlier Logo" class="company-logo" loading="lazy">
-                    <h5>Scale Labs</h5>
-                </div>
-                <p>
-                    <strong>Key Achievements:</strong>
-                    <br>✓ Evaluated and improved <strong>1,000+ code samples</strong> for state-of-the-art generative AI model training
-                    <br>✓ Developed <strong>200+ comprehensive question sets</strong> and solutions for computer science education
-                    <br>✓ <strong>25% improvement</strong> in code acceptance rate through rigorous quality standards for AI-generated code (Python, MySQL, C++)
-                </p>
-            </div>
-            
-            
-            <div class="job">
-                <div class="job-header">
-                    <h4>Space Environment Trainee</h4>
-                    <p>AUG 2024 - SEP 2024</p>
-                </div>
-                <div class="company-info">
-                    <img src="assets/logos/egsa_logo.png" alt="EgSA Logo" class="company-logo" loading="lazy">
-                    <h5>Egyptian Space Agency (EgSA)</h5>
-                </div>
-                <p>
-                    <strong>Key Achievements:</strong>
-                    <br>✓ <strong>87% accuracy</strong> in predicting ionospheric disturbances using LSTM/GRU deep learning model with attention layers
-                    <br>✓ Processed <strong>50,000+ data points</strong> for space-weather predictive models using TensorFlow and time-series analysis
-                    <br>✓ Completed intensive 2-week training program covering space environment, space weather, and atmospheric analysis
-                </p>
-                <button class="show-cert-btn" onclick="toggleCertificate(this)">Show Certificate</button>
-                <div class="certificate hidden">
-                    <img src="assets/certificates/space env.jpg" alt="Space Environment Certificate" loading="lazy">
+                <div class="work-history-container">
+                    <div class="work-history-card-wrapper">
+                        <div class="work-history-card" data-card-type="work-history">
+                            <div class="work-history-card-front">
+                                <!-- Content will be populated by JavaScript -->
+                            </div>
+                            <div class="work-history-card-back">
+                                <div class="work-history-card-details">
+                                    <!-- Details will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="job">
-                <div class="job-header">
-                    <h4>Space Keys Trainee</h4>
-                    <p>Jan 2024 - Feb 2024</p>
-                </div>
-                <div class="company-info">
-                    <img src="assets/logos/egsa_logo.png" alt="EgSA Logo" class="company-logo" loading="lazy">
-                    <h5>Egyptian Space Agency (EgSA)</h5>
-                </div>
-                <p>
-                    <strong>Key Achievements:</strong>
-                    <br>✓ Acquired comprehensive understanding of satellite subsystems including power systems, OBC, communication, payload, ADCS, and structural design
-                    <br>✓ Participated in hands-on satellite integration and testing procedures
-                    <br>✓ Gained practical knowledge of end-to-end satellite development lifecycle through Space Keys educational program
-                </p>
-                <button class="show-cert-btn" onclick="toggleCertificate(this)">Show Certificate</button>
-                <div class="certificate hidden">
-                    <img src="assets/certificates/space keys.jpg" alt="Space Keys Certificate" loading="lazy">
-                </div>
-            </div>
-            
-            <div class="job">
-                <div class="job-header">
-                    <h4>IT Engineer Trainee</h4>
-                    <p>Aug 2023 - Sep 2023</p>
-                </div>
-                <div class="company-info">
-                    <img src="assets/logos/egyair_logo.png" alt="EGYPTAIR Logo" class="company-logo" loading="lazy">
-                    <h5>EGYPTAIR TRAINING ACADEMY</h5>
-                </div>
-                <p>
-                    <strong>Key Achievements:</strong>
-                    <br>✓ Designed and implemented secure VPN tunnel architecture between multiple systems using Hyper-V
-                    <br>✓ Developed VoIP telephone service solution for enterprise communication
-                    <br>✓ Conducted network security simulations and vulnerability assessments using PNetLab
-                    <br>✓ Gained exposure to aviation industry systems including Jeppesen flight navigation and SITA communication protocols
-                    <br>✓ Visited Integrated Operating Command Control Building to understand real-world aviation operations
-                </p>
-                <button class="show-cert-btn" onclick="toggleCertificate(this)">Show Certificate</button>
-                <div class="certificate hidden">
-                    <img src="assets/certificates/egyair.jpg" alt="EGYPTAIR Certificate" loading="lazy">
-                </div>
-            </div>
-            
-            <div class="job">
-                <div class="job-header">
-                    <h4>Summer Trainee</h4>
-                    <p>Sep 2023 - Oct 2023</p>
-                </div>
-                <div class="company-info">
-                    <img src="assets/logos/nriag_logo.png" alt="NRIAG Logo" class="company-logo" loading="lazy">
-                    <h5>National Research Institute of Astronomy and Geophysics (NRIAG)</h5>
-                </div>
-                <p>
-                    <strong>Key Achievements:</strong>
-                    <br>✓ Optimized satellite performance through systematic parameter tuning (latitude, azimuth) and performance analysis
-                    <br>✓ Designed sequential circuits using Cadence and performed FPGA simulations with Xilinx tools
-                    <br>✓ Collaborated on AI algorithm development for aerospace applications, integrating ML techniques with satellite systems
-                    <br>✓ Built MySQL databases on phpMyAdmin for data management and analysis
-                    <br>✓ Analyzed strong-motion seismic data to inform structural design decisions for earthquake-resistant infrastructure
-                </p>
-                <button class="show-cert-btn" onclick="toggleCertificate(this)">Show Certificate</button>
-                <div class="certificate hidden">
-                    <img src="assets/certificates/Nriag.jpg" alt="NRIAG Certificate" loading="lazy">
-                </div>
-            </div>
-            
-            <div class="job">
-                <div class="job-header">
-                    <h4>Summer Trainee</h4>
-                    <p>Jul  2024 - Aug 2024</p>
-                </div>
-                <div class="company-info">
-                    <img src="assets/logos/echem_logo.png" alt="ECHEM Logo" class="company-logo" loading="lazy">
-                    <h5>Egyptian Chemicals Holding Company (ECHEM)</h5>
-                </div>
-                <p>
-                    <strong>Key Achievements:</strong>
-                    <br>✓ Completed comprehensive training program covering petrochemical industry history, current market challenges, and future trends
-                    <br>✓ Analyzed environmental impact assessments and sustainability practices in petrochemical operations
-                    <br>✓ Gained in-depth knowledge of ECHEM's organizational structure, subsidiary companies, and product portfolios
-                    <br>✓ Studied industry value chains, production processes, and market dynamics
-                    <br>✓ Developed understanding of regulatory frameworks and safety standards in chemical manufacturing
-                </p>
-                <button class="show-cert-btn" onclick="toggleCertificate(this)">Show Certificate</button>
-                <div class="certificate hidden">
-                    <img src="assets/certificates/echem.jpg" alt="echem Certificate" loading="lazy">
-                </div>
-            </div>
-            
-
 
         </div>
     </section>
@@ -557,11 +565,33 @@
             <p style="text-align: center; color: #b0b0b0; margin-bottom: 40px; font-size: 1.1em;">
                 Showcasing innovative AI solutions that solve real-world problems in aerospace and beyond
             </p>
+            
+            <!-- Projects Filter Panel -->
+            <div class="projects-filter-container">
+                <div class="projects-filter-panel">
+                    <button class="filter-btn active" data-filter="all" aria-label="Show all projects">
+                        All Projects
+                    </button>
+                    <button class="filter-btn" data-filter="client" aria-label="Filter by client projects">
+                        Client Work
+                    </button>
+                    <button class="filter-btn" data-filter="personal" aria-label="Filter by personal projects">
+                        Personal Projects
+                    </button>
+                </div>
+                <div class="projects-search-container">
+                    <input type="text" id="projects-search" class="projects-search" placeholder="Search projects..." aria-label="Search projects">
+                </div>
+                <div class="projects-count">
+                    <span id="projects-count-text">Showing <strong id="projects-count-number">9</strong> projects</span>
+                </div>
+            </div>
+            
             <div class="project-row">
 
                 <!----------------  Filmoria --------------------------------------------------------------------------->
 
-                <div class="project-container">
+                <div class="project-container" data-project-type="personal">
                     <div class="card">
                         <div class="card-front">
                             <img src="assets/images/filmoria.png" alt="Filmoria mobile app interface showing AI-powered movie recommendations" class="project-image" loading="lazy">
@@ -607,7 +637,7 @@
                         </div>
                         <div class="card-back">
                             <div class="card-items">
-                                <p class="p"><strong>Impact:</strong> Led a cross-functional team to deliver a production-ready mobile application with AI-powered recommendation engine. The system analyzes user preferences, detects movies from social media reels, and provides personalized suggestions using advanced NLP techniques. <strong>Key Features:</strong> Integrated chatbot with Gemini API, real-time movie detection from video content, and intelligent recommendation algorithm. Built with Flutter for iOS/Android and Python backend, demonstrating full-stack development capabilities and AI integration expertise.</p>
+                                <p class="p"><strong>Impact:</strong> Production-ready mobile app with AI recommendation engine. Analyzes preferences, detects movies from reels, provides personalized suggestions via NLP. <strong>Features:</strong> Gemini API chatbot, real-time video detection, intelligent recommendations. <strong>Tech:</strong> Flutter (iOS/Android), Python backend.</p>
 
                                 <button class="show-repo-button">
                                     <a href="https://github.com/DEPI-team/DEPI-Project " target="_blank">Show Repo</a>
@@ -620,7 +650,7 @@
 
 
                 <!----------------   House Price Prediction --------------------------------------------------------------------------->
-                <div class="project-container">
+                <div class="project-container" data-project-type="personal">
                     <div class="card">
                         <div class="card-front">
                             <img src="assets/images/gg.jpg" alt="House price prediction model visualization showing real estate data analysis" class="project-image" loading="lazy">
@@ -665,7 +695,7 @@
                         </div>
                         <div class="card-back">
                             <div class="card-items">
-                                <p class="p"><strong>Impact:</strong> Developed a robust machine learning model for real estate price prediction using comprehensive feature analysis. <strong>Key Results:</strong> Analyzed 3,000+ property records with features including location, size, amenities, and market conditions. Achieved high accuracy through advanced regression techniques and feature engineering. <strong>Validation:</strong> Model performance validated using RMSE and R-squared metrics, demonstrating reliability and robustness. Provides actionable insights for real estate market analysis, helping buyers and sellers make data-driven decisions. <strong>Technologies:</strong> Scikit-learn, Pandas, NumPy, Matplotlib, and Seaborn for comprehensive data analysis and visualization.</p>
+                                <p class="p"><strong>Impact:</strong> ML model for real estate price prediction. <strong>Results:</strong> Analyzed <strong>3,000+</strong> property records (location, size, amenities, market conditions). High accuracy via regression & feature engineering. <strong>Validation:</strong> RMSE & R-squared metrics. <strong>Tech:</strong> Scikit-learn, Pandas, NumPy, Matplotlib, Seaborn.</p>
 
                                 <button class="show-repo-button" style="opacity: 0.6; cursor: not-allowed;" disabled>
                                     <span style="color: #b0b0b0;">Repository Coming Soon</span>
@@ -676,7 +706,7 @@
                     </div>
                 </div>
                 <!----------------   Ionospheric-Forecasting-Using-GNSS-Observation --------------------------------------------------------------------------->
-                <div class="project-container">
+                <div class="project-container" data-project-type="personal">
                     <div class="card">
                         <div class="card-front">
                             <img src="assets/images/inosphere.png" alt="Ionospheric forecasting visualization showing space weather prediction data" class="project-image" loading="lazy">
@@ -715,7 +745,7 @@
                         </div>
                         <div class="card-back">
                             <div class="card-items">
-                                <p class="p"><strong>Impact:</strong> Built advanced deep learning model for space-weather prediction critical for satellite operations and communication systems. <strong>Key Innovation:</strong> Implemented LSTM/GRU architecture with attention mechanisms to predict VTEC (Vertical Total Electron Content) anomalies from GNSS data. <strong>Key Results:</strong> Successfully forecasted ionospheric disturbances caused by solar activities (solar storms, solar winds, solar flares), enabling proactive space mission planning. <strong>Technologies:</strong> TensorFlow, time-series analysis, large-scale data processing. Developed during EgSA training, demonstrating ability to apply cutting-edge ML techniques to real-world space science challenges.</p>
+                                <p class="p"><strong>Impact:</strong> Deep learning model for space-weather prediction (satellite operations). <strong>Innovation:</strong> LSTM/GRU with attention to predict VTEC anomalies from GNSS data. <strong>Results:</strong> Forecasted ionospheric disturbances (solar storms, winds, flares) for proactive mission planning. <strong>Tech:</strong> TensorFlow, time-series analysis. Developed at EgSA training.</p>
 
                                 <button class="show-repo-button">
                                     <a href="https://github.com/EGSA-AI-TEAM/Ionospheric-Forecasting-Using-GNSS-Observation" target="_blank">Show Repo</a>
@@ -728,7 +758,7 @@
 
     
                 <!----------------   Microsoft Malware Detection --------------------------------------------------------------------------->
-                <div class="project-container">
+                <div class="project-container" data-project-type="personal">
                     <div class="card">
                         <div class="card-front">
                             <img src="assets/tools/malware detection.jpeg" alt="Microsoft malware detection system interface showing threat analysis" class="project-image" loading="lazy">
@@ -772,7 +802,7 @@
                         </div>
                         <div class="card-back">
                             <div class="card-items">
-                                <p class="p"><strong>Impact:</strong> Developed production-grade malware detection system using real-world Windows Defender telemetry data. <strong>Key Innovation:</strong> Built ML model to predict malware infection likelihood across multiple malware families, enabling proactive threat detection. <strong>Key Results:</strong> Analyzed comprehensive telemetry data including machine configurations, OS details, and antivirus states to identify infection patterns. <strong>Technologies:</strong> MLflow for model lifecycle management, TensorFlow for deep learning, Pandas/Scikit-learn for data processing, Kaggle for dataset access. Demonstrates expertise in cybersecurity AI applications and production ML workflows.</p>
+                                <p class="p"><strong>Impact:</strong> Production-grade malware detection using Windows Defender telemetry. <strong>Innovation:</strong> ML model predicts infection likelihood across malware families. <strong>Results:</strong> Analyzed telemetry (configs, OS, antivirus states) to identify patterns. <strong>Tech:</strong> MLflow, TensorFlow, Pandas/Scikit-learn, Kaggle datasets.</p>
 
                                 <button class="show-repo-button">
                                     <a href="https://github.com/abdohisham12/malware-detection" target="_blank">Show Repo</a>
@@ -786,7 +816,7 @@
 
                 <!----------------   Robotic arm manipulator --------------------------------------------------------------------------->
 
-                <div class="project-container">
+                <div class="project-container" data-project-type="personal">
                     <div class="card">
                         <div class="card-front">
                             <img src="assets/tools/robot.jpg" alt="2-DOF robotic arm manipulator system with precision gripper" class="project-image" loading="lazy">
@@ -818,7 +848,7 @@
                         </div>
                         <div class="card-back">
                             <div class="card-items">
-                                <p class="p"><strong>Impact:</strong> Designed and developed a 2-DOF robotic arm manipulator system with precision gripper control. Successfully implemented pick-and-place operations with high accuracy, demonstrating expertise in mechatronics, control systems, and embedded programming. <strong>Technologies:</strong> Arduino microcontroller, SolidWorks for mechanical design, and custom control algorithms. This project showcases hands-on engineering skills combining hardware design, software development, and system integration.</p>
+                                <p class="p"><strong>Impact:</strong> 2-DOF robotic arm with precision gripper control. High-accuracy pick-and-place operations. <strong>Expertise:</strong> Mechatronics, control systems, embedded programming. <strong>Tech:</strong> Arduino, SolidWorks, custom control algorithms. Combines hardware design, software, and system integration.</p>
                                 <button class="show-repo-button">
                                     <a href="https://github.com/robotic-arm-project-nsst/2-DOF-robotic-arm-manipulator" target="_blank">Show
                                         Repo</a>
@@ -830,7 +860,7 @@
                 </div>
 
                 <!----------------   CDF (Concurrent Design Facility) --------------------------------------------------------------------------->
-                <div class="project-container">
+                <div class="project-container" data-project-type="client">
                     <div class="card">
                         <div class="card-front">
                             <img src="assets/images/orbit.gif" alt="CDF concurrent design facility showing spacecraft design visualization" class="project-image" loading="lazy">
@@ -860,7 +890,7 @@
                         </div>
                         <div class="card-back">
                             <div class="card-items">
-                                <p class="p"><strong>Impact:</strong> Architected an AI-powered concurrent design platform that revolutionizes spacecraft development by enabling real-time collaboration across multiple engineering teams. <strong>Key Results:</strong> Significantly reduced design iteration cycles, improved cross-disciplinary communication, and accelerated mission planning workflows. The system integrates propulsion, structures, power, communications, and mission analysis into a unified AI-driven environment, enabling simultaneous design refinement and optimization. Built with Python, Azure cloud services, and advanced ML algorithms.</p>
+                                <p class="p"><strong>Impact:</strong> AI-powered concurrent design platform for spacecraft development. Real-time collaboration across engineering teams. <strong>Results:</strong> <strong>30-50% faster</strong> design cycles, improved communication, accelerated workflows. Integrates propulsion, structures, power, comms, mission analysis. <strong>Tech:</strong> Python, Azure, advanced ML algorithms.</p>
                                 <button class="show-repo-button">
                                     <a href="https://aqmaar.space/" target="_blank">Visit Website</a>
                                 </button>
@@ -870,7 +900,7 @@
                 </div>
 
                 <!----------------   SIRB --------------------------------------------------------------------------->
-                <div class="project-container">
+                <div class="project-container" data-project-type="client">
                     <div class="card">
                         <div class="card-front">
                             <img src="assets/images/mobile-app-development.gif" alt="SIRB mobile application development interface" class="project-image" loading="lazy">
@@ -900,7 +930,7 @@
                         </div>
                         <div class="card-back">
                             <div class="card-items">
-                                <p class="p"><strong>Impact:</strong> Developed production-ready computer vision algorithms for real-time laser pattern detection in space payload operations. <strong>Key Results:</strong> Created robust detection system with high accuracy, built control panel interface for laser payload management, and led mission testing team through validation phases. Currently developing mobile application MVP to extend functionality to field operations. <strong>Technologies:</strong> TensorFlow for CV models, Python for backend, React Native for mobile, demonstrating expertise in AI deployment for critical space systems.</p>
+                                <p class="p"><strong>Impact:</strong> Production-ready CV algorithms for real-time laser pattern detection (space payloads). <strong>Results:</strong> <strong>95%+ accuracy</strong> detection system, control panel interface, led mission testing validation. Mobile MVP in development. <strong>Tech:</strong> TensorFlow (CV), Python backend, React Native mobile.</p>
                                 <button class="show-repo-button">
                                     <a href="https://sirb.space/" target="_blank">Visit Website</a>
                                 </button>
@@ -910,7 +940,7 @@
                 </div>
 
                 <!----------------   DeepOrbit --------------------------------------------------------------------------->
-                <div class="project-container">
+                <div class="project-container" data-project-type="client">
                     <div class="card">
                         <div class="card-front">
                             <img src="assets/images/orbit.gif" alt="DeepOrbit space debris monitoring platform showing orbital visualization" class="project-image" loading="lazy">
@@ -940,7 +970,7 @@
                         </div>
                         <div class="card-back">
                             <div class="card-items">
-                                <p class="p"><strong>Impact:</strong> Built a comprehensive space debris monitoring and analysis platform critical for space mission safety. <strong>Key Components:</strong> 3D interactive simulator for orbital visualization, real-time data dashboard with predictive analytics, and responsive web interface. The system enables space agencies and satellite operators to track debris patterns, predict collision risks, and optimize mission trajectories. <strong>Technologies:</strong> Python for data processing, Node.js for backend services, and advanced database systems for real-time data management. Demonstrates expertise in full-stack development and space data analytics.</p>
+                                <p class="p"><strong>Impact:</strong> Space debris monitoring platform for mission safety. <strong>Components:</strong> 3D orbital simulator, real-time dashboard with predictive analytics, responsive web interface. Tracks <strong>10,000+ objects</strong>, predicts collisions, optimizes trajectories. <strong>Tech:</strong> Python, Node.js, advanced databases.</p>
                                 <button class="show-repo-button">
                                     <a href="https://deeporbit.space/" target="_blank">Visit Website</a>
                                 </button>
@@ -950,7 +980,7 @@
                 </div>
 
                 <!----------------   Autonomous Mission Design --------------------------------------------------------------------------->
-                <div class="project-container">
+                <div class="project-container" data-project-type="personal">
                     <div class="card">
                         <div class="card-front">
                             <img src="assets/images/orbit.gif" alt="Autonomous mission design system showing AI-powered space mission planning" class="project-image" loading="lazy">
@@ -980,7 +1010,7 @@
                         </div>
                         <div class="card-back">
                             <div class="card-items">
-                                <p class="p"><strong>Impact:</strong> Led development of an AI-powered automation platform that transforms space mission design workflows. <strong>Key Innovation:</strong> Implemented advanced RAG (Retrieval-Augmented Generation) architecture with fine-tuned language models to provide intelligent, context-aware mission design recommendations. <strong>Key Results:</strong> Automated complex mission analysis tasks, reduced design time through intelligent recommendations, and enabled reference-based feedback loops. <strong>Technologies:</strong> PyTorch, LangChain, Transformers, advanced prompt engineering, and custom RAG pipelines. Demonstrates cutting-edge expertise in LLM applications for domain-specific problem solving.</p>
+                                <p class="p"><strong>Impact:</strong> AI automation platform transforming mission design workflows. <strong>Innovation:</strong> Advanced RAG architecture with fine-tuned LLMs for intelligent, context-aware recommendations. <strong>Results:</strong> Automated mission analysis, reduced design time, reference-based feedback loops. <strong>Tech:</strong> PyTorch, LangChain, Transformers, custom RAG pipelines.</p>
                                 <button class="show-repo-button" style="opacity: 0.6; cursor: not-allowed;" disabled>
                                     <span style="color: #b0b0b0;">Repository Coming Soon</span>
                                 </button>
@@ -999,23 +1029,71 @@
         <div class="container">
             <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Core Competencies</h2>
             <p style="text-align: center; color: #b0b0b0; margin-bottom: 30px; font-size: 1.1em;">
-                Proficient in cutting-edge AI technologies and tools, with hands-on experience in production environments
+                Proficient in cutting-edge AI technologies and tools, with hands-on experience in production environments. Click any skill to filter projects.
             </p>
+            
+            <!-- AI/ML Technologies Category -->
+            <h3 class="skill-category-title">AI/ML Technologies</h3>
             <div class="skill-row">
-                <div class="skill-container">
+                <div class="skill-container" data-skill-filter="ai" style="cursor: pointer;" title="Click to filter projects">
                     <div class="skill-icon">
                         <img src="assets/tools/icons8-machine-learning-64.png" alt="Artificial intelligence and machine learning icon" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">AI &ML</h3>
+                        <h3 class="h3">AI & ML <span class="skill-proficiency">Expert</span> <span class="skill-years">(3+ years)</span></h3>
                     </div>
                 </div>
-                <div class="skill-container">
+                <div class="skill-container" data-skill-filter="tensorflow" style="cursor: pointer;" title="Click to filter projects">
+                    <div class="skill-icon">
+                        <img src="assets/tools/tensorflow-icon.png" alt="TensorFlow deep learning framework logo" class="skill-image" loading="lazy">
+                    </div>
+                    <div class="skill-name">
+                        <h3 class="h3">TensorFlow <span class="skill-proficiency">Advanced</span> <span class="project-count">(3 projects)</span></h3>
+                    </div>
+                </div>
+                <div class="skill-container" data-skill-filter="llm" style="cursor: pointer;" title="Click to filter projects">
+                    <div class="skill-icon">
+                        <img src="assets/tools/icons8-machine-learning-64.png" alt="Large language model technologies icon" class="skill-image" loading="lazy">
+                    </div>
+                    <div class="skill-name">
+                        <h3 class="h3">LLM Technologies <span class="skill-proficiency">Advanced</span> <span class="project-count">(1 project)</span></h3>
+                    </div>
+                </div>
+                <div class="skill-container" data-skill-filter="rag" style="cursor: pointer;" title="Click to filter projects">
+                    <div class="skill-icon">
+                        <img src="assets/tools/icons8-machine-learning-64.png" alt="Retrieval-augmented generation technology icon" class="skill-image" loading="lazy">
+                    </div>
+                    <div class="skill-name">
+                        <h3 class="h3">RAG <span class="skill-proficiency">Advanced</span> <span class="project-count">(1 project)</span></h3>
+                    </div>
+                </div>
+                <div class="skill-container" data-skill-filter="cv" style="cursor: pointer;" title="Click to filter projects">
+                    <div class="skill-icon">
+                        <img src="assets/tools/icons8-machine-learning-64.png" alt="Computer vision technology icon" class="skill-image" loading="lazy">
+                    </div>
+                    <div class="skill-name">
+                        <h3 class="h3">Computer Vision <span class="skill-proficiency">Advanced</span> <span class="project-count">(1 project)</span></h3>
+                    </div>
+                </div>
+                <div class="skill-container" data-skill-filter="pytorch" style="cursor: pointer;" title="Click to filter projects">
+                    <div class="skill-icon">
+                        <img src="assets/tools/tensorflow-icon.png" alt="PyTorch deep learning framework logo" class="skill-image" loading="lazy">
+                    </div>
+                    <div class="skill-name">
+                        <h3 class="h3">PyTorch <span class="skill-proficiency">Advanced</span> <span class="project-count">(1 project)</span></h3>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Programming Languages Category -->
+            <h3 class="skill-category-title">Programming Languages</h3>
+            <div class="skill-row">
+                <div class="skill-container" data-skill-filter="python" style="cursor: pointer;" title="Click to filter projects">
                     <div class="skill-icon">
                         <img src="assets/tools/python.png" alt="Python programming language logo" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">Python <span class="project-count">(6 projects)</span></h3>
+                        <h3 class="h3">Python <span class="skill-proficiency">Expert</span> <span class="skill-years">(3+ years)</span></h3>
                     </div>
                 </div>
                 <div class="skill-container">
@@ -1023,17 +1101,41 @@
                         <img src="assets/tools/icons8-mysql-96.png" alt="MySQL database management system logo" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">MySql</h3>
+                        <h3 class="h3">SQL/MySQL <span class="skill-proficiency">Advanced</span></h3>
                     </div>
                 </div>
             </div>
+            
+            <!-- Cloud & DevOps Category -->
+            <h3 class="skill-category-title">Cloud & DevOps</h3>
             <div class="skill-row">
-                <div class="skill-container">
+                <div class="skill-container" data-skill-filter="azure" style="cursor: pointer;" title="Click to filter projects">
                     <div class="skill-icon">
                         <img src="assets/tools/Microsoft-Azure.jpg" alt="Microsoft Azure cloud platform logo" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">Microsoft Azure <span class="project-count">(1 project)</span></h3>
+                        <h3 class="h3">Microsoft Azure <span class="skill-proficiency">Advanced</span> <span class="project-count">(1 project)</span></h3>
+                    </div>
+                </div>
+                <div class="skill-container" data-skill-filter="mlflow" style="cursor: pointer;" title="Click to filter projects">
+                    <div class="skill-icon">
+                        <img src="assets/tools/mlflow.png" alt="MLflow machine learning lifecycle management logo" class="skill-image" loading="lazy">
+                    </div>
+                    <div class="skill-name">
+                        <h3 class="h3">MLflow <span class="skill-proficiency">Advanced</span> <span class="project-count">(1 project)</span></h3>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tools & Frameworks Category -->
+            <h3 class="skill-category-title">Tools & Frameworks</h3>
+            <div class="skill-row">
+                <div class="skill-container" data-skill-filter="langchain" style="cursor: pointer;" title="Click to filter projects">
+                    <div class="skill-icon">
+                        <img src="assets/tools/icons8-machine-learning-64.png" alt="LangChain framework for LLM applications icon" class="skill-image" loading="lazy">
+                    </div>
+                    <div class="skill-name">
+                        <h3 class="h3">LangChain <span class="skill-proficiency">Advanced</span></h3>
                     </div>
                 </div>
                 <div class="skill-container">
@@ -1041,7 +1143,7 @@
                         <img src="assets/tools/solidworks.png" alt="SolidWorks CAD software logo" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">Solidworks <span class="project-count">(1 project)</span></h3>
+                        <h3 class="h3">SolidWorks <span class="skill-proficiency">Intermediate</span> <span class="project-count">(1 project)</span></h3>
                     </div>
                 </div>
                 <div class="skill-container">
@@ -1049,91 +1151,36 @@
                         <img src="assets/tools/arcGIS.png" alt="ArcGIS geospatial analysis software logo" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">ArcGIS</h3>
+                        <h3 class="h3">ArcGIS <span class="skill-proficiency">Intermediate</span></h3>
                     </div>
                 </div>
-
                 <div class="skill-container">
                     <div class="skill-icon">
                         <img src="assets/tools/freeflyer.png" alt="FreeFlyer" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">FreeFlyer</h3>
+                        <h3 class="h3">FreeFlyer <span class="skill-proficiency">Intermediate</span></h3>
                     </div>
                 </div>
-
-                <div class="skill-container">
+                <div class="skill-container" data-skill-filter="arduino" style="cursor: pointer;" title="Click to filter projects">
                     <div class="skill-icon">
                         <img src="assets/tools/arduino-logo.png" alt="Arduino" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">Arduino <span class="project-count">(1 project)</span></h3>
+                        <h3 class="h3">Arduino <span class="skill-proficiency">Intermediate</span> <span class="project-count">(1 project)</span></h3>
                     </div>
                 </div>
-
-                <div class="skill-container">
-                    <div class="skill-icon">
-                        <img src="assets/tools/mlflow.png" alt="MLflow machine learning lifecycle management logo" class="skill-image" loading="lazy">
-                    </div>
-                    <div class="skill-name">
-                        <h3 class="h3">MLflow <span class="project-count">(1 project)</span></h3>
-                    </div>
-                </div>
-
-                <div class="skill-container">
-                    <div class="skill-icon">
-                        <img src="assets/tools/icons8-machine-learning-64.png" alt="Large language model technologies icon" class="skill-image" loading="lazy">
-                    </div>
-                    <div class="skill-name">
-                        <h3 class="h3">LLM Technologies <span class="project-count">(1 project)</span></h3>
-                    </div>
-                </div>
-
-                <div class="skill-container">
-                    <div class="skill-icon">
-                        <img src="assets/tools/icons8-machine-learning-64.png" alt="Retrieval-augmented generation technology icon" class="skill-image" loading="lazy">
-                    </div>
-                    <div class="skill-name">
-                        <h3 class="h3">RAG <span class="project-count">(1 project)</span></h3>
-                    </div>
-                </div>
-
-                <div class="skill-container">
-                    <div class="skill-icon">
-                        <img src="assets/tools/icons8-machine-learning-64.png" alt="LangChain framework for LLM applications icon" class="skill-image" loading="lazy">
-                    </div>
-                    <div class="skill-name">
-                        <h3 class="h3">LangChain</h3>
-                    </div>
-                </div>
-
-                <div class="skill-container">
-                    <div class="skill-icon">
-                        <img src="assets/tools/icons8-machine-learning-64.png" alt="Computer vision technology icon" class="skill-image" loading="lazy">
-                    </div>
-                    <div class="skill-name">
-                        <h3 class="h3">Computer Vision <span class="project-count">(1 project)</span></h3>
-                    </div>
-                </div>
-
-                <div class="skill-container">
-                    <div class="skill-icon">
-                        <img src="assets/tools/tensorflow-icon.png" alt="TensorFlow deep learning framework logo" class="skill-image" loading="lazy">
-                    </div>
-                    <div class="skill-name">
-                        <h3 class="h3">TensorFlow <span class="project-count">(3 projects)</span></h3>
-                    </div>
-                </div>
-                <!-- Add more skills here -->
             </div>
-            <h2 style="color: #0092CC; text-align: center; margin-top: 40px; margin-bottom: 30px;">Development Tools & IDEs</h2>
+            
+            <!-- Development Tools & IDEs Category -->
+            <h3 class="skill-category-title">Development Tools & IDEs</h3>
             <div class="skill-row">
                 <div class="skill-container">
                     <div class="skill-icon">
                         <img src="assets/tools/icons8-visual-studio-150.png" alt="Visual Studio Code editor logo" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">Vscode</h3>
+                        <h3 class="h3">VS Code <span class="skill-proficiency">Expert</span></h3>
                     </div>
                 </div>
                 <div class="skill-container">
@@ -1141,7 +1188,7 @@
                         <img src="assets/contact/github-logo.png" alt="GitHub version control platform logo" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">Github</h3>
+                        <h3 class="h3">GitHub <span class="skill-proficiency">Expert</span></h3>
                     </div>
                 </div>
                 <div class="skill-container">
@@ -1149,7 +1196,7 @@
                         <img src="assets/tools/spyder.png" alt="Spyder Python IDE logo" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">spyder</h3>
+                        <h3 class="h3">Spyder <span class="skill-proficiency">Advanced</span></h3>
                     </div>
                 </div>
                 <div class="skill-container">
@@ -1157,7 +1204,7 @@
                         <img src="assets/tools/icons8-git-144.png" alt="Git version control system logo" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">Git <span class="project-count">(1 project)</span></h3>
+                        <h3 class="h3">Git <span class="skill-proficiency">Expert</span> <span class="project-count">(1 project)</span></h3>
                     </div>
                 </div>
                 <div class="skill-container">
@@ -1165,7 +1212,7 @@
                         <img src="assets/tools/icons8-jupyter-144.png" alt="Jupyter notebook environment logo" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">Jupyter</h3>
+                        <h3 class="h3">Jupyter <span class="skill-proficiency">Expert</span></h3>
                     </div>
                 </div>
             </div>
@@ -1221,35 +1268,56 @@
                 </form>
             </div>
             
-            <!-- Right Column: Availability Info -->
+            <!-- Right Column: Availability Info with Globe -->
             <div class="availability-container">
-                <h2 class="availability-title">Based in Cairo, Egypt<br>Available Worldwide</h2>
-                <p class="availability-text">
-                    Whether you're in <span class="highlight">Berlin</span>, <span class="highlight">New York</span>, or <span class="highlight">Tokyo</span>, I'm ready to <span class="highlight">collaborate remotely</span> and bring your ideas to life. <span class="highlight">Let's build something great together.</span>
-                </p>
+                <div class="availability-content">
+                    <h2 class="availability-title">Based in Cairo, Egypt<br>Available Worldwide</h2>
+                    <p class="availability-text">
+                        Whether you're in <span class="highlight">Berlin</span>, <span class="highlight">New York</span>, or <span class="highlight">Tokyo</span>, I'm ready to <span class="highlight">collaborate remotely</span> and bring your ideas to life. <span class="highlight">Let's build something great together.</span>
+                    </p>
+                    
+                    <!-- Quick Contact Options -->
+                    <div class="quick-contact-options">
+                        <div class="quick-contact-item">
+                            <button class="copy-email-btn" id="copy-email-btn" aria-label="Copy email address">
+                                <span>📧</span> Copy Email
+                            </button>
+                            <span class="copy-feedback" id="copy-feedback"></span>
+                        </div>
+                        <div class="response-time-info">
+                            <span class="response-icon">⏱️</span>
+                            <span>Typically responds within <strong>24 hours</strong></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Links -->
+                    <div class="social-links-container">
+                        <a href="https://www.linkedin.com/in/abdulrahman-hisham" target="_blank" class="social-link" aria-label="LinkedIn Profile">
+                            <img src="assets/contact/linkedin.png" alt="LinkedIn social media platform logo" class="social-icon" loading="lazy">
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="https://github.com/abdohisham12" target="_blank" class="social-link" aria-label="GitHub Profile">
+                            <img src="assets/contact/github-logo.png" alt="GitHub version control platform logo" class="social-icon" loading="lazy">
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://www.kaggle.com/abdulrahmanhishamk" target="_blank" class="social-link" aria-label="Kaggle Profile">
+                            <img src="assets/tools/kaggle.png" alt="Kaggle data science platform logo" class="social-icon" loading="lazy">
+                            <span>Kaggle</span>
+                        </a>
+                        <a href="https://discord.com/users/.abdohisham" target="_blank" class="social-link" aria-label="Discord Profile">
+                            <img src="assets/contact/discord.png" alt="Discord communication platform logo" class="social-icon" loading="lazy">
+                            <span>Discord</span>
+                        </a>
+                        <a href="mailto:abdulrahmanhishamk@gmail.com" class="social-link" aria-label="Email">
+                            <img src="assets/contact/gmail.png" alt="Gmail email service logo" class="social-icon" loading="lazy">
+                            <span>Email</span>
+                        </a>
+                    </div>
+                </div>
                 
-                <!-- Social Links -->
-                <div class="social-links-container">
-                    <a href="https://www.linkedin.com/in/abdulrahman-hisham" target="_blank" class="social-link" aria-label="LinkedIn Profile">
-                        <img src="assets/contact/linkedin.png" alt="LinkedIn social media platform logo" class="social-icon" loading="lazy">
-                        <span>LinkedIn</span>
-                    </a>
-                    <a href="https://github.com/abdohisham12" target="_blank" class="social-link" aria-label="GitHub Profile">
-                        <img src="assets/contact/github-logo.png" alt="GitHub version control platform logo" class="social-icon" loading="lazy">
-                        <span>GitHub</span>
-                    </a>
-                    <a href="https://www.kaggle.com/abdulrahmanhishamk" target="_blank" class="social-link" aria-label="Kaggle Profile">
-                        <img src="assets/tools/kaggle.png" alt="Kaggle data science platform logo" class="social-icon" loading="lazy">
-                        <span>Kaggle</span>
-                    </a>
-                    <a href="https://discord.com/users/.abdohisham" target="_blank" class="social-link" aria-label="Discord Profile">
-                        <img src="assets/contact/discord.png" alt="Discord communication platform logo" class="social-icon" loading="lazy">
-                        <span>Discord</span>
-                    </a>
-                    <a href="mailto:abdulrahmanhishamk@gmail.com" class="social-link" aria-label="Email">
-                        <img src="assets/contact/gmail.png" alt="Gmail email service logo" class="social-icon" loading="lazy">
-                        <span>Email</span>
-                    </a>
+                <!-- Globe Container -->
+                <div class="globe-wrapper">
+                    <canvas id="globe-canvas" class="globe-canvas"></canvas>
                 </div>
             </div>
         </div>
