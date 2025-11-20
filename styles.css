@@ -1405,9 +1405,10 @@ a:hover {
 
 .executive-summary-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
     gap: 30px;
     margin-top: 30px;
+    align-items: stretch;
 }
 
 .executive-summary-item {
@@ -1489,10 +1490,11 @@ a:hover {
 /* Fixed grid layout - Updated for even distribution */
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(280px, 1fr));
     gap: 25px;
     max-width: 1200px;
     margin: 0 auto;
+    align-items: stretch;
 }
 
 .metric-card {
@@ -1504,6 +1506,10 @@ a:hover {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .metric-card::before {
@@ -1623,9 +1629,10 @@ a:hover {
 
 .why-hire-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(300px, 1fr));
     gap: 30px;
     margin-top: 40px;
+    align-items: stretch;
 }
 
 .why-hire-card {
@@ -1731,9 +1738,10 @@ a:hover {
 
 .leadership-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(400px, 1fr));
     gap: 30px;
     margin-top: 40px;
+    align-items: stretch;
 }
 
 .leadership-card {
@@ -1833,9 +1841,10 @@ a:hover {
 
 .highlights-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(300px, 1fr));
     gap: 30px;
     margin-top: 40px;
+    align-items: stretch;
 }
 
 .highlight-card {
@@ -1847,6 +1856,7 @@ a:hover {
     transition: all 0.3s ease;
     border-left: 4px solid #0092CC;
     min-height: 320px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -3117,10 +3127,11 @@ p {
 
 .tech-stack-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(250px, 1fr));
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
+    align-items: stretch;
 }
 
 .tech-stack-category {
@@ -3129,6 +3140,9 @@ p {
     border-radius: 12px;
     padding: 25px;
     transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .tech-stack-category:hover {
@@ -3181,10 +3195,11 @@ p {
 
 .domain-expertise-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(400px, 1fr));
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto 40px;
+    align-items: stretch;
 }
 
 .domain-card {
@@ -3195,6 +3210,10 @@ p {
     text-align: center;
     transition: all 0.3s ease;
     border-left: 4px solid #0092CC;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .domain-card:hover {
@@ -3248,10 +3267,11 @@ p {
 
 .attributes-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(400px, 1fr));
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
+    align-items: stretch;
 }
 
 .attribute-card {
@@ -4481,12 +4501,6 @@ p {
 
 .experience-card:hover:not(.flipped) {
     box-shadow: 0 8px 25px rgba(0, 146, 204, 0.3);
-}
-    transition: transform 0.6s ease;
-    cursor: pointer;
-    border-radius: 10px;
-    border: 1px solid #0092CC;
-    box-shadow: 0 4px 6px rgba(0, 146, 204, 0.1);
 }
 
 .experience-card.flipped {
