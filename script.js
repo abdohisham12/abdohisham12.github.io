@@ -119,36 +119,122 @@ if (document.readyState === 'loading') {
 // Enhanced Skills Tooltips
 function initSkillTooltips() {
     const skillContainers = document.querySelectorAll('.skill-container[data-skill-filter]');
+    if (!skillContainers.length) return;
+
+    const projectMap = {
+        'TensorFlow': 'SIRB, Ionospheric Forecasting, Microsoft Malware Detection',
+        'Python': 'All projects - Core language for AI/ML development',
+        'LLM': 'Autonomous Mission Design (RAG)',
+        'LLM Technologies': 'Autonomous Mission Design (RAG)',
+        'RAG': 'Autonomous Mission Design - Graduation Project',
+        'Computer': 'SIRB Project - 95%+ accuracy',
+        'Computer Vision': 'SIRB Project - 95%+ accuracy',
+        'PyTorch': 'Autonomous Mission Design',
+        'Microsoft': 'CDF Project - Cloud deployment',
+        'Microsoft Azure': 'CDF Project - Cloud deployment',
+        'MLflow': 'Microsoft Malware Detection - MLOps'
+    };
+
+    const supportsHoverQuery = window.matchMedia('(hover: hover)');
+    const persistentQuery = window.matchMedia('(max-width: 600px)');
+    const supportsHover = supportsHoverQuery.matches;
+
+    const addMediaListener = (mq, handler) => {
+        if (typeof mq.addEventListener === 'function') {
+            mq.addEventListener('change', handler);
+        } else if (typeof mq.addListener === 'function') {
+            mq.addListener(handler);
+        }
+    };
+
+    const hideAllTooltips = () => {
+        if (persistentQuery.matches) return;
+        skillContainers.forEach(container => {
+            const tooltip = container.querySelector('.skill-tooltip');
+            if (tooltip) {
+                tooltip.classList.remove('visible');
+                container.setAttribute('aria-expanded', 'false');
+            }
+        });
+    };
+
+    if (!supportsHover) {
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.skill-container[data-skill-filter]')) {
+                hideAllTooltips();
+            }
+        });
+    }
     
     skillContainers.forEach(container => {
-        const skillName = container.querySelector('.skill-name .h3')?.textContent || '';
-        const projects = {
-            'TensorFlow': 'SIRB, Ionospheric Forecasting, Microsoft Malware Detection',
-            'Python': 'All projects - Core language for AI/ML development',
-            'LLM Technologies': 'Autonomous Mission Design (RAG)',
-            'RAG': 'Autonomous Mission Design - Graduation Project',
-            'Computer Vision': 'SIRB Project - 95%+ accuracy',
-            'PyTorch': 'Autonomous Mission Design',
-            'Microsoft Azure': 'CDF Project - Cloud deployment',
-            'MLflow': 'Microsoft Malware Detection - MLOps'
-        };
+        const heading = container.querySelector('.skill-name .h3');
+        const rawName = heading?.textContent?.trim() || '';
+        const lookupKey = rawName.split(' ')[0];
+        const projectList = projectMap[rawName] || projectMap[lookupKey] || 'Multiple projects';
         
-        const projectList = projects[skillName.split(' ')[0]] || 'Multiple projects';
-        
-        // Create tooltip
+        container.setAttribute('tabindex', '0');
+        container.setAttribute('role', 'button');
+        container.setAttribute('aria-expanded', persistentQuery.matches ? 'true' : 'false');
+
         const tooltip = document.createElement('div');
         tooltip.className = 'skill-tooltip';
         tooltip.textContent = `Used in: ${projectList}`;
         container.appendChild(tooltip);
-        
-        // Show/hide tooltip on hover
-        container.addEventListener('mouseenter', () => {
+
+        const showTooltip = () => {
+            if (persistentQuery.matches) return;
             tooltip.classList.add('visible');
-        });
-        
-        container.addEventListener('mouseleave', () => {
+            container.setAttribute('aria-expanded', 'true');
+        };
+
+        const hideTooltip = () => {
+            if (persistentQuery.matches) return;
             tooltip.classList.remove('visible');
-        });
+            container.setAttribute('aria-expanded', 'false');
+        };
+
+        const toggleTooltip = () => {
+            if (persistentQuery.matches) return;
+            const isVisible = tooltip.classList.contains('visible');
+            hideAllTooltips();
+            if (!isVisible) {
+                tooltip.classList.add('visible');
+                container.setAttribute('aria-expanded', 'true');
+            }
+        };
+
+        if (supportsHover) {
+            container.addEventListener('mouseenter', showTooltip);
+            container.addEventListener('mouseleave', hideTooltip);
+        } else {
+            container.addEventListener('click', (event) => {
+                event.stopPropagation();
+                toggleTooltip();
+            });
+            container.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    toggleTooltip();
+                }
+            });
+        }
+
+        container.addEventListener('focus', showTooltip);
+        container.addEventListener('blur', hideTooltip);
+
+        const applyPersistentState = (matches) => {
+            if (matches) {
+                tooltip.classList.add('always-visible', 'visible');
+                container.setAttribute('aria-expanded', 'true');
+            } else {
+                tooltip.classList.remove('always-visible');
+                tooltip.classList.remove('visible');
+                container.setAttribute('aria-expanded', 'false');
+            }
+        };
+
+        applyPersistentState(persistentQuery.matches);
+        addMediaListener(persistentQuery, (event) => applyPersistentState(event.matches));
     });
 }
 
@@ -1010,204 +1096,107 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Work History Auto-Rotation
-    const workHistoryCard = document.querySelector('.work-history-card[data-card-type="work-history"]');
-    const workHistoryCardFront = document.querySelector('.work-history-card-front');
-    const workHistoryCardBack = document.querySelector('.work-history-card-details');
+    // Work History Carousel
+    const workHistoryTrack = document.getElementById('work-history-track');
+    const prevWorkHistoryBtn = document.getElementById('work-history-prev');
+    const nextWorkHistoryBtn = document.getElementById('work-history-next');
+    const pauseWorkHistoryBtn = document.getElementById('work-history-pause');
+    const pauseIcon = document.getElementById('pause-icon');
+    const positionIndicator = document.getElementById('work-history-position');
+    const totalIndicator = document.getElementById('work-history-total');
 
-    if (workHistoryCard && workHistoryCardFront && workHistoryCardBack) {
-        let currentIndex = 0;
+    if (workHistoryTrack) {
+        const AUTO_ROTATION_DELAY = 3000;
+        let currentSlide = 0;
         let autoRotationInterval = null;
-        let visualHintInterval = null;
-        let isCardFlipped = false;
-
-        // Function to update work history card content
-        function updateWorkHistoryCard(index) {
-            const position = workHistoryPositions[index];
-            if (!position) return;
-
-            // Update front face with responsibilities
-            let responsibilitiesHTML = '';
-            if (position.responsibilities && position.responsibilities.length > 0) {
-                responsibilitiesHTML = '<div class="work-history-responsibilities"><h4 style="color: #0092CC; margin-bottom: 15px; font-size: 1.2em;">Key Responsibilities:</h4><ul style="list-style: none; padding: 0; line-height: 1.8;">';
-                position.responsibilities.forEach(resp => {
-                    responsibilitiesHTML += `<li>${resp}</li>`;
-                });
-                responsibilitiesHTML += '</ul></div>';
-            }
-            
-            workHistoryCardFront.innerHTML = `
-                <div class="work-history-card-header">
-                    <img src="${position.logo}" alt="${position.company} Logo" class="work-history-logo" onerror="this.style.display='none'">
-                    <div class="work-history-title">
-                        <h4>Inside ${position.company}</h4>
-                    </div>
-                </div>
-                <div class="work-history-date">${position.date}</div>
-                ${responsibilitiesHTML}
-            `;
-
-            // Update back face
-            let detailsHTML = `<h3>Inside ${position.company}</h3>`;
-            if (position.details.achievements) {
-                detailsHTML += '<p><strong>Key Achievements:</strong></p><ul style="list-style: none; padding: 0; line-height: 1.8;">';
-                position.details.achievements.forEach(achievement => {
-                    // Remove checkmark emoji (✓) from achievement text (anywhere in the string)
-                    const cleanAchievement = achievement.replace(/✓/g, '').trim();
-                    detailsHTML += `<li>${cleanAchievement}</li>`;
-                });
-                detailsHTML += '</ul>';
-            }
-            if (position.details.projects) {
-                detailsHTML += '<p><strong>Key Projects:</strong></p><ul style="list-style: none; padding: 0; line-height: 1.8;">';
-                position.details.projects.forEach(project => {
-                    // Remove checkmark emoji (✓) from project text if present
-                    const cleanProject = project.replace(/✓/g, '').trim();
-                    detailsHTML += `<li>${cleanProject}</li>`;
-                });
-                detailsHTML += '</ul>';
-            }
-            workHistoryCardBack.innerHTML = detailsHTML;
-        }
-
-        // Function to move to next position
-        function nextPosition() {
-            if (isCardFlipped) return; // Don't rotate if card is flipped
-            currentIndex = (currentIndex + 1) % workHistoryPositions.length;
-            updateWorkHistoryCard(currentIndex);
-            updatePositionIndicator();
-        }
-
-        // Function to move to previous position
-        function prevPosition() {
-            if (isCardFlipped) return;
-            currentIndex = (currentIndex - 1 + workHistoryPositions.length) % workHistoryPositions.length;
-            updateWorkHistoryCard(currentIndex);
-            updatePositionIndicator();
-        }
-
-        // Function to update position indicator
-        function updatePositionIndicator() {
-            const positionEl = document.getElementById('work-history-position');
-            const totalEl = document.getElementById('work-history-total');
-            if (positionEl) positionEl.textContent = currentIndex + 1;
-            if (totalEl) totalEl.textContent = workHistoryPositions.length;
-        }
-
-        // Navigation controls
-        const prevBtn = document.getElementById('work-history-prev');
-        const nextBtn = document.getElementById('work-history-next');
-        const pauseBtn = document.getElementById('work-history-pause');
-        const pauseIcon = document.getElementById('pause-icon');
         let isPaused = false;
+        let slides = [];
+        let slideGap = 0;
 
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                prevPosition();
-                if (!isPaused) {
-                    stopAutoRotation();
-                    startAutoRotation();
-                }
+        const pauseIconSVG = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
+        const playIconSVG = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+
+        function sanitizeText(text = '') {
+            return text.replace(/✓/g, '').trim();
+        }
+
+        function buildHighlights(position) {
+            const source = (position.details && position.details.achievements && position.details.achievements.length)
+                ? position.details.achievements
+                : (position.responsibilities || []);
+
+            return source.slice(0, 3).map(item => sanitizeText(item));
+        }
+
+        function buildSlide(position, index) {
+            const highlights = buildHighlights(position);
+            const highlightsHTML = highlights.length
+                ? `<ul class="work-history-slide-points">${highlights.map(point => `<li>${point}</li>`).join('')}</ul>`
+                : '';
+
+            return `
+                <article class="work-history-slide" role="group" aria-label="Inside ${position.company} slide ${index + 1} of ${workHistoryPositions.length}">
+                    <div class="work-history-slide-media">
+                        <img src="${position.logo}" alt="${position.company} logo" loading="lazy" onerror="this.style.display='none'">
+                    </div>
+                    <div class="work-history-slide-content">
+                        <span class="work-history-slide-label">Inside ${position.company}</span>
+                        <h4 class="work-history-slide-title">${position.title}</h4>
+                        <p class="work-history-slide-company">${position.company}</p>
+                        <p class="work-history-slide-date">${position.date}</p>
+                        <p class="work-history-slide-preview">${position.preview || ''}</p>
+                        ${highlightsHTML}
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderSlides() {
+            const slidesMarkup = workHistoryPositions.map((position, index) => buildSlide(position, index)).join('');
+            workHistoryTrack.innerHTML = slidesMarkup;
+            slides = Array.from(workHistoryTrack.querySelectorAll('.work-history-slide'));
+            slideGap = parseFloat(getComputedStyle(workHistoryTrack).columnGap || getComputedStyle(workHistoryTrack).gap || '0');
+            if (totalIndicator) totalIndicator.textContent = slides.length;
+            updateSlideState();
+            updateTransform();
+        }
+
+        function updateSlideState() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
             });
+            if (positionIndicator) positionIndicator.textContent = currentSlide + 1;
         }
 
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                nextPosition();
-                if (!isPaused) {
-                    stopAutoRotation();
-                    startAutoRotation();
-                }
-            });
+        function updateTransform() {
+            if (!slides.length) return;
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            const offset = currentSlide * (slideWidth + slideGap);
+            workHistoryTrack.style.transform = `translateX(-${offset}px)`;
         }
 
-        if (pauseBtn && pauseIcon) {
-            // SVG icons for pause and play
-            const pauseIconSVG = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
-            const playIconSVG = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
-            
-            pauseBtn.addEventListener('click', () => {
-                isPaused = !isPaused;
-                if (isPaused) {
-                    stopAutoRotation();
-                    pauseIcon.innerHTML = playIconSVG;
-                    pauseBtn.setAttribute('aria-label', 'Resume auto-rotation');
-                } else {
-                    startAutoRotation();
-                    pauseIcon.innerHTML = pauseIconSVG;
-                    pauseBtn.setAttribute('aria-label', 'Pause auto-rotation');
-                }
-            });
+        function goToSlide(index) {
+            if (!slides.length) return;
+            const total = slides.length;
+            currentSlide = (index + total) % total;
+            updateSlideState();
+            updateTransform();
         }
 
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            const workHistorySection = document.querySelector('.work-history-section, .experience-section');
-            if (!workHistorySection) return;
-            
-            const rect = workHistorySection.getBoundingClientRect();
-            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-            
-            if (isVisible && !isCardFlipped) {
-                if (e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    prevPosition();
-                } else if (e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    nextPosition();
-                } else if (e.key === ' ') {
-                    e.preventDefault();
-                    if (pauseBtn) pauseBtn.click();
-                }
-            }
-        });
-
-        // Initialize position indicator
-        updatePositionIndicator();
-        
-        // Swipe gesture support for mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        if (workHistoryCard) {
-            workHistoryCard.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-            
-            workHistoryCard.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            }, { passive: true });
-            
-            function handleSwipe() {
-                if (isCardFlipped) return;
-                const swipeThreshold = 50;
-                const diff = touchStartX - touchEndX;
-                
-                if (Math.abs(diff) > swipeThreshold) {
-                    if (diff > 0) {
-                        // Swipe left - next
-                        nextPosition();
-                    } else {
-                        // Swipe right - previous
-                        prevPosition();
-                    }
-                    if (!isPaused) {
-                        stopAutoRotation();
-                        startAutoRotation();
-                    }
-                }
-            }
+        function nextSlide() {
+            goToSlide(currentSlide + 1);
         }
 
-        // Function to start auto-rotation
+        function prevSlide() {
+            goToSlide(currentSlide - 1);
+        }
+
         function startAutoRotation() {
-            if (isPaused) return;
-            if (autoRotationInterval) clearInterval(autoRotationInterval);
-            autoRotationInterval = setInterval(nextPosition, 1500); // 1.5 seconds for better readability
+            if (isPaused || slides.length <= 1) return;
+            stopAutoRotation();
+            autoRotationInterval = setInterval(nextSlide, AUTO_ROTATION_DELAY);
         }
 
-        // Function to stop auto-rotation
         function stopAutoRotation() {
             if (autoRotationInterval) {
                 clearInterval(autoRotationInterval);
@@ -1215,65 +1204,121 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Function to show visual hint on random card
-        function showVisualHint() {
-            if (isCardFlipped) return; // Don't show hint if card is flipped
-            
-            // Show hint on work history card
-            workHistoryCard.classList.add('hint-pulse');
-            setTimeout(() => {
-                workHistoryCard.classList.remove('hint-pulse');
-            }, 1000);
-
-            // Also show hint on random education card
-            if (educationCards.length > 0) {
-                const randomCard = educationCards[Math.floor(Math.random() * educationCards.length)];
-                randomCard.classList.add('hint-pulse');
-                setTimeout(() => {
-                    randomCard.classList.remove('hint-pulse');
-                }, 1000);
+        function togglePause() {
+            isPaused = !isPaused;
+            if (pauseIcon) {
+                pauseIcon.innerHTML = isPaused ? playIconSVG : pauseIconSVG;
             }
-        }
-
-        // Function to start visual hints
-        function startVisualHints() {
-            if (visualHintInterval) clearInterval(visualHintInterval);
-            visualHintInterval = setInterval(showVisualHint, 5000); // 5 seconds
-        }
-
-        // Card flip handler
-        workHistoryCard.addEventListener('click', function() {
-            isCardFlipped = !isCardFlipped;
-            this.classList.toggle('flipped');
-            
-            if (isCardFlipped) {
+            if (pauseWorkHistoryBtn) {
+                pauseWorkHistoryBtn.setAttribute('aria-label', isPaused ? 'Resume auto-rotation' : 'Pause auto-rotation');
+            }
+            if (isPaused) {
                 stopAutoRotation();
             } else {
                 startAutoRotation();
             }
+        }
+
+        // Event bindings
+        if (prevWorkHistoryBtn) {
+            prevWorkHistoryBtn.addEventListener('click', () => {
+                prevSlide();
+                if (!isPaused) {
+                    stopAutoRotation();
+                    startAutoRotation();
+                }
+            });
+        }
+
+        if (nextWorkHistoryBtn) {
+            nextWorkHistoryBtn.addEventListener('click', () => {
+                nextSlide();
+                if (!isPaused) {
+                    stopAutoRotation();
+                    startAutoRotation();
+                }
+            });
+        }
+
+        if (pauseWorkHistoryBtn) {
+            pauseWorkHistoryBtn.addEventListener('click', togglePause);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const section = document.querySelector('.work-history-carousel');
+            if (!section) return;
+            const rect = section.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+            if (!isVisible) return;
+
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                togglePause();
+            }
         });
 
+        // Swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+                if (!isPaused) {
+                    stopAutoRotation();
+                    startAutoRotation();
+                }
+            }
+        }
+
+        workHistoryTrack.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        workHistoryTrack.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        // Pause on hover/focus for accessibility
+        const carouselWrapper = document.querySelector('.work-history-carousel');
+        if (carouselWrapper) {
+            carouselWrapper.addEventListener('mouseenter', () => {
+                stopAutoRotation();
+            });
+            carouselWrapper.addEventListener('mouseleave', () => {
+                if (!isPaused) startAutoRotation();
+            });
+            carouselWrapper.addEventListener('focusin', () => {
+                stopAutoRotation();
+            });
+            carouselWrapper.addEventListener('focusout', () => {
+                if (!isPaused) startAutoRotation();
+            });
+        }
+
+        // Recalculate on resize
+        window.addEventListener('resize', () => {
+            slideGap = parseFloat(getComputedStyle(workHistoryTrack).columnGap || getComputedStyle(workHistoryTrack).gap || '0');
+            updateTransform();
+        });
 
         // Initialize
-        updateWorkHistoryCard(currentIndex);
+        renderSlides();
         startAutoRotation();
-        startVisualHints();
-
-        // Pause rotation when user is not viewing the section
-        const workHistorySection = document.querySelector('.work-history-subsection');
-        if (workHistorySection) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && !isCardFlipped) {
-                        startAutoRotation();
-                    } else {
-                        stopAutoRotation();
-                    }
-                });
-            }, { threshold: 0.3 });
-
-            observer.observe(workHistorySection);
-        }
     }
 
     // Projects Filter Functionality
