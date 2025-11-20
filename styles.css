@@ -4,6 +4,26 @@ html {
     scroll-padding-top: 80px; /* Account for sticky navigation */
 }
 
+/* Font Awesome Icon Styling */
+.quick-nav-icon i,
+.quick-fact-hr-icon i,
+.executive-icon i,
+.metric-icon i,
+.why-hire-icon i,
+.leadership-icon i,
+.highlight-icon i,
+.achievement-icon i,
+.hr-summary-icon i,
+.quick-fact-icon i,
+.domain-icon i,
+.attribute-icon i {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    vertical-align: middle;
+}
+
 /* Scroll Progress Indicator */
 .scroll-progress {
     position: fixed;
@@ -1385,7 +1405,7 @@ a:hover {
 
 .executive-summary-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
     margin-top: 30px;
 }
@@ -1466,9 +1486,10 @@ a:hover {
     transform: translateY(0);
 }
 
+/* Fixed grid layout - Updated for even distribution */
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px;
     max-width: 1200px;
     margin: 0 auto;
@@ -1548,9 +1569,15 @@ a:hover {
     margin: 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) and (min-width: 769px) {
     .metrics-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .metrics-grid {
+        grid-template-columns: 1fr;
         gap: 20px;
     }
     
@@ -1596,7 +1623,7 @@ a:hover {
 
 .why-hire-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
     margin-top: 40px;
 }
@@ -1646,6 +1673,12 @@ a:hover {
 .why-hire-card p strong {
     color: #0092CC;
     font-weight: 700;
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .why-hire-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
@@ -1698,13 +1731,13 @@ a:hover {
 
 .leadership-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 30px;
     margin-top: 40px;
 }
 
 .leadership-card {
-    background: linear-gradient(135deg, rgba(0,146,204,0.1) 0%, rgba(0,146,204,0.05) 100%);
+    background: linear-gradient(135deg, rgba(0,146,204,0.12) 0%, rgba(0,146,204,0.06) 100%);
     border: 2px solid rgba(0, 146, 204, 0.3);
     border-radius: 15px;
     padding: 35px 30px;
@@ -1721,7 +1754,7 @@ a:hover {
     transform: translateY(-8px);
     box-shadow: 0 12px 35px rgba(0, 146, 204, 0.4);
     border-color: #00b4e6;
-    background: linear-gradient(135deg, rgba(0,146,204,0.15) 0%, rgba(0,146,204,0.08) 100%);
+    background: linear-gradient(135deg, rgba(0,146,204,0.18) 0%, rgba(0,146,204,0.1) 100%);
 }
 
 .leadership-icon {
@@ -1800,16 +1833,16 @@ a:hover {
 
 .highlights-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
     margin-top: 40px;
 }
 
 .highlight-card {
-    background: linear-gradient(135deg, rgba(0,146,204,0.1) 0%, rgba(0,146,204,0.05) 100%);
-    border: 1px solid rgba(0, 146, 204, 0.3);
-    border-radius: 12px;
-    padding: 40px 35px;
+    background: linear-gradient(135deg, rgba(0,146,204,0.12) 0%, rgba(0,146,204,0.06) 100%);
+    border: 2px solid rgba(0, 146, 204, 0.3);
+    border-radius: 15px;
+    padding: 35px 30px;
     text-align: center;
     transition: all 0.3s ease;
     border-left: 4px solid #0092CC;
@@ -1823,7 +1856,7 @@ a:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow: 0 12px 35px rgba(0, 146, 204, 0.4);
     border-color: #00b4e6;
-    background: linear-gradient(135deg, rgba(0,146,204,0.15) 0%, rgba(0,146,204,0.08) 100%);
+    background: linear-gradient(135deg, rgba(0,146,204,0.18) 0%, rgba(0,146,204,0.1) 100%);
 }
 
 .highlight-icon {
@@ -3084,7 +3117,7 @@ p {
 
 .tech-stack-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
@@ -3148,7 +3181,7 @@ p {
 
 .domain-expertise-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto 40px;
@@ -3215,7 +3248,7 @@ p {
 
 .attributes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
@@ -3226,6 +3259,7 @@ p {
     border: 2px solid rgba(0, 146, 204, 0.3);
     border-radius: 15px;
     padding: 35px 30px;
+    text-align: center;
     transition: all 0.3s ease;
     border-left: 4px solid #0092CC;
     min-height: 320px;
@@ -3271,6 +3305,12 @@ p {
 
 .attribute-evidence strong {
     color: #0092CC;
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .tech-stack-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
