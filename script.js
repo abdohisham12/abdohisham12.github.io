@@ -100,10 +100,13 @@ function initQuickNav() {
         });
     });
     
-    window.addEventListener('scroll', () => {
+    // Throttled scroll handler for better performance
+    const throttledScrollHandler = throttle(() => {
         toggleSidebar();
         updateActiveLink();
-    });
+    }, 100);
+    
+    window.addEventListener('scroll', throttledScrollHandler, { passive: true });
     
     toggleSidebar();
     updateActiveLink();
@@ -357,24 +360,55 @@ function updateActiveNavLink() {
     });
 }
 
+// Throttle function for performance optimization
+function throttle(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Debounce function for performance optimization
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Optimized scroll handlers with throttling
+const throttledUpdateActiveNavLink = throttle(updateActiveNavLink, 100);
+const throttledUpdateScrollProgress = throttle(() => {
+    const scrollProgress = document.getElementById('scroll-progress');
+    if (scrollProgress) {
+        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (window.scrollY / windowHeight) * 100;
+        scrollProgress.style.width = scrolled + '%';
+        scrollProgress.setAttribute('aria-valuenow', Math.round(scrolled));
+    }
+}, 16); // ~60fps
+
 // Update active nav link on scroll
-window.addEventListener('scroll', updateActiveNavLink);
+window.addEventListener('scroll', throttledUpdateActiveNavLink, { passive: true });
 window.addEventListener('load', updateActiveNavLink);
 
-// Scroll Progress Indicator
+// Scroll Progress Indicator - Using throttled version defined above
 document.addEventListener('DOMContentLoaded', () => {
     const scrollProgress = document.getElementById('scroll-progress');
     
     if (scrollProgress) {
-        function updateScrollProgress() {
-            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (window.scrollY / windowHeight) * 100;
-            scrollProgress.style.width = scrolled + '%';
-            scrollProgress.setAttribute('aria-valuenow', Math.round(scrolled));
-        }
-        
-        window.addEventListener('scroll', updateScrollProgress);
-        updateScrollProgress();
+        window.addEventListener('scroll', throttledUpdateScrollProgress, { passive: true });
+        throttledUpdateScrollProgress(); // Initial update
     }
 });
 
@@ -404,7 +438,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
         
-        window.addEventListener('scroll', toggleBackToTop);
+        const throttledToggleBackToTop = throttle(toggleBackToTop, 100);
+        window.addEventListener('scroll', throttledToggleBackToTop, { passive: true });
         toggleBackToTop();
     }
     
@@ -437,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroShapes = document.querySelectorAll('.shape');
     
     if (hero && heroShapes.length > 0) {
-        window.addEventListener('scroll', () => {
+        const throttledParallax = throttle(() => {
             const scrolled = window.pageYOffset;
             const rate = scrolled * 0.5;
             
@@ -445,7 +480,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const speed = 0.3 + (index * 0.1);
                 shape.style.transform = `translateY(${rate * speed}px)`;
             });
-        });
+        }, 16); // ~60fps for smooth parallax
+        
+        window.addEventListener('scroll', throttledParallax, { passive: true });
     }
 });
 
@@ -639,7 +676,7 @@ if (typeof IntersectionObserver !== 'undefined') {
     }, observerOptions);
 } else {
     // Fallback for browsers without IntersectionObserver support
-    console.warn('IntersectionObserver not supported');
+    // IntersectionObserver not supported in this browser
 }
 
 // Function to show visible sections immediately
@@ -782,7 +819,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Check if all required elements exist
     if (!emailInput || !messageInput || !submitBtn || !formMessage || !emailError || !messageError) {
-        console.warn('Contact form elements not found');
+        // Contact form elements not found
         return;
     }
 
@@ -901,7 +938,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     } catch (e) {
                         // If JSON parsing fails, assume success (Formspree HTML success page)
-                        console.warn('Could not parse response as JSON, assuming success');
+                        // Could not parse response as JSON, assuming success
                     }
                 }
                 // Success - Formspree accepted the form
@@ -932,7 +969,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } catch (error) {
-            console.error('Error sending message:', error);
+            // Error sending message
             showFormMessage('Failed to send message. Please try again or email me directly at abdulrahmanhishamk@gmail.com', 'error');
         } finally {
             // Re-enable submit button
@@ -1337,6 +1374,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (projectsCountNumber) {
             projectsCountNumber.textContent = visibleCount;
         }
+        
+        // Update ARIA live region for screen readers
+        const ariaLiveRegion = document.getElementById('projects-aria-live');
+        if (ariaLiveRegion) {
+            ariaLiveRegion.textContent = `Showing ${visibleCount} project${visibleCount !== 1 ? 's' : ''}`;
+        }
     }
 
     function filterProjects(filterType, searchText = '') {
@@ -1441,9 +1484,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Update count
-        if (projectsCountNumber) {
-            projectsCountNumber.textContent = visibleProjects.length;
-        }
+        updateProjectsCount();
+        
+        // Show empty state if no projects visible
+        showEmptyStateIfNeeded(visibleProjects.length);
     }
 
     // Add click handlers to filter buttons
@@ -1462,6 +1506,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Show empty state helper function
+    function showEmptyStateIfNeeded(visibleCount) {
+        let emptyState = document.querySelector('.projects-empty-state');
+        
+        if (visibleCount === 0) {
+            if (!emptyState) {
+                emptyState = document.createElement('div');
+                emptyState.className = 'projects-empty-state';
+                emptyState.innerHTML = `
+                    <h3>No projects found</h3>
+                    <p>Try adjusting your search or filter criteria</p>
+                `;
+                if (projectRow && projectRow.parentNode) {
+                    projectRow.parentNode.insertBefore(emptyState, projectRow);
+                }
+            }
+            emptyState.style.display = 'block';
+        } else {
+            if (emptyState) {
+                emptyState.style.display = 'none';
+            }
+        }
+    }
+    
+    // Image error handling - graceful fallback
+    document.addEventListener('error', (e) => {
+        if (e.target.tagName === 'IMG') {
+            e.target.style.opacity = '0.5';
+            e.target.alt = e.target.alt || 'Image failed to load';
+            // Add error class for styling
+            e.target.classList.add('image-error');
+        }
+    }, true);
+    
     // Initialize with default filter (all projects)
     filterProjects(activeFilter);
     
@@ -1499,19 +1577,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function getCobeLibrary() {
         // Try different ways cobe might be exposed from CDN
         if (window.cobe && window.cobe.createGlobe) {
-            console.log('Cobe library found via window.cobe');
             return window.cobe;
         }
         if (window.createGlobe) {
-            console.log('Cobe library found via window.createGlobe');
             return { createGlobe: window.createGlobe };
         }
         // Check if loaded as module
         if (typeof cobe !== 'undefined' && cobe.createGlobe) {
-            console.log('Cobe library found via module');
             return cobe;
         }
-        console.warn('Cobe library not found');
         return null;
     }
     
@@ -1525,26 +1599,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const tryInit = () => {
             retryCount++;
             if (retryCount > maxRetries) {
-                console.warn('Cobe library failed to load after maximum retries');
+                // Cobe library failed to load after maximum retries
                 // Show canvas with fallback styling if library fails to load
                 if (canvas) {
                     canvas.style.opacity = '0.3';
                     canvas.style.visibility = 'visible';
-                    console.warn('Globe canvas set to fallback visibility');
                 }
                 return;
             }
             
             const cobeLib = getCobeLibrary();
             if (!cobeLib || !cobeLib.createGlobe) {
-                if (retryCount % 10 === 0) {
-                    console.log(`Waiting for cobe library... (attempt ${retryCount}/${maxRetries})`);
-                }
                 setTimeout(tryInit, 100);
                 return;
             }
             
-            console.log('Cobe library loaded successfully, initializing globe...');
+            // Cobe library loaded successfully, initializing globe
             
             isInitialized = true;
             
@@ -1610,8 +1680,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     widthRef.current = 500;
                 }
                 
-                console.log(`Canvas dimensions set: ${widthRef.current}px`);
-                
                 // Set canvas internal dimensions (important for rendering)
                 const canvasWidth = widthRef.current * 2;
                 const canvasHeight = widthRef.current * 2;
@@ -1620,7 +1688,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Verify dimensions were set
                 if (canvas.width === 0 || canvas.height === 0) {
-                    console.error('Canvas dimensions are zero, retrying...');
+                    // Canvas dimensions are zero, retrying
                     setTimeout(initializeDimensions, 100);
                     return;
                 }
@@ -1640,7 +1708,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Verify canvas has valid dimensions
                 if (canvasWidth === 0 || canvasHeight === 0) {
-                    console.error('Invalid canvas dimensions:', canvasWidth, canvasHeight);
+                    // Invalid canvas dimensions
                     return;
                 }
 
@@ -1659,7 +1727,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 ];
 
                 try {
-                    console.log(`Creating globe with dimensions: ${canvasWidth}x${canvasHeight}`);
                     globe = cobeLib.createGlobe(canvas, {
                         devicePixelRatio: 2,
                         width: canvasWidth,
@@ -1684,13 +1751,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
 
-                    console.log('Globe created successfully');
+                    // Globe created successfully
                     
                     // Make canvas visible immediately after globe creation
                     if (canvas) {
                         canvas.style.opacity = '1';
                         canvas.style.visibility = 'visible';
-                        console.log('Canvas made visible');
                     }
                     
                     // Pointer event handlers
@@ -1725,19 +1791,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.removeEventListener('resize', onResize);
                     });
                 } catch (error) {
-                    console.error('Error creating globe:', error);
-                    console.error('Error details:', {
-                        message: error.message,
-                        stack: error.stack,
-                        canvasWidth: canvasWidth,
-                        canvasHeight: canvasHeight,
-                        canvasExists: !!canvas
-                    });
+                    // Error creating globe
                     // Show canvas with reduced opacity as fallback
                     if (canvas) {
                         canvas.style.opacity = '0.2';
                         canvas.style.visibility = 'visible';
-                        console.warn('Globe failed to initialize, showing fallback');
                     }
                     return;
                 }
@@ -1839,19 +1897,21 @@ function initHRSummaryCarousel() {
     // Start rotation after a short delay
     setTimeout(startRotation, 1000);
     
-    // Add hover event listeners
+    // Add hover event listeners - pause when mouse enters carousel or any item
     carousel.addEventListener('mouseenter', pauseRotation);
     carousel.addEventListener('mouseleave', resumeRotation);
     
-    // Also pause on individual item hover for better UX
+    // Pause on individual item hover - this ensures pause when hovering over the current card
     items.forEach(item => {
         item.addEventListener('mouseenter', () => {
             pauseRotation();
         });
         item.addEventListener('mouseleave', () => {
-            // Only resume if mouse is not over carousel
+            // Only resume if mouse is not over carousel or any item
             setTimeout(() => {
-                if (!carousel.matches(':hover')) {
+                const isOverCarousel = carousel.matches(':hover');
+                const isOverAnyItem = Array.from(items).some(item => item.matches(':hover'));
+                if (!isOverCarousel && !isOverAnyItem) {
                     resumeRotation();
                 }
             }, 50);
