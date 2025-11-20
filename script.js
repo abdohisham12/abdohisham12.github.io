@@ -1737,4 +1737,88 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(checkIfInViewport, 1000);
 });
 
+// HR Summary Carousel - Auto-rotating with hover pause
+function initHRSummaryCarousel() {
+    const carousel = document.getElementById('hr-summary-carousel');
+    const track = document.getElementById('hr-summary-carousel-track');
+    
+    if (!carousel || !track) return;
+    
+    const items = track.querySelectorAll('.hr-summary-item');
+    if (items.length === 0) return;
+    
+    let currentIndex = 0;
+    let isPaused = false;
+    let rotationInterval = null;
+    const rotationDuration = 4500; // 4.5 seconds between rotations
+    const transitionDuration = 800; // 0.8s transition time
+    
+    // Function to move to next card
+    function moveToNext() {
+        if (isPaused) return;
+        
+        currentIndex = (currentIndex + 1) % items.length;
+        const translateX = -currentIndex * 100;
+        track.style.transform = `translateX(${translateX}%)`;
+    }
+    
+    // Start auto-rotation
+    function startRotation() {
+        if (rotationInterval) clearInterval(rotationInterval);
+        rotationInterval = setInterval(moveToNext, rotationDuration);
+    }
+    
+    // Pause rotation
+    function pauseRotation() {
+        isPaused = true;
+        if (rotationInterval) {
+            clearInterval(rotationInterval);
+            rotationInterval = null;
+        }
+    }
+    
+    // Resume rotation
+    function resumeRotation() {
+        isPaused = false;
+        // Wait a moment before resuming to ensure smooth transition
+        setTimeout(() => {
+            if (!isPaused) {
+                startRotation();
+            }
+        }, 100);
+    }
+    
+    // Initialize: show first card
+    track.style.transform = 'translateX(0%)';
+    
+    // Start rotation after a short delay
+    setTimeout(startRotation, 1000);
+    
+    // Add hover event listeners
+    carousel.addEventListener('mouseenter', pauseRotation);
+    carousel.addEventListener('mouseleave', resumeRotation);
+    
+    // Also pause on individual item hover for better UX
+    items.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            pauseRotation();
+        });
+        item.addEventListener('mouseleave', () => {
+            // Only resume if mouse is not over carousel
+            setTimeout(() => {
+                if (!carousel.matches(':hover')) {
+                    resumeRotation();
+                }
+            }, 50);
+        });
+    });
+}
+
+// Initialize carousel when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHRSummaryCarousel);
+} else {
+    initHRSummaryCarousel();
+}
+
 

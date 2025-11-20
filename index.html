@@ -122,10 +122,6 @@
                 <span class="quick-nav-icon"><i class="fas fa-home"></i></span>
                 <span class="quick-nav-label">Home</span>
             </a>
-            <a href="#quick-facts-hr" class="quick-nav-link" data-section="quick-facts-hr" title="Quick Facts">
-                <span class="quick-nav-icon"><i class="fas fa-bolt"></i></span>
-                <span class="quick-nav-label">Quick Facts</span>
-            </a>
             <a href="#key-highlights" class="quick-nav-link" data-section="key-highlights" title="Highlights">
                 <span class="quick-nav-icon"><i class="fas fa-star"></i></span>
                 <span class="quick-nav-label">Highlights</span>
@@ -174,6 +170,22 @@
             </div>
         </nav>
     </header>
+    
+    <!-- Fixed CTA Buttons -->
+    <div class="fixed-cta-buttons">
+        <a href="https://www.canva.com/design/DAGmx1cDN2k/W9ic4ys76y851Vt668_1eQ/view?utm_content=DAGmx1cDN2k&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha199810385" 
+           target="_blank" 
+           aria-label="View My CV"
+           class="fixed-cv-button btn btn-primary">
+            <span aria-hidden="true"><i class="fas fa-file-alt"></i></span> View My CV
+        </a>
+        <a href="#footer" 
+           aria-label="Navigate to contact section"
+           class="fixed-contact-button btn btn-secondary">
+            <span aria-hidden="true"><i class="fas fa-comments"></i></span> Get In Touch
+        </a>
+    </div>
+    
 <!-- Hero Section ------------------------------------------------>
 <main id="main-content">
 <section id="home" class="hero">
@@ -190,29 +202,39 @@
     
     <div class="hero-content">
         <div class="hero-text-container">
-            <h1 class="hero-name animate-fade-in-up" data-delay="0.1s">Abdulrahman Hisham Kamel</h1>
+            <div class="hero-name-section">
+                <div class="hero-image-container">
+                    <div class="profile-picture-wrapper animate-scale-in" data-delay="0.1s">
+                        <div class="profile-glow"></div>
+                        <img src="assets/profile photo.jpg" alt="Abdulrahman Hisham Kamel - AI Engineer" class="profile-picture" loading="eager" fetchpriority="high">
+                    </div>
+                </div>
+                <h1 class="hero-name animate-fade-in-up" data-delay="0.1s">Abdulrahman Hisham Kamel</h1>
+            </div>
             <h2 class="hero-title animate-fade-in-up" data-delay="0.3s">
                 <span class="title-highlight">R&D AI Software Engineer</span>
             </h2>
             <h3 class="hero-tagline animate-fade-in-up" data-delay="0.5s">
-                Building Production AI Systems for Space & Aerospace
+                Transforming Business Challenges with Production&nbsp;AI&nbsp;Systems
             </h3>
+            
+            <!-- Industry Application Badges -->
+            <div class="hero-skill-badges animate-fade-in-up" data-delay="0.6s">
+                <span class="skill-badge">Banking Systems</span>
+                <span class="skill-badge">Fraud Detection</span>
+                <span class="skill-badge">Customer Behavior Analysis</span>
+                <span class="skill-badge">Enterprise AI</span>
+                <span class="skill-badge">Customized Chatbots</span>
+            </div>
+            
             <p class="hero-description animate-fade-in-up" data-delay="0.7s">
                 Specializing in LLM technologies, computer vision, MLOps, and production AI systems. 
-                Transforming complex aerospace challenges into intelligent, scalable solutions deployed on Azure and cloud platforms.
+                Transforming complex business challenges into intelligent, scalable solutions deployed on enterprise cloud infrastructure.
             </p>
             
             <!-- Quick Stats Carousel -->
             <div class="hero-stats-carousel animate-fade-in-up" data-delay="0.8s">
                 <div class="stat-item active">
-                    <div class="stat-number" data-target="3">0</div>
-                    <div class="stat-label">Years Experience</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-target="10">0</div>
-                    <div class="stat-label">Projects Delivered</div>
-                </div>
-                <div class="stat-item">
                     <div class="stat-number" data-target="95">0</div>
                     <div class="stat-label">% Accuracy</div>
                 </div>
@@ -220,38 +242,11 @@
                     <div class="stat-number" data-target="40">0</div>
                     <div class="stat-label">% Cost Reduction</div>
                 </div>
-            </div>
-            
-            <!-- Animated Skill Badges -->
-            <div class="hero-skill-badges animate-fade-in-up" data-delay="0.85s">
-                <span class="skill-badge">Python</span>
-                <span class="skill-badge">TensorFlow</span>
-                <span class="skill-badge">LLMs</span>
-                <span class="skill-badge">Computer Vision</span>
-                <span class="skill-badge">MLOps</span>
-                <span class="skill-badge">Azure</span>
-            </div>
-            
-            <!-- Buttons Container -->
-            <div class="hero-buttons animate-fade-in-up" data-delay="0.9s">
-                <a href="https://www.canva.com/design/DAGmx1cDN2k/W9ic4ys76y851Vt668_1eQ/view?utm_content=DAGmx1cDN2k&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha199810385" 
-                   target="_blank" 
-                   aria-label="Download CV"
-                   class="btn btn-primary">
-                    <span aria-hidden="true"><i class="fas fa-file-download"></i></span> Download CV
-                </a>
-                <a href="#footer" 
-                   aria-label="Navigate to contact section"
-                   class="btn btn-secondary">
-                    <span aria-hidden="true"><i class="fas fa-comments"></i></span> Get In Touch
-                </a>
-            </div>
-        </div>
-        
-        <div class="hero-image-container">
-            <div class="profile-picture-wrapper animate-scale-in" data-delay="0.5s">
-                <div class="profile-glow"></div>
-                <img src="assets/profile photo.jpg" alt="Abdulrahman Hisham Kamel - AI Engineer" class="profile-picture" loading="eager" fetchpriority="high">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="10">0</div>
+                    <div class="stat-unit">K+</div>
+                    <div class="stat-label">Users Served</div>
+                </div>
             </div>
         </div>
     </div>
@@ -261,73 +256,6 @@
     <section class="ats-keywords-section" aria-hidden="true" style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;">
         <h2>AI Engineer Skills and Keywords</h2>
         <p>Machine Learning, Deep Learning, Neural Networks, Natural Language Processing, Computer Vision, MLOps, Model Deployment, Data Engineering, Feature Engineering, Model Evaluation, Hyperparameter Tuning, A/B Testing, Model Monitoring, Large Language Models, LLM, RAG, Retrieval-Augmented Generation, TensorFlow, PyTorch, Scikit-learn, Pandas, NumPy, Azure, AWS, Cloud Computing, Production AI Systems, Model Training, Model Inference, Data Science, Python, SQL, Git, Jupyter, MLflow, CI/CD, Continuous Integration, Continuous Deployment, Model Versioning, Model Serving, API Development, REST APIs, Microservices, Docker, Kubernetes, Model Optimization, Performance Tuning, Distributed Computing, GPU Computing, CUDA, Computer Vision, Image Processing, Object Detection, Semantic Segmentation, Natural Language Understanding, NLP, Text Classification, Sentiment Analysis, Named Entity Recognition, Transformers, BERT, GPT, Fine-tuning, Transfer Learning, Supervised Learning, Unsupervised Learning, Reinforcement Learning, Time Series Analysis, Predictive Modeling, Statistical Analysis, Data Visualization, ETL, Data Pipelines, Big Data, Spark, Hadoop, Database Management, PostgreSQL, MySQL, MongoDB, Redis, Version Control, Agile Development, Scrum, Project Management, Team Leadership, Cross-functional Collaboration, Technical Communication, Problem Solving, Aerospace Engineering, Space Technology, Mission Planning, Orbital Mechanics</p>
-    </section>
-
-    <!-- Quick Facts for HR Section -->
-    <section id="quick-facts-hr" class="quick-facts-hr" aria-label="Quick facts for HR managers">
-        <div class="container">
-            <div class="quick-facts-hr-card">
-                <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px; font-size: 2em;">Quick Facts for HR</h2>
-                <div class="quick-facts-hr-grid">
-                    <div class="quick-fact-hr-item">
-                        <div class="quick-fact-hr-icon"><i class="fas fa-briefcase"></i></div>
-                        <div class="quick-fact-hr-content">
-                            <strong>Years of Experience</strong>
-                            <p>3+ years in AI Engineering & Production Systems</p>
-                        </div>
-                    </div>
-                    <div class="quick-fact-hr-item">
-                        <div class="quick-fact-hr-icon"><i class="fas fa-bullseye"></i></div>
-                        <div class="quick-fact-hr-content">
-                            <strong>Core Expertise</strong>
-                            <p>AI Engineering, MLOps, Computer Vision, LLMs, RAG</p>
-                        </div>
-                    </div>
-                    <div class="quick-fact-hr-item">
-                        <div class="quick-fact-hr-icon"><i class="fas fa-rocket"></i></div>
-                        <div class="quick-fact-hr-content">
-                            <strong>Production Deployments</strong>
-                            <p>10+ projects delivered and deployed</p>
-                        </div>
-                    </div>
-                    <div class="quick-fact-hr-item">
-                        <div class="quick-fact-hr-icon"><i class="fas fa-users"></i></div>
-                        <div class="quick-fact-hr-content">
-                            <strong>Team Leadership</strong>
-                            <p>Led teams of 3+ engineers on critical projects</p>
-                        </div>
-                    </div>
-                    <div class="quick-fact-hr-item">
-                        <div class="quick-fact-hr-icon"><i class="fas fa-graduation-cap"></i></div>
-                        <div class="quick-fact-hr-content">
-                            <strong>Education</strong>
-                            <p>Bachelor's (GPA 3.69/4.0) + Microsoft Nano Degree</p>
-                        </div>
-                    </div>
-                    <div class="quick-fact-hr-item">
-                        <div class="quick-fact-hr-icon"><i class="fas fa-trophy"></i></div>
-                        <div class="quick-fact-hr-content">
-                            <strong>Certifications</strong>
-                            <p>AI-900 (Azure AI Fundamentals), AWS Generative AI</p>
-                        </div>
-                    </div>
-                    <div class="quick-fact-hr-item">
-                        <div class="quick-fact-hr-icon"><i class="fas fa-clock"></i></div>
-                        <div class="quick-fact-hr-content">
-                            <strong>Availability</strong>
-                            <p>Immediate | 2 weeks notice</p>
-                        </div>
-                    </div>
-                    <div class="quick-fact-hr-item">
-                        <div class="quick-fact-hr-icon"><i class="fas fa-globe"></i></div>
-                        <div class="quick-fact-hr-content">
-                            <strong>Work Preference</strong>
-                            <p>Remote, Full-time, Contract</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- Executive Summary Section -->
@@ -368,7 +296,7 @@
     <!-- Visual Metrics Dashboard -->
     <section id="metrics-dashboard" class="metrics-dashboard" aria-label="Key performance metrics">
         <div class="container">
-            <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Impact Metrics</h2>
+            <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px; font-size: 2.5em;">Impact Metrics</h2>
             <p style="text-align: center; color: #b0b0b0; margin-bottom: 40px; font-size: 1.1em;">
                 Quantifiable results that demonstrate business value
             </p>
@@ -376,45 +304,48 @@
             <div class="metrics-grid">
                 <div class="metric-card">
                     <div class="metric-icon"><i class="fas fa-dollar-sign"></i></div>
-                    <div class="metric-value" data-target="40">0</div>
-                    <div class="metric-unit">%</div>
+                    <div class="metric-value-wrapper">
+                        <div class="metric-value" data-target="40">0</div>
+                        <div class="metric-unit">%</div>
+                    </div>
                     <div class="metric-label">Cost Reduction</div>
                     <div class="metric-description">Design cycle time reduction at AQMAAR.space</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-icon"><i class="fas fa-bolt"></i></div>
-                    <div class="metric-value" data-target="50">0</div>
-                    <div class="metric-unit">%</div>
+                    <div class="metric-value-wrapper">
+                        <div class="metric-value" data-target="50">0</div>
+                        <div class="metric-unit">%</div>
+                    </div>
                     <div class="metric-label">Faster Iterations</div>
                     <div class="metric-description">30-50% faster design cycles</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-icon"><i class="fas fa-bullseye"></i></div>
-                    <div class="metric-value" data-target="95">0</div>
-                    <div class="metric-unit">%</div>
+                    <div class="metric-value-wrapper">
+                        <div class="metric-value" data-target="95">0</div>
+                        <div class="metric-unit">%</div>
+                    </div>
                     <div class="metric-label">Accuracy</div>
                     <div class="metric-description">Computer vision detection accuracy</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-icon"><i class="fas fa-chart-line"></i></div>
-                    <div class="metric-value" data-target="10">0</div>
-                    <div class="metric-unit">%</div>
+                    <div class="metric-value-wrapper">
+                        <div class="metric-value" data-target="10">0</div>
+                        <div class="metric-unit">%</div>
+                    </div>
                     <div class="metric-label">AI Improvement</div>
                     <div class="metric-description">Gemini accuracy boost for 10K+ students</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-icon"><i class="fas fa-users"></i></div>
-                    <div class="metric-value" data-target="10000">0</div>
-                    <div class="metric-unit">+</div>
+                    <div class="metric-value-wrapper">
+                        <div class="metric-value" data-target="10000">0</div>
+                        <div class="metric-unit">+</div>
+                    </div>
                     <div class="metric-label">Users Served</div>
                     <div class="metric-description">Platforms serving 10,000+ users</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-icon"><i class="fas fa-rocket"></i></div>
-                    <div class="metric-value" data-target="10">0</div>
-                    <div class="metric-unit">+</div>
-                    <div class="metric-label">Projects</div>
-                    <div class="metric-description">Production projects delivered</div>
                 </div>
             </div>
         </div>
@@ -444,7 +375,7 @@
                 <div class="why-hire-card">
                     <div class="why-hire-icon"><i class="fas fa-users"></i></div>
                     <h3>Leadership & Team Collaboration</h3>
-                    <p>Led cross-functional teams of <strong>3+ engineers</strong> on critical space missions, successfully delivering <strong>95%+ accuracy</strong> computer vision systems. Proven ability to collaborate with aerospace engineers, data scientists, and product teams to deliver production-ready solutions.</p>
+                    <p>Led cross-functional teams of <strong>3+ engineers</strong> on critical space missions, successfully delivering high-accuracy computer vision systems. Proven ability to collaborate with aerospace engineers, data scientists, and product teams to deliver scalable solutions.</p>
                 </div>
                 
                 <div class="why-hire-card">
@@ -456,13 +387,13 @@
                 <div class="why-hire-card">
                     <div class="why-hire-icon"><i class="fas fa-bullseye"></i></div>
                     <h3>Domain Expertise + AI Innovation</h3>
-                    <p>Unique combination of <strong>aerospace engineering background</strong> (GPA 3.69/4.0) and cutting-edge AI skills. I understand both the technical challenges and business requirements, enabling me to bridge the gap between domain experts and AI technology.</p>
+                    <p>Unique combination of <strong>space technology expertise</strong> and advanced AI skills. I understand both technical constraints and strategic needs, enabling me to connect domain experts with AI technology.</p>
                 </div>
                 
                 <div class="why-hire-card">
                     <div class="why-hire-icon"><i class="fas fa-bolt"></i></div>
                     <h3>Fast Time-to-Value</h3>
-                    <p>Delivered <strong>10+ production projects</strong> in 3+ years, demonstrating ability to quickly understand requirements, build solutions, and deliver results. Proven track record of taking projects from ideation to deployment efficiently.</p>
+                    <p>Demonstrating ability to quickly understand requirements, build solutions, and deliver results. Proven track record of taking projects from ideation to deployment efficiently.</p>
                 </div>
             </div>
         </div>
@@ -480,7 +411,7 @@
                 <div class="leadership-card">
                     <div class="leadership-icon"><i class="fas fa-users"></i></div>
                     <h3>Team Leadership</h3>
-                    <p><strong>Led mission testing team of 3 engineers</strong> at AQMAAR.space for SIRB project, successfully delivering production-ready computer vision system with 95%+ accuracy. Managed project timelines, coordinated testing procedures, and ensured quality standards across team deliverables.</p>
+                    <p>Led mission testing teams at AQMAAR.space for critical projects, successfully delivering high-performance computer vision systems. Managed project timelines, coordinated testing procedures, and ensured quality standards across team deliverables.</p>
                 </div>
                 
                 <div class="leadership-card">
@@ -492,7 +423,7 @@
                 <div class="leadership-card">
                     <div class="leadership-icon"><i class="fas fa-bullseye"></i></div>
                     <h3>Project Management</h3>
-                    <p>Delivered <strong>10+ projects</strong> from concept to production, managing timelines, resources, and stakeholder expectations. Proven ability to balance technical excellence with business priorities, consistently meeting deadlines while maintaining high quality standards.</p>
+                    <p>Managing timelines, resources, and stakeholder expectations across multiple production deployments. Proven ability to balance technical excellence with business priorities, consistently meeting deadlines while maintaining high quality standards.</p>
                 </div>
                 
                 <div class="leadership-card">
@@ -519,7 +450,7 @@
                     <div class="highlight-icon"><i class="fas fa-rocket"></i></div>
                     <h3>SIRB Project</h3>
                     <p><strong>95%+ Accuracy in CV Detection</strong></p>
-                    <p><strong>Business Impact:</strong> Production-ready computer vision system achieving 95%+ accuracy in laser pattern detection for space payload operations. Led mission testing team of 3 engineers, delivering reliable automation that reduces human error and operational costs in critical space missions.</p>
+                    <p><strong>Business Impact:</strong> Production-ready computer vision system achieving high accuracy in laser pattern detection for space payload operations. Delivering reliable automation that reduces human error and operational costs in critical space missions.</p>
                 </div>
                 <div class="highlight-card">
                     <div class="highlight-icon"><i class="fas fa-chart-line"></i></div>
@@ -601,7 +532,7 @@
 
     <section id="education" class="education" aria-label="Education and certifications">
         <div class="container">
-            <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Education & Certifications</h2>
+            <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Education</h2>
             
             <!-- Academic Excellence Banner -->
             <div class="academic-excellence-banner">
@@ -617,11 +548,11 @@
                     </div>
                     <div class="achievement-item">
                         <span class="achievement-icon"><i class="fas fa-graduation-cap"></i></span>
-                        <span>RAG Capstone Project - Space Mission Planning</span>
+                        <span>R&D Capstone: RAG-Powered AI for Space Mission Planning</span>
                     </div>
                     <div class="achievement-item">
                         <span class="achievement-icon"><i class="fas fa-flask"></i></span>
-                        <span>Research at NRIAG & EgSA</span>
+                        <span>R&D Experience: Applied AI Research at EgSA</span>
                     </div>
                 </div>
             </div>
@@ -642,72 +573,73 @@
                             </div>
                             <div class="education-card-meta">
                                 <p class="education-date">Oct 2020 - July 2025</p>
-                                <div class="education-badge gpa-badge-prominent">
-                                    <img src="assets/logos/excellence.png" alt="Excellence Award Icon" style="height: 35px;width: 35px;">
-                                    <div class="gpa-badge-content">
-                                        <span class="gpa-badge-label">GPA</span>
-                                        <span class="gpa-badge-value">3.69/4.0</span>
-                                        <span class="gpa-badge-percentage">(92.25%)</span>
+                            </div>
+                            <div class="education-responsibilities">
+                                <h4>Core Foundation for AI Engineering</h4>
+                                
+                                <div class="education-category">
+                                    <div class="category-header">
+                                        <i class="fas fa-calculator category-icon"></i>
+                                        <strong>Mathematics & Statistics</strong>
+                                    </div>
+                                    <p>Advanced calculus, linear algebra, probability theory</p>
+                                </div>
+                                
+                                <div class="education-category">
+                                    <div class="category-header">
+                                        <i class="fas fa-code category-icon"></i>
+                                        <strong>Programming & Systems</strong>
+                                    </div>
+                                    <p>Python, embedded systems, robotics</p>
+                                </div>
+                                
+                                <div class="education-category">
+                                    <div class="category-header">
+                                        <i class="fas fa-cogs category-icon"></i>
+                                        <strong>Control & Signal Processing</strong>
+                                    </div>
+                                    <p>Control theory, wave propagation, antennas</p>
+                                </div>
+                                
+                                <div class="education-category">
+                                    <div class="category-header">
+                                        <i class="fas fa-rocket category-icon"></i>
+                                        <strong>Space Technology & Research</strong>
+                                    </div>
+                                    <p>Mission planning, orbital mechanics, applied AI research at EgSA</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="education-card-back">
+                            <div class="education-card-details">
+                                <h3>How This Degree Shapes My Career</h3>
+                                
+                                <div class="degree-columns">
+                                    <div class="degree-section">
+                                        <div class="section-header">
+                                            <i class="fas fa-brain section-icon"></i>
+                                            <h4>As an AI Engineer</h4>
+                                        </div>
+                                        <p>Advanced mathematics, statistics, and probability provide the theoretical foundation for understanding ML algorithms, neural networks, and optimization techniques.</p>
+                                    </div>
+                                    
+                                    <div class="degree-section">
+                                        <div class="section-header">
+                                            <i class="fas fa-flask section-icon"></i>
+                                            <h4>As an R&D Engineer</h4>
+                                        </div>
+                                        <p>Developed a RAG-powered AI solution for space mission planning, demonstrating ability to conduct independent research and apply advanced AI technologies to solve complex domain-specific problems.</p>
+                                        <p>Applied AI research at EgSA provided practical experience in R&D environments, working on real aerospace challenges.</p>
+                                    </div>
+                                    
+                                    <div class="degree-section">
+                                        <div class="section-header">
+                                            <i class="fas fa-cog section-icon"></i>
+                                            <h4>As an Engineer</h4>
+                                        </div>
+                                        <p>Embedded systems, control theory, and signal processing training enables me to design AI systems that integrate seamlessly with hardware and real-world constraints—critical for production deployment.</p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="education-responsibilities">
-                                <h4>Key Responsibilities & Coursework:</h4>
-                                <ul>
-                                    <li>• Advanced mathematics, probability and statistics</li>
-                                    <li>• Mechanical design and structural analysis</li>
-                                    <li>• Electromagnetics and advanced control systems</li>
-                                    <li>• Product Lifecycle Management (PLM)</li>
-                                    <li>• Electronics, robotics, and embedded systems</li>
-                                    <li>• Space navigation and orbital mechanics</li>
-                                    <li>• Space mission planning and optimization</li>
-                                    <li>• Research at NRIAG and EgSA</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="education-card-back">
-                            <div class="education-card-details">
-                                <h3>Bachelor's Degree Achievements</h3>
-                                <p><strong>Academic Excellence:</strong> <strong>GPA 3.69/4.0</strong> in CS, Space Navigation & Orbital Mechanics.</p>
-                                <p><strong>Capstone:</strong> RAG-powered AI solution for space mission planning optimization.</p>
-                                <p><strong>Research:</strong> Applied AI at NRIAG & EgSA for aerospace challenges.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Nano Degree Card -->
-                <div class="education-card-container">
-                    <div class="education-card" data-card-type="education">
-                        <div class="education-card-front">
-                            <div class="education-card-header">
-                                <img src="assets/logos/microsoft-logo.png" alt="Microsoft Logo" class="education-logo">
-                                <div class="education-card-title">
-                                    <h3>Nano Degree</h3>
-                                    <p class="education-institution">Microsoft</p>
-                                    <p class="education-field">AI and Data Science</p>
-                                </div>
-                            </div>
-                            <div class="education-card-meta">
-                                <p class="education-date">April 2024 - Nov 2024</p>
-                            </div>
-                            <div class="education-responsibilities">
-                                <h4>Key Responsibilities & Training:</h4>
-                                <ul>
-                                    <li>• Machine learning algorithms and deep learning</li>
-                                    <li>• Attention-based NLP and prompt engineering</li>
-                                    <li>• MLOps with MLflow and Azure AI services</li>
-                                    <li>• GANs training and software development</li>
-                                    <li>• Supervised and unsupervised ML</li>
-                                    <li>• Industry-recognized AI and Data Science training</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="education-card-back">
-                            <div class="education-card-details">
-                                <h3>Nano Degree Achievements</h3>
-                                <p><strong>Certification:</strong> Industry-recognized AI & Data Science training from Microsoft.</p>
-                                <p><strong>Mastery:</strong> Hands-on projects demonstrating expertise in cutting-edge AI technologies.</p>
                             </div>
                         </div>
                     </div>
@@ -723,75 +655,35 @@
             <!-- HR-Friendly Summary -->
             <div class="hr-friendly-summary">
                 <h3 style="color: #0092CC; text-align: center; margin-bottom: 25px; font-size: 1.8em;">What I Bring to Your Team</h3>
-                <div class="hr-summary-content">
-                    <div class="hr-summary-item">
-                        <div class="hr-summary-icon"><i class="fas fa-briefcase"></i></div>
-                        <div class="hr-summary-text">
-                            <h4>Proven Business Impact</h4>
-                            <p>I don't just build AI systems—I deliver measurable results. Reduced design cycle times by 40%, improved AI accuracy by 10% for platforms serving 10,000+ users, and led teams that delivered production-ready solutions with 95%+ accuracy. Every project I work on has clear business value: cost savings, faster time-to-market, improved efficiency, or enhanced user experience.</p>
+                <div class="hr-summary-carousel" id="hr-summary-carousel">
+                    <div class="hr-summary-carousel-track" id="hr-summary-carousel-track">
+                        <div class="hr-summary-item">
+                            <div class="hr-summary-icon"><i class="fas fa-briefcase"></i></div>
+                            <div class="hr-summary-text">
+                                <h4>Proven Business Impact</h4>
+                                <p>I don't just build AI systems—I deliver measurable results. Reduced design cycle times by 40%, improved AI accuracy by 10% for platforms serving 10,000+ users, and led teams that delivered scalable solutions with exceptional accuracy. Every project I work on has clear business value: cost savings, faster time-to-market, improved efficiency, or enhanced user experience.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="hr-summary-item">
-                        <div class="hr-summary-icon"><i class="fas fa-users"></i></div>
-                        <div class="hr-summary-text">
-                            <h4>Leadership & Collaboration</h4>
-                            <p>Successfully led cross-functional teams of 3+ engineers on critical projects. I excel at bridging the gap between technical teams and business stakeholders, translating complex AI capabilities into actionable business solutions. My experience includes working with aerospace engineers, data scientists, product managers, and executives.</p>
+                        <div class="hr-summary-item">
+                            <div class="hr-summary-icon"><i class="fas fa-users"></i></div>
+                            <div class="hr-summary-text">
+                                <h4>Leadership & Collaboration</h4>
+                                <p>Successfully led cross-functional teams of 3+ engineers on critical projects. I excel at bridging the gap between technical teams and business stakeholders, translating complex AI capabilities into actionable business solutions. My experience includes working with aerospace engineers, data scientists, product managers, and executives.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="hr-summary-item">
-                        <div class="hr-summary-icon"><i class="fas fa-rocket"></i></div>
-                        <div class="hr-summary-text">
-                            <h4>Production-Ready Expertise</h4>
-                            <p>With 3+ years of hands-on experience, I've delivered 10+ projects from concept to production deployment on Azure and cloud platforms. I understand the full lifecycle: requirements gathering, system design, development, testing, deployment, and maintenance. My solutions are built for scale, reliability, and real-world use.</p>
+                        <div class="hr-summary-item">
+                            <div class="hr-summary-icon"><i class="fas fa-rocket"></i></div>
+                            <div class="hr-summary-text">
+                                <h4>Production-Ready Expertise</h4>
+                                <p>With extensive practical experience, I've delivered multiple projects from concept to production deployment on Azure and cloud platforms. I understand the full lifecycle: requirements gathering, system design, development, testing, deployment, and maintenance. My solutions are built for scale, reliability, and real-world use.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="hr-summary-item">
-                        <div class="hr-summary-icon"><i class="fas fa-bullseye"></i></div>
-                        <div class="hr-summary-text">
-                            <h4>Unique Value Proposition</h4>
-                            <p>What sets me apart is my combination of aerospace engineering domain expertise (GPA 3.69/4.0) and cutting-edge AI skills. I understand both the technical challenges and business requirements, enabling me to create solutions that are not just technically sound, but also strategically valuable and aligned with business goals.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Quick Facts Card -->
-            <div class="quick-facts-card">
-                <h3 style="color: #0092CC; text-align: center; margin-bottom: 25px; font-size: 1.5em;">Quick Facts</h3>
-                <div class="quick-facts-grid">
-                    <div class="quick-fact-item">
-                        <span class="quick-fact-icon"><i class="fas fa-map-marker-alt"></i></span>
-                        <div class="quick-fact-content">
-                            <strong>Location</strong>
-                            <p>Cairo, Egypt</p>
-                        </div>
-                    </div>
-                    <div class="quick-fact-item">
-                        <span class="quick-fact-icon"><i class="fas fa-globe"></i></span>
-                        <div class="quick-fact-content">
-                            <strong>Availability</strong>
-                            <p>Available Worldwide (Remote)</p>
-                        </div>
-                    </div>
-                    <div class="quick-fact-item">
-                        <span class="quick-fact-icon"><i class="fas fa-graduation-cap"></i></span>
-                        <div class="quick-fact-content">
-                            <strong>Education</strong>
-                            <p>Bachelor's (GPA 3.69/4.0)</p>
-                        </div>
-                    </div>
-                    <div class="quick-fact-item">
-                        <span class="quick-fact-icon"><i class="fas fa-briefcase"></i></span>
-                        <div class="quick-fact-content">
-                            <strong>Current</strong>
-                            <p>2 Active Positions</p>
-                        </div>
-                    </div>
-                    <div class="quick-fact-item">
-                        <span class="quick-fact-icon"><i class="fas fa-rocket"></i></span>
-                        <div class="quick-fact-content">
-                            <strong>Open to</strong>
-                            <p>Full-time, Contract, Remote</p>
+                        <div class="hr-summary-item">
+                            <div class="hr-summary-icon"><i class="fas fa-bullseye"></i></div>
+                            <div class="hr-summary-text">
+                                <h4>Unique Value Proposition</h4>
+                                <p>What sets me apart is my combination of space technology and mission planning expertise with advanced AI skills. I understand both technical constraints and strategic needs, enabling me to create solutions that are not just technically sound, but also strategically valuable and aligned with business goals.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -801,22 +693,18 @@
                 <p style="font-size: 1.15em; line-height: 1.8; padding-right: 5%;padding-left: 5%; margin: 0;">
                     <strong>R&D AI Software Engineer</strong> with expertise in building end-to-end AI solutions from concept to production. 
                     Currently leading AI initiatives at <strong>AQMAAR.space</strong>, where I develop intelligent systems for space mission planning and optimization. 
-                    My work combines cutting-edge LLM technologies, computer vision, MLOps, and deep learning to solve complex aerospace challenges.
+                    My work combines modern LLM technologies, computer vision, MLOps, and deep learning to solve complex aerospace challenges.
                 </p>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0; padding: 0 5%;">
                 <div style="text-align: center; padding: 20px;">
-                    <h3 style="color: #0092CC; font-size: 2.5em; margin: 0;">3+</h3>
-                    <p style="margin: 5px 0; color: #b0b0b0;">Years Experience</p>
+                    <h3 style="color: #0092CC; font-size: 2.5em; margin: 0;">95%+</h3>
+                    <p style="margin: 5px 0; color: #b0b0b0;">System Accuracy</p>
                 </div>
                 <div style="text-align: center; padding: 20px;">
-                    <h3 style="color: #0092CC; font-size: 2.5em; margin: 0;">10+</h3>
-                    <p style="margin: 5px 0; color: #b0b0b0;">Projects Delivered</p>
-                </div>
-                <div style="text-align: center; padding: 20px;">
-                    <h3 style="color: #0092CC; font-size: 2.5em; margin: 0;">3.69</h3>
-                    <p style="margin: 5px 0; color: #b0b0b0;">GPA / 4.0</p>
+                    <h3 style="color: #0092CC; font-size: 2.5em; margin: 0;">40%</h3>
+                    <p style="margin: 5px 0; color: #b0b0b0;">Cost Reduction</p>
                 </div>
                 <div style="text-align: center; padding: 20px;">
                     <h3 style="color: #0092CC; font-size: 2.5em; margin: 0;">2</h3>
@@ -830,7 +718,7 @@
                 <br>• <strong>Computer vision</strong> and deep learning
                 <br>• <strong>MLOps</strong> and production deployment
                 <br><br>
-                With hands-on experience deploying production-ready AI solutions on Azure and cloud platforms. My unique combination of aerospace engineering background and AI expertise enables me to bridge the gap between domain knowledge and cutting-edge technology.
+                With practical experience deploying scalable AI solutions on enterprise cloud infrastructure. My unique combination of space technology domain knowledge and AI expertise enables me to connect domain knowledge with advanced technology.
             </p> 
 
 
@@ -1636,12 +1524,12 @@
                 <div class="domain-card">
                     <div class="domain-icon"><i class="fas fa-rocket"></i></div>
                     <h3>Aerospace Engineering</h3>
-                    <p>Bachelor's degree in Navigation Science and Space Technology with GPA 3.69/4.0. Deep understanding of spacecraft design, mission planning, and orbital mechanics.</p>
+                    <p>Bachelor's degree in Navigation Science and Space Technology. Deep understanding of spacecraft design, mission planning, and orbital mechanics.</p>
                 </div>
                 <div class="domain-card">
                     <div class="domain-icon"><i class="fas fa-satellite"></i></div>
                     <h3>Space Technology</h3>
-                    <p>Hands-on experience developing AI systems for space missions, including real-time space debris tracking, mission planning optimization, and payload operations.</p>
+                    <p>Practical experience developing AI systems for space missions, including real-time space debris tracking, mission planning optimization, and payload operations.</p>
                 </div>
                 <div class="domain-card">
                     <div class="domain-icon"><i class="fas fa-ruler-combined"></i></div>
@@ -1658,7 +1546,7 @@
             <div class="domain-value-proposition">
                 <h3 style="color: #0092CC; text-align: center; margin: 40px 0 20px 0;">Why This Matters</h3>
                 <p style="text-align: center; color: #ffffffc7; max-width: 800px; margin: 0 auto; line-height: 1.8; font-size: 1.05em;">
-                    My unique combination of <strong>aerospace engineering background</strong> and <strong>cutting-edge AI skills</strong> enables me to bridge the gap between domain experts and AI technology. I understand both the technical challenges and business requirements, allowing me to create solutions that are not just technically sound, but also strategically valuable and aligned with business goals. This domain expertise has been instrumental in delivering successful AI solutions at AQMAAR.space, where I've reduced design cycle times by 40% and achieved 95%+ accuracy in computer vision systems for space missions.
+                    My unique combination of <strong>aerospace engineering background</strong> and <strong>cutting-edge AI skills</strong> enables me to bridge the gap between domain experts and AI technology. I understand both the technical challenges and business requirements, allowing me to create solutions that are not just technically sound, but also strategically valuable and aligned with business goals. This domain expertise has been instrumental in delivering successful AI solutions at AQMAAR.space, where I've reduced design cycle times by 40% and achieved exceptional accuracy in computer vision systems for space missions.
                 </p>
             </div>
         </div>
@@ -1685,7 +1573,7 @@
                 <div class="attribute-card">
                     <div class="attribute-icon"><i class="fas fa-comments"></i></div>
                     <h3>Technical Communication</h3>
-                    <p>Excellent at explaining complex AI concepts to non-technical stakeholders. Created clear documentation, presentations, and reports that bridge the gap between technical teams and business decision-makers.</p>
+                    <p>Excellent at explaining complex AI concepts to non-technical stakeholders. Created clear documentation, presentations, and reports that connect technical teams with business decision-makers.</p>
                     <div class="attribute-evidence">
                         <strong>Evidence:</strong> Successfully communicated AI solutions to aerospace engineers and executives at AQMAAR.space
                     </div>
@@ -1696,14 +1584,14 @@
                     <h3>Problem-Solving Methodology</h3>
                     <p>Systematic approach to problem-solving: understanding business requirements, analyzing technical constraints, designing solutions, and iterating based on feedback. Strong analytical thinking and attention to detail.</p>
                     <div class="attribute-evidence">
-                        <strong>Evidence:</strong> Delivered 10+ projects from concept to production, consistently meeting deadlines
+                        <strong>Evidence:</strong> Consistently meeting deadlines across multiple production deployments
                     </div>
                 </div>
                 
                 <div class="attribute-card">
                     <div class="attribute-icon"><i class="fas fa-book"></i></div>
                     <h3>Adaptability & Continuous Learning</h3>
-                    <p>Proactive learner who stays current with rapidly evolving AI technologies. Completed Microsoft Nano Degree and multiple certifications while working full-time. Quick to adapt to new tools, frameworks, and methodologies.</p>
+                    <p>Proactive learner who stays current with rapidly evolving AI technologies. Continuously expanding expertise through certifications and hands-on R&D work while maintaining full-time employment. Quick to adapt to new tools, frameworks, and methodologies.</p>
                     <div class="attribute-evidence">
                         <strong>Evidence:</strong> Continuously learning new technologies (LLMs, RAG, MLOps) and applying them to production projects
                     </div>
@@ -1723,7 +1611,7 @@
                     <h3>Fast Time-to-Value</h3>
                     <p>Ability to quickly understand requirements, build solutions, and deliver results. Proven track record of taking projects from ideation to deployment efficiently without compromising quality.</p>
                     <div class="attribute-evidence">
-                        <strong>Evidence:</strong> Delivered 10+ production projects in 3+ years, consistently meeting deadlines
+                        <strong>Evidence:</strong> Consistently meeting deadlines and delivering enterprise-grade solutions
                     </div>
                 </div>
             </div>
@@ -1735,7 +1623,7 @@
         <div class="container">
             <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Core Competencies</h2>
             <p style="text-align: center; color: #b0b0b0; margin-bottom: 30px; font-size: 1.1em;">
-                Proficient in cutting-edge AI technologies and tools, with hands-on experience in production environments. Click any skill to filter projects.
+                Proficient in advanced AI technologies and tools, with practical experience in production environments. Click any skill to filter projects.
             </p>
             
             <!-- AI/ML Technologies Category -->
@@ -1746,7 +1634,7 @@
                         <img src="assets/tools/icons8-machine-learning-64.png" alt="Artificial intelligence and machine learning icon" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">AI & ML <span class="skill-proficiency">Expert</span> <span class="skill-years">(3+ years)</span></h3>
+                        <h3 class="h3">AI & ML <span class="skill-proficiency">Expert</span></h3>
                     </div>
                 </div>
                 <div class="skill-container" data-skill-filter="tensorflow" style="cursor: pointer;" title="Click to filter projects">
@@ -1799,7 +1687,7 @@
                         <img src="assets/tools/python.png" alt="Python programming language logo" class="skill-image" loading="lazy">
                     </div>
                     <div class="skill-name">
-                        <h3 class="h3">Python <span class="skill-proficiency">Expert</span> <span class="skill-years">(3+ years)</span></h3>
+                        <h3 class="h3">Python <span class="skill-proficiency">Expert</span></h3>
                     </div>
                 </div>
                 <div class="skill-container">
