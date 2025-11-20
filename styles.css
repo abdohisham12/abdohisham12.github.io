@@ -521,7 +521,7 @@ a:hover {
 .nav-bar {
     background-color: #0f222b;
     color: #ffffffc7;
-    padding: 1em 2em;
+    padding: 0.75em 2em;
     text-align: center;
     position: sticky;
     top: 0;
@@ -529,10 +529,11 @@ a:hover {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    min-height: 60px;
+    min-height: 70px;
     box-sizing: border-box;
+    gap: 20px;
 }
 
 .nav-links {
@@ -572,6 +573,47 @@ a:hover {
     color: #0092CC;
     border-bottom: 2px solid #0092CC;
     background-color: rgba(0, 146, 204, 0.1);
+}
+
+/* Header CTA Buttons */
+.nav-cv-button,
+.nav-contact-button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    font-size: 0.95em;
+}
+
+.nav-cv-button {
+    background: linear-gradient(135deg, #0092CC 0%, #007bb5 100%);
+    color: #ffffff;
+    border: 1px solid rgba(0, 180, 230, 0.3);
+    box-shadow: 0 2px 10px rgba(0, 146, 204, 0.3);
+}
+
+.nav-cv-button:hover {
+    background: linear-gradient(135deg, #00b4e6 0%, #0092CC 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 146, 204, 0.5);
+}
+
+.nav-contact-button {
+    background: rgba(0, 146, 204, 0.15);
+    color: #00b4e6;
+    border: 2px solid #0092CC;
+}
+
+.nav-contact-button:hover {
+    background: rgba(0, 146, 204, 0.25);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 146, 204, 0.3);
 }
 
 
@@ -658,9 +700,22 @@ a:hover {
 
     .nav-bar {
         padding: 0.75em 1em;
-        justify-content: flex-end;
+        justify-content: space-between;
         min-height: 56px;
-        height: 56px;
+        height: auto;
+        flex-wrap: wrap;
+    }
+    
+    /* Hide button text on mobile, show icons only */
+    .nav-cv-button .btn-text,
+    .nav-contact-button .btn-text {
+        display: none;
+    }
+    
+    .nav-cv-button,
+    .nav-contact-button {
+        padding: 10px 12px;
+        font-size: 1.1em;
     }
     
     .hamburger-menu {
