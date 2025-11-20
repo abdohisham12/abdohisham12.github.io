@@ -67,6 +67,14 @@ The site is configured for static hosting. The deployment uses:
 - All HTML, CSS, JS, and assets are served directly
 
 ## Recent Changes
+- **2025-11-20**: HR-focused improvements and mobile optimization
+  - Added email subject line options for different contact purposes (Full-Time Job, Freelancing, Meeting, Collaboration)
+  - Renamed "Quick Facts for HR" section to "Your Next AI Engineer at a Glance"
+  - Removed duplicate statistics (K+ users replaced with Azure expertise)
+  - Improved bachelor's degree card with larger fonts and concise content
+  - Enhanced mobile responsiveness maintained with 37 media queries
+  - Optimized content for HR appeal and quick scanning
+
 - **2025-01-20**: Initial Replit setup
   - Created Python HTTP server for hosting
   - Configured workflow for port 5000
