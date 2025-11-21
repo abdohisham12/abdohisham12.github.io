@@ -33,7 +33,11 @@ function initStatsCarousel() {
             item.classList.remove('active');
         });
         statItems[currentIndex].classList.add('active');
-        animateNumber(statNumbers[currentIndex]);
+        // Only animate if the stat-number has a data-target attribute (for numbers)
+        const currentStatNumber = statNumbers[currentIndex];
+        if (currentStatNumber && currentStatNumber.hasAttribute('data-target')) {
+            animateNumber(currentStatNumber);
+        }
         currentIndex = (currentIndex + 1) % statItems.length;
     }
     
@@ -125,7 +129,7 @@ function initSkillTooltips() {
     if (!skillContainers.length) return;
 
     const projectMap = {
-        'TensorFlow': 'SIRB, Ionospheric Forecasting, Microsoft Malware Detection',
+        'TensorFlow': 'SIRB, Ionospheric Forecasting',
         'Python': 'All projects - Core language for AI/ML development',
         'LLM': 'Autonomous Mission Design (RAG)',
         'LLM Technologies': 'Autonomous Mission Design (RAG)',
@@ -133,9 +137,8 @@ function initSkillTooltips() {
         'Computer': 'SIRB Project - 95%+ accuracy',
         'Computer Vision': 'SIRB Project - 95%+ accuracy',
         'PyTorch': 'Autonomous Mission Design',
-        'Microsoft': 'CDF Project - Cloud deployment',
-        'Microsoft Azure': 'CDF Project - Cloud deployment',
-        'MLflow': 'Microsoft Malware Detection - MLOps'
+        'Microsoft': 'Cloud deployment',
+        'Microsoft Azure': 'Cloud deployment'
     };
 
     const supportsHoverQuery = window.matchMedia('(hover: hover)');
@@ -1009,32 +1012,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         {
-            title: 'Space Environment Trainee',
             company: 'Egyptian Space Agency (EgSA)',
-            date: 'Aug 2024 - Sep 2024',
+            location: 'EgSA labs',
+            date: 'Jan 2024 - Sep 2024',
             logo: 'assets/logos/egsa_logo.png',
-            preview: '87% accuracy in predicting ionospheric disturbances using LSTM/GRU deep learning model',
+            preview: 'Space environment training and satellite subsystems expertise',
             responsibilities: [
                 'Develop deep learning models for space-weather prediction',
                 'Process and analyze large-scale space environment data',
                 'Implement LSTM/GRU architectures with attention mechanisms',
-                'Complete intensive training on space environment and space weather'
-            ],
-            details: {
-                achievements: [
-                    '✓ <strong>87% accuracy</strong> predicting ionospheric disturbances (LSTM/GRU)',
-                    '✓ Processed <strong>50K+ data points</strong> for space-weather models',
-                    '✓ Completed 2-week intensive training on space environment & weather'
-                ]
-            }
-        },
-        {
-            title: 'Space Keys Trainee',
-            company: 'Egyptian Space Agency (EgSA)',
-            date: 'Jan 2024 - Feb 2024',
-            logo: 'assets/logos/egsa_logo.png',
-            preview: 'Comprehensive understanding of satellite subsystems and integration procedures',
-            responsibilities: [
+                'Complete intensive training on space environment and space weather',
                 'Study satellite subsystems (power, OBC, communication, payload, ADCS, structural)',
                 'Participate in hands-on satellite integration and testing procedures',
                 'Learn end-to-end satellite development lifecycle',
@@ -1042,6 +1029,9 @@ document.addEventListener('DOMContentLoaded', () => {
             ],
             details: {
                 achievements: [
+                    '✓ <strong>87% accuracy</strong> predicting ionospheric disturbances (LSTM/GRU)',
+                    '✓ Processed <strong>50K+ data points</strong> for space-weather models',
+                    '✓ Completed 2-week intensive training on space environment & weather',
                     '✓ Mastered satellite subsystems (power, OBC, comms, payload, ADCS)',
                     '✓ Hands-on satellite integration & testing experience',
                     '✓ End-to-end satellite development lifecycle knowledge'
@@ -1051,14 +1041,15 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             title: 'IT Engineer Trainee',
             company: 'EGYPTAIR TRAINING ACADEMY',
+            location: 'Cairo Airport IT center',
             date: 'Aug 2023 - Sep 2023',
             logo: 'assets/logos/egyair_logo.png',
             preview: 'Designed and implemented secure VPN tunnel architecture and VoIP solutions',
             responsibilities: [
-                'Design and implement secure VPN tunnel architecture using Hyper-V',
-                'Develop VoIP telephone service solutions for enterprise communication',
-                'Conduct network security simulations and vulnerability assessments',
-                'Learn aviation industry systems (Jeppesen, SITA protocols)'
+                'Designed and implemented secure VPN tunnel architecture and VoIP solutions',
+                'Built secure VPN tunnels (Hyper-V) for multi-system architecture',
+                'Developed enterprise VoIP solutions',
+                'Network security simulations & vulnerability assessments (PNetLab)'
             ],
             details: {
                 achievements: [
@@ -1072,6 +1063,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             title: 'Summer Trainee',
             company: 'National Research Institute of Astronomy and Geophysics (NRIAG)',
+            location: 'NRIAG R&D centers',
             date: 'Sep 2023 - Oct 2023',
             logo: 'assets/logos/nriag_logo.png',
             preview: 'Optimized satellite performance and collaborated on AI algorithm development',
@@ -1095,6 +1087,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             title: 'Summer Trainee',
             company: 'Egyptian Chemicals Holding Company (ECHEM)',
+            location: 'ECHEM halls',
             date: 'Jul 2024 - Aug 2024',
             logo: 'assets/logos/echem_logo.png',
             preview: 'Comprehensive training in petrochemical industry operations and sustainability',
@@ -1120,9 +1113,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // Education card flip functionality
     const educationCards = document.querySelectorAll('.education-card[data-card-type="education"]');
     educationCards.forEach(card => {
-        card.addEventListener('click', function() {
-            this.classList.toggle('flipped');
-        });
+        const front = card.querySelector('.education-card-front');
+        const back = card.querySelector('.education-card-back');
+        
+        // Set initial height based on front card
+        if (front && back) {
+            const updateCardHeight = () => {
+                if (card.classList.contains('flipped')) {
+                    card.style.minHeight = back.offsetHeight + 'px';
+                } else {
+                    card.style.minHeight = front.offsetHeight + 'px';
+                }
+            };
+            
+            // Set initial height
+            updateCardHeight();
+            
+            // Update on resize
+            window.addEventListener('resize', updateCardHeight);
+            
+            card.addEventListener('click', function() {
+                this.classList.toggle('flipped');
+                // Update height after flip animation
+                setTimeout(updateCardHeight, 300);
+            });
+        } else {
+            // Fallback if structure is different
+            card.addEventListener('click', function() {
+                this.classList.toggle('flipped');
+            });
+        }
     });
 
     // Experience card flip functionality
@@ -1131,6 +1151,92 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('click', function() {
             this.classList.toggle('flipped');
         });
+    });
+
+    // Project card height adjustment on hover - smooth expansion
+    const projectCards = document.querySelectorAll('.projects .card');
+    projectCards.forEach(card => {
+        const front = card.querySelector('.card-front');
+        const back = card.querySelector('.card-back');
+        const container = card.closest('.project-container');
+        
+        if (front && back && container) {
+            // Measure heights function
+            const measureHeights = () => {
+                // Front is visible, measure directly
+                const frontHeight = front.offsetHeight;
+                
+                // For back, create a clone to measure without affecting layout
+                const backClone = back.cloneNode(true);
+                backClone.style.position = 'fixed';
+                backClone.style.visibility = 'hidden';
+                backClone.style.transform = 'rotateY(0deg)';
+                backClone.style.top = '-9999px';
+                backClone.style.left = '-9999px';
+                backClone.style.width = back.offsetWidth + 'px';
+                backClone.style.height = 'auto';
+                backClone.style.opacity = '1';
+                document.body.appendChild(backClone);
+                
+                // Force reflow
+                void backClone.offsetHeight;
+                
+                // Get the full height
+                const backHeight = backClone.offsetHeight;
+                
+                // Remove clone
+                document.body.removeChild(backClone);
+                
+                return { frontHeight, backHeight };
+            };
+            
+            // Initial measurement and setup
+            const { frontHeight, backHeight } = measureHeights();
+            card.style.height = frontHeight + 'px';
+            card.style.minHeight = frontHeight + 'px';
+            // Ensure container matches card height
+            container.style.height = frontHeight + 'px';
+            
+            // Smooth height transition on hover
+            card.addEventListener('mouseenter', function() {
+                // Re-measure to ensure accuracy
+                const heights = measureHeights();
+                // Expand card to back card height - use both height and min-height
+                card.style.height = heights.backHeight + 'px';
+                card.style.minHeight = heights.backHeight + 'px';
+                // Expand container to match - this pushes other cards down
+                container.style.height = heights.backHeight + 'px';
+            });
+            
+            // Return to front card height on mouse leave
+            card.addEventListener('mouseleave', function() {
+                // Re-measure front height
+                const heights = measureHeights();
+                // Shrink back to front card height
+                card.style.height = heights.frontHeight + 'px';
+                card.style.minHeight = heights.frontHeight + 'px';
+                // Shrink container to match
+                container.style.height = heights.frontHeight + 'px';
+            });
+            
+            // Update on resize
+            let resizeTimeout;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    const heights = measureHeights();
+                    if (!card.matches(':hover')) {
+                        card.style.height = heights.frontHeight + 'px';
+                        card.style.minHeight = heights.frontHeight + 'px';
+                        container.style.height = heights.frontHeight + 'px';
+                    } else {
+                        card.style.height = heights.backHeight + 'px';
+                        card.style.minHeight = heights.backHeight + 'px';
+                        container.style.height = heights.backHeight + 'px';
+                    }
+                }, 100);
+            });
+        }
     });
 
     // Work History Carousel
@@ -1166,23 +1272,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function buildSlide(position, index) {
-            const highlights = buildHighlights(position);
-            const highlightsHTML = highlights.length
-                ? `<ul class="work-history-slide-points">${highlights.map(point => `<li>${point}</li>`).join('')}</ul>`
-                : '';
+            const locationLabel = position.location ? `Inside ${position.location}` : `Inside ${position.company}`;
+            
+            // Show all responsibilities if available, otherwise show highlights
+            let contentHTML = '';
+            if (position.responsibilities && position.responsibilities.length > 0) {
+                contentHTML = `<ul class="work-history-slide-points">${position.responsibilities.map(point => `<li>${sanitizeText(point)}</li>`).join('')}</ul>`;
+            } else {
+                const highlights = buildHighlights(position);
+                if (highlights.length > 0) {
+                    contentHTML = `<ul class="work-history-slide-points">${highlights.map(point => `<li>${point}</li>`).join('')}</ul>`;
+                }
+            }
 
             return `
-                <article class="work-history-slide" role="group" aria-label="Inside ${position.company} slide ${index + 1} of ${workHistoryPositions.length}">
+                <article class="work-history-slide" role="group" aria-label="${locationLabel} slide ${index + 1} of ${workHistoryPositions.length}">
                     <div class="work-history-slide-media">
                         <img src="${position.logo}" alt="${position.company} logo" loading="lazy" onerror="this.style.display='none'">
                     </div>
                     <div class="work-history-slide-content">
-                        <span class="work-history-slide-label">Inside ${position.company}</span>
-                        <h4 class="work-history-slide-title">${position.title}</h4>
-                        <p class="work-history-slide-company">${position.company}</p>
-                        <p class="work-history-slide-date">${position.date}</p>
-                        <p class="work-history-slide-preview">${position.preview || ''}</p>
-                        ${highlightsHTML}
+                        <span class="work-history-slide-label">${locationLabel}</span>
+                        ${contentHTML}
                     </div>
                 </article>
             `;
@@ -1358,176 +1468,155 @@ document.addEventListener('DOMContentLoaded', () => {
         startAutoRotation();
     }
 
-    // Projects Filter Functionality
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const projectRow = document.querySelector('.project-row');
-    const projectContainers = document.querySelectorAll('.project-container');
-    const projectsSearch = document.getElementById('projects-search');
-    const projectsCountNumber = document.getElementById('projects-count-number');
-    let activeFilter = 'all'; // Default to all projects
-    let searchQuery = '';
-
-    function updateProjectsCount() {
-        const visibleCount = Array.from(projectContainers).filter(container => 
-            !container.classList.contains('filtered-out')
-        ).length;
-        if (projectsCountNumber) {
-            projectsCountNumber.textContent = visibleCount;
+    // Projects Carousel Functionality
+    function initProjectsCarousel() {
+        const carousel = document.querySelector('.projects-carousel');
+        const track = document.getElementById('projects-carousel-track');
+        const prevBtn = document.getElementById('projects-carousel-prev');
+        const nextBtn = document.getElementById('projects-carousel-next');
+        const indicatorsContainer = document.getElementById('projects-carousel-indicators');
+        
+        if (!carousel || !track) return;
+        
+        const projectContainers = track.querySelectorAll('.project-container');
+        if (projectContainers.length === 0) return;
+        
+        let currentIndex = 0;
+        let isPaused = false;
+        let autoRotationInterval = null;
+        const ROTATION_DELAY = 3000; // 3 seconds
+        
+        // Create indicators
+        function createIndicators() {
+            if (!indicatorsContainer) return;
+            indicatorsContainer.innerHTML = '';
+            projectContainers.forEach((_, index) => {
+                const indicator = document.createElement('button');
+                indicator.className = 'projects-carousel-indicator';
+                indicator.setAttribute('role', 'tab');
+                indicator.setAttribute('aria-label', `Go to project ${index + 1}`);
+                indicator.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
+                indicator.addEventListener('click', () => goToSlide(index));
+                indicatorsContainer.appendChild(indicator);
+            });
+            updateIndicators();
         }
         
-        // Update ARIA live region for screen readers
-        const ariaLiveRegion = document.getElementById('projects-aria-live');
-        if (ariaLiveRegion) {
-            ariaLiveRegion.textContent = `Showing ${visibleCount} project${visibleCount !== 1 ? 's' : ''}`;
-        }
-    }
-
-    function filterProjects(filterType, searchText = '') {
-        activeFilter = filterType;
-        searchQuery = searchText.toLowerCase();
-        
-        // Update active button state
-        filterButtons.forEach(btn => {
-            if (btn.getAttribute('data-filter') === filterType) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        });
-
-        // Separate visible and hidden projects
-        const visibleProjects = [];
-        const hiddenProjects = [];
-        
-        projectContainers.forEach(container => {
-            const projectType = container.getAttribute('data-project-type');
-            const projectTitle = container.querySelector('h3')?.textContent.toLowerCase() || '';
-            const projectDescription = container.querySelector('.p')?.textContent.toLowerCase() || '';
-            const projectText = projectTitle + ' ' + projectDescription;
-            
-            let shouldShow = false;
-            
-            // Type filter
-            if (filterType === 'all') {
-                shouldShow = true;
-            } else if (projectType === filterType) {
-                shouldShow = true;
-            }
-            
-            // Search filter
-            if (shouldShow && searchQuery) {
-                shouldShow = projectText.includes(searchQuery);
-            }
-            
-            if (shouldShow) {
-                container.classList.remove('filtered-out');
-                visibleProjects.push(container);
-            } else {
-                container.classList.add('filtered-out');
-                hiddenProjects.push(container);
-            }
-        });
-
-        // Reorder projects: visible first, then hidden
-        if (projectRow) {
-            // Add reordering class for smooth transition
-            projectRow.classList.add('reordering');
-            
-            // Use DocumentFragment for efficient DOM manipulation
-            const fragment = document.createDocumentFragment();
-            
-            // Add visible projects first
-            visibleProjects.forEach(project => {
-                fragment.appendChild(project);
-            });
-            
-            // Add hidden projects at the end
-            hiddenProjects.forEach(project => {
-                fragment.appendChild(project);
-            });
-            
-            // Clear and repopulate the container
-            projectRow.innerHTML = '';
-            projectRow.appendChild(fragment);
-            
-            // Use requestAnimationFrame to ensure smooth reflow
-            requestAnimationFrame(() => {
-                // Trigger reflow for smooth animation
-                projectRow.offsetHeight;
-                
-                // Animate visible projects in with stagger effect
-                visibleProjects.forEach((project, index) => {
-                    // Reset any inline styles first
-                    project.style.opacity = '0';
-                    project.style.transform = 'translateY(20px)';
-                    
-                    requestAnimationFrame(() => {
-                        setTimeout(() => {
-                            project.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                            project.style.opacity = '1';
-                            project.style.transform = 'translateY(0)';
-                        }, index * 30); // Stagger animation
-                    });
-                });
-                
-                // Clean up after animation completes
-                const animationDuration = visibleProjects.length * 30 + 300;
-                setTimeout(() => {
-                    projectRow.classList.remove('reordering');
-                    visibleProjects.forEach(project => {
-                        project.style.transition = '';
-                        project.style.opacity = '';
-                        project.style.transform = '';
-                    });
-                }, animationDuration);
-            });
-        }
-
-        // Update count
-        updateProjectsCount();
-        
-        // Show empty state if no projects visible
-        showEmptyStateIfNeeded(visibleProjects.length);
-    }
-
-    // Add click handlers to filter buttons
-    filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const filterType = this.getAttribute('data-filter');
-            filterProjects(filterType, searchQuery);
-        });
-    });
-
-    // Add search functionality
-    if (projectsSearch) {
-        projectsSearch.addEventListener('input', function() {
-            const searchText = this.value;
-            filterProjects(activeFilter, searchText);
-        });
-    }
-
-    // Show empty state helper function
-    function showEmptyStateIfNeeded(visibleCount) {
-        let emptyState = document.querySelector('.projects-empty-state');
-        
-        if (visibleCount === 0) {
-            if (!emptyState) {
-                emptyState = document.createElement('div');
-                emptyState.className = 'projects-empty-state';
-                emptyState.innerHTML = `
-                    <h3>No projects found</h3>
-                    <p>Try adjusting your search or filter criteria</p>
-                `;
-                if (projectRow && projectRow.parentNode) {
-                    projectRow.parentNode.insertBefore(emptyState, projectRow);
+        // Update indicators
+        function updateIndicators() {
+            const indicators = indicatorsContainer?.querySelectorAll('.projects-carousel-indicator');
+            if (!indicators) return;
+            indicators.forEach((indicator, index) => {
+                if (index === currentIndex) {
+                    indicator.classList.add('active');
+                    indicator.setAttribute('aria-selected', 'true');
+                } else {
+                    indicator.classList.remove('active');
+                    indicator.setAttribute('aria-selected', 'false');
                 }
-            }
-            emptyState.style.display = 'block';
-        } else {
-            if (emptyState) {
-                emptyState.style.display = 'none';
+            });
+        }
+        
+        // Go to specific slide
+        function goToSlide(index) {
+            if (index < 0) index = projectContainers.length - 1;
+            if (index >= projectContainers.length) index = 0;
+            
+            currentIndex = index;
+            const translateX = -currentIndex * 100;
+            track.style.transform = `translateX(${translateX}%)`;
+            updateIndicators();
+            
+            // Update ARIA live region
+            const ariaLiveRegion = document.getElementById('projects-aria-live');
+            if (ariaLiveRegion) {
+                const projectTitle = projectContainers[currentIndex].querySelector('h3')?.textContent || '';
+                ariaLiveRegion.textContent = `Showing project ${currentIndex + 1} of ${projectContainers.length}: ${projectTitle}`;
             }
         }
+        
+        // Next slide
+        function nextSlide() {
+            goToSlide(currentIndex + 1);
+        }
+        
+        // Previous slide
+        function prevSlide() {
+            goToSlide(currentIndex - 1);
+        }
+        
+        // Start auto-rotation
+        function startAutoRotation() {
+            if (isPaused || projectContainers.length <= 1) return;
+            stopAutoRotation();
+            autoRotationInterval = setInterval(nextSlide, ROTATION_DELAY);
+        }
+        
+        // Stop auto-rotation
+        function stopAutoRotation() {
+            if (autoRotationInterval) {
+                clearInterval(autoRotationInterval);
+                autoRotationInterval = null;
+            }
+        }
+        
+        // Pause on hover
+        carousel.addEventListener('mouseenter', () => {
+            isPaused = true;
+            stopAutoRotation();
+        });
+        
+        // Resume on mouse leave
+        carousel.addEventListener('mouseleave', () => {
+            isPaused = false;
+            startAutoRotation();
+        });
+        
+        // Navigation buttons
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                if (!isPaused) {
+                    stopAutoRotation();
+                    startAutoRotation();
+                }
+            });
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                if (!isPaused) {
+                    stopAutoRotation();
+                    startAutoRotation();
+                }
+            });
+        }
+        
+        // Initialize
+        createIndicators();
+        goToSlide(0);
+        
+        // Start auto-rotation after a short delay
+        setTimeout(() => {
+            startAutoRotation();
+        }, 1000);
+        
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                goToSlide(currentIndex); // Recalculate position
+            }, 100);
+        });
+    }
+    
+    // Initialize carousel when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initProjectsCarousel);
+    } else {
+        initProjectsCarousel();
     }
     
     // Image error handling - graceful fallback
