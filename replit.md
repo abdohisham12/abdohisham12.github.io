@@ -96,18 +96,12 @@ Preferred communication style: Simple, everyday language.
    - PWA meta tags for Add to Home Screen support
    - Apple-specific status bar styling (black-translucent)
 
-5. **"OPEN TO HIRE" Badge**
-   - Responsive, animated availability indicator
-   - Pulsing glow and dot animations
-   - Adapts size and layout for different screen sizes
-   - Green gradient with high visibility
-
-6. **Accessibility**
+5. **Accessibility**
    - Reduced motion support for users with vestibular disorders
    - High DPI (Retina) display optimization with font smoothing
    - Maintained keyboard navigation and focus indicators
 
-7. **Responsive Breakpoints**
+6. **Responsive Breakpoints**
    - Desktop: >1024px
    - Tablet: 769px-1024px
    - Mobile: ≤768px
