@@ -1644,7 +1644,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, true);
     
+    // Define filterProjects function for projects search/filtering
+    window.filterProjects = function(filter, searchQuery) {
+        // Projects filtering logic - can be enhanced based on needs
+        const projectContainers = document.querySelectorAll('.project-container');
+        projectContainers.forEach(container => {
+            let shouldShow = true;
+            
+            if (searchQuery) {
+                const projectText = container.textContent.toLowerCase();
+                shouldShow = projectText.includes(searchQuery.toLowerCase());
+            }
+            
+            container.style.display = shouldShow ? 'block' : 'none';
+        });
+    };
+    
     // Initialize with default filter (all projects)
+    const activeFilter = 'all';
     filterProjects(activeFilter);
     
     // Make skills clickable to filter projects
