@@ -1161,32 +1161,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = card.closest('.project-container');
         
         if (front && back && container) {
-            // Measure heights function
-            const measureHeights = () => {
-                // Front is visible, measure directly
-                const frontHeight = front.offsetHeight;
-                
-                // For back, create a clone to measure without affecting layout
-                const backClone = back.cloneNode(true);
-                backClone.style.position = 'fixed';
-                backClone.style.visibility = 'hidden';
-                backClone.style.transform = 'rotateY(0deg)';
-                backClone.style.top = '-9999px';
-                backClone.style.left = '-9999px';
-                backClone.style.width = back.offsetWidth + 'px';
-                backClone.style.height = 'auto';
-                backClone.style.opacity = '1';
-                document.body.appendChild(backClone);
+            const measureFaceHeight = (element) => {
+                const clone = element.cloneNode(true);
+                const referenceWidth = card.getBoundingClientRect().width || element.offsetWidth;
+                clone.style.position = 'fixed';
+                clone.style.visibility = 'hidden';
+                clone.style.transform = 'none';
+                clone.style.top = '-9999px';
+                clone.style.left = '-9999px';
+                clone.style.width = `${referenceWidth}px`;
+                clone.style.height = 'auto';
+                clone.style.opacity = '1';
+                clone.style.pointerEvents = 'none';
+                document.body.appendChild(clone);
                 
                 // Force reflow
-                void backClone.offsetHeight;
+                const measuredHeight = clone.scrollHeight;
                 
-                // Get the full height
-                const backHeight = backClone.offsetHeight;
-                
-                // Remove clone
-                document.body.removeChild(backClone);
-                
+                document.body.removeChild(clone);
+                return measuredHeight;
+            };
+
+            // Measure heights function
+            const measureHeights = () => {
+                const frontHeight = measureFaceHeight(front);
+                const backHeight = measureFaceHeight(back);
                 return { frontHeight, backHeight };
             };
             
@@ -1636,16 +1635,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const skillContainers = document.querySelectorAll('.skill-container[data-skill-filter]');
     skillContainers.forEach(skill => {
         skill.addEventListener('click', function() {
-            const skillFilter = this.getAttribute('data-skill-filter');
+            const skillFilter = (this.getAttribute('data-skill-filter') || '').trim();
+            const fallbackLabel = this.querySelector('.skill-name .h3')?.textContent?.trim().toLowerCase().split(' ')[0] || '';
+            const searchValue = skillFilter || fallbackLabel;
             // Scroll to projects section
             const projectsSection = document.getElementById('projects');
             if (projectsSection) {
                 projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
             // Set search query to filter by skill
-            if (projectsSearch) {
-                projectsSearch.value = skillFilter;
-                filterProjects('all', skillFilter);
+            if (projectsSearch && searchValue) {
+                projectsSearch.value = searchValue;
+                filterProjects('all', searchValue);
             }
         });
     });
