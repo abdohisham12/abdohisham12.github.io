@@ -7006,6 +7006,471 @@ button:disabled {
     border-radius: 2px;
 }
 
+/* ========================================
+   MOBILE UX ENHANCEMENTS
+   Optimized for mobile, tablet, iPhone, and PC
+   ======================================== */
+
+/* Universal Touch Target Optimization */
+@media (max-width: 1024px) {
+    /* Ensure all interactive elements meet minimum 44x44px touch target */
+    button,
+    a,
+    .btn-primary,
+    .btn-secondary,
+    .nav-links a,
+    .hamburger-menu,
+    .back-to-top,
+    .quick-nav-link,
+    .skill-badge,
+    .project-card,
+    .metric-card {
+        min-height: 44px;
+        min-width: 44px;
+        -webkit-tap-highlight-color: rgba(0, 146, 204, 0.2);
+    }
+    
+    /* Better button padding for touch */
+    .btn-primary,
+    .btn-secondary {
+        padding: 14px 24px;
+        font-size: 1rem;
+    }
+    
+    /* Improved link spacing for easier tapping */
+    .nav-links a {
+        padding: 16px 20px;
+        min-height: 52px;
+    }
+}
+
+/* Tablet Optimization (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Optimized hero section for tablets */
+    .hero {
+        padding: 100px 40px 60px;
+    }
+    
+    .hero-name {
+        font-size: 3em;
+    }
+    
+    .hero-title {
+        font-size: 2em;
+    }
+    
+    .hero-tagline {
+        font-size: 1.4em;
+    }
+    
+    /* Better grid layouts for tablets */
+    .executive-summary-grid,
+    .metrics-grid,
+    .why-hire-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+    
+    /* Touch-friendly project cards */
+    .project-card {
+        padding: 24px;
+    }
+    
+    /* Optimized navigation for tablets */
+    .nav-bar {
+        padding: 1em 2em;
+    }
+}
+
+/* Mobile & iPhone Optimization (max-width: 768px) */
+@media (max-width: 768px) {
+    /* Enhanced mobile typography */
+    html {
+        font-size: 16px; /* Ensure readable base font size */
+    }
+    
+    /* Mobile-optimized hero section */
+    .hero {
+        padding: 80px 20px 40px;
+        min-height: auto;
+    }
+    
+    .hero-name {
+        font-size: 2.2em;
+        line-height: 1.2;
+        margin-bottom: 12px;
+    }
+    
+    .hero-title {
+        font-size: 1.6em;
+        line-height: 1.3;
+    }
+    
+    .hero-tagline {
+        font-size: 1.15em;
+        line-height: 1.4;
+        padding: 0 10px;
+    }
+    
+    .hero-description {
+        font-size: 1em;
+        line-height: 1.7;
+        padding: 0 10px;
+    }
+    
+    /* Mobile-optimized skill badges */
+    .hero-skill-badges {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        padding: 12px;
+    }
+    
+    .skill-badge {
+        font-size: 0.9em;
+        padding: 10px 16px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+    
+    /* Better button sizing for mobile */
+    .nav-cv-button,
+    .nav-contact-button {
+        min-height: 48px;
+        min-width: 48px;
+        padding: 12px;
+        font-size: 1.2em;
+    }
+    
+    /* Mobile-optimized sections */
+    section {
+        padding: 40px 20px;
+    }
+    
+    .container {
+        padding: 0 16px;
+    }
+    
+    /* Mobile-friendly cards */
+    .executive-summary-card,
+    .metric-card,
+    .why-hire-card,
+    .project-card,
+    .job,
+    .degree-card {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    /* Better headings on mobile */
+    h2 {
+        font-size: 2em;
+        line-height: 1.3;
+        margin-bottom: 20px;
+    }
+    
+    h3 {
+        font-size: 1.5em;
+        line-height: 1.3;
+    }
+    
+    /* Mobile-optimized metrics */
+    .metric-value {
+        font-size: 2.5em;
+    }
+    
+    .metric-label {
+        font-size: 1em;
+    }
+    
+    /* Better spacing for mobile grids */
+    .executive-summary-grid,
+    .metrics-grid,
+    .why-hire-grid,
+    .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    /* Improved profile picture */
+    .profile-picture-wrapper {
+        width: 140px;
+        height: 140px;
+    }
+    
+    /* Mobile-friendly footer */
+    footer {
+        padding: 30px 20px;
+        font-size: 0.95em;
+    }
+}
+
+/* Small Mobile Phones (max-width: 480px) */
+@media (max-width: 480px) {
+    /* Extra small font adjustments */
+    .hero-name {
+        font-size: 1.8em;
+    }
+    
+    .hero-title {
+        font-size: 1.3em;
+    }
+    
+    .hero-tagline {
+        font-size: 1em;
+    }
+    
+    .hero-description {
+        font-size: 0.95em;
+    }
+    
+    /* Smaller skill badges for very small screens */
+    .skill-badge {
+        font-size: 0.85em;
+        padding: 8px 12px;
+    }
+    
+    /* Compact metrics */
+    .metric-value {
+        font-size: 2em;
+    }
+    
+    /* Smaller section headings */
+    h2 {
+        font-size: 1.7em;
+    }
+    
+    h3 {
+        font-size: 1.3em;
+    }
+    
+    /* Compact navigation */
+    .nav-bar {
+        padding: 0.5em 0.75em;
+    }
+}
+
+/* iPhone-Specific Optimizations (Safe Areas) */
+@supports (padding: max(0px)) {
+    .nav-bar {
+        padding-left: max(1em, env(safe-area-inset-left));
+        padding-right: max(1em, env(safe-area-inset-right));
+    }
+    
+    .hero {
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+    }
+    
+    .nav-links {
+        padding-left: max(0px, env(safe-area-inset-left));
+        padding-right: max(0px, env(safe-area-inset-right));
+    }
+    
+    .fixed-cta-buttons {
+        bottom: max(20px, env(safe-area-inset-bottom));
+        right: max(20px, env(safe-area-inset-right));
+    }
+    
+    .back-to-top {
+        bottom: max(30px, env(safe-area-inset-bottom));
+        right: max(30px, env(safe-area-inset-right));
+    }
+}
+
+/* Tap Feedback for Better Mobile UX */
+@media (max-width: 1024px) {
+    /* Active state feedback for touch */
+    button:active,
+    .btn-primary:active,
+    .btn-secondary:active,
+    a:active,
+    .nav-links a:active,
+    .skill-badge:active,
+    .project-card:active {
+        transform: scale(0.97);
+        opacity: 0.9;
+        transition: transform 0.1s ease, opacity 0.1s ease;
+    }
+    
+    /* Smooth scrolling optimization for mobile */
+    html {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Prevent text selection on repeated taps */
+    .btn-primary,
+    .btn-secondary,
+    .nav-links a,
+    .hamburger-menu,
+    .skill-badge {
+        -webkit-user-select: none;
+        user-select: none;
+    }
+}
+
+/* "OPEN TO HIRE" Badge - Mobile Responsive */
+.availability-badge-container {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.availability-badge {
+    background: linear-gradient(135deg, #00ff00 0%, #00dd00 100%);
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 0.95em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.availability-badge::before {
+    content: '●';
+    font-size: 1.2em;
+    animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+.availability-text {
+    color: #0092CC;
+    font-weight: 600;
+    font-size: 1em;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 25px rgba(0, 255, 0, 0.5);
+    }
+}
+
+@keyframes pulse-dot {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* Mobile Optimization for Availability Badge */
+@media (max-width: 768px) {
+    .availability-badge-container {
+        flex-direction: column;
+        gap: 8px;
+        margin: 16px 0;
+    }
+    
+    .availability-badge {
+        font-size: 0.9em;
+        padding: 10px 18px;
+        min-height: 44px;
+    }
+    
+    .availability-text {
+        font-size: 0.95em;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .availability-badge {
+        font-size: 0.85em;
+        padding: 8px 16px;
+    }
+    
+    .availability-text {
+        font-size: 0.9em;
+    }
+}
+
+/* Landscape Mobile Optimization */
+@media (max-width: 896px) and (orientation: landscape) {
+    .hero {
+        min-height: auto;
+        padding: 60px 30px 40px;
+    }
+    
+    .hero-name {
+        font-size: 2em;
+    }
+    
+    .hero-title {
+        font-size: 1.4em;
+    }
+    
+    .profile-picture-wrapper {
+        width: 100px;
+        height: 100px;
+    }
+    
+    /* Compact stats in landscape */
+    .hero-stats-carousel {
+        gap: 12px;
+    }
+    
+    .stat-item {
+        padding: 10px 16px;
+    }
+    
+    /* Compact availability badge in landscape */
+    .availability-badge-container {
+        flex-direction: row;
+        gap: 8px;
+        margin: 12px 0;
+    }
+    
+    .availability-badge {
+        font-size: 0.8em;
+        padding: 6px 12px;
+    }
+}
+
+/* High DPI Displays (Retina) */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Sharper borders and shadows */
+    .nav-bar,
+    .btn-primary,
+    .btn-secondary,
+    .project-card,
+    .metric-card {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* Reduced Motion Support (Accessibility) */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Dark Mode Support (Future-proofing) */
+@media (prefers-color-scheme: dark) {
+    /* Already dark by default, but ensure consistency */
+    body {
+        background-color: #09151a;
+    }
+}
+
 /* Print Styles */
 @media print {
     .quick-nav-sidebar,
