@@ -2758,6 +2758,28 @@ a:hover {
     max-width: 100%;
 }
 
+@media (max-width: 768px) {
+    .education {
+        padding: 40px 20px;
+        padding-left: 20px;
+        margin: 0;
+    }
+    
+    .education .container {
+        padding: 0;
+    }
+    
+    .academic-excellence-banner {
+        margin: 25px 0 35px;
+        padding: 25px 20px;
+    }
+    
+    .certifications-showcase {
+        margin: 30px 0;
+        padding: 40px 20px;
+    }
+}
+
 .education h2 {
     text-align: start;
     margin-bottom: 20px;
@@ -5655,6 +5677,26 @@ p {
 .experience-card-back {
     transform: rotateY(180deg);
     overflow: visible;
+}
+
+@media (max-width: 768px) {
+    .current-positions-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+        padding: 0 5%;
+        gap: 25px;
+    }
+    
+    .experience-card {
+        min-height: auto;
+        height: auto;
+    }
+    
+    .experience-card-front,
+    .experience-card-back {
+        min-height: auto;
+        padding: 25px;
+    }
 }
 
 .experience-card-header {

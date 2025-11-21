@@ -1148,8 +1148,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Experience card flip functionality
     const experienceCards = document.querySelectorAll('.experience-card[data-card-type="experience"]');
     experienceCards.forEach(card => {
+        const front = card.querySelector('.experience-card-front');
+        const back = card.querySelector('.experience-card-back');
+
+        const updateCardHeight = () => {
+            if (!front || !back) return;
+            const targetHeight = card.classList.contains('flipped')
+                ? back.offsetHeight
+                : front.offsetHeight;
+            card.style.minHeight = `${targetHeight}px`;
+            card.style.height = `${targetHeight}px`;
+        };
+
+        updateCardHeight();
+        window.addEventListener('resize', updateCardHeight);
+
         card.addEventListener('click', function() {
             this.classList.toggle('flipped');
+            setTimeout(updateCardHeight, 300);
         });
     });
 
