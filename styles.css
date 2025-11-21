@@ -3537,14 +3537,14 @@ p {
     align-items: stretch;
     transform: rotateY(180deg);
     border-radius: 16px;
-    overflow: visible;
+    overflow: hidden;
     padding: 20px;
     box-sizing: border-box;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
     min-height: 100%;
 }
 
@@ -3560,8 +3560,9 @@ p {
     padding: 10px 20px 20px;
     box-sizing: border-box;
     color: #ffffff;
-    min-height: 100%;
     flex: 1;
+    overflow-y: auto;
+    max-height: 100%;
 }
 
 .card-items .p {
