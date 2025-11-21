@@ -69,12 +69,58 @@ Preferred communication style: Simple, everyday language.
 3. **Smooth Scrolling**: Native CSS `scroll-behavior: smooth` for navigation
 4. **Overflow Control**: Prevents horizontal scrolling issues on mobile devices
 
+### Mobile UX Enhancements (Nov 2025)
+
+**Comprehensive responsive design optimizations for mobile, tablet, iPhone, and PC:**
+
+1. **Touch Target Optimization**
+   - All interactive elements (buttons, links, navigation) meet minimum 44x44px touch target
+   - Enhanced tap feedback with scale and opacity transitions
+   - Tap highlight colors for visual feedback on touch
+
+2. **Responsive Typography**
+   - Desktop (>1024px): Large, impactful font sizes
+   - Tablet (769px-1024px): Medium-sized fonts with 2-column grids
+   - Mobile (≤768px): Readable font sizes optimized for smaller screens
+   - Small phones (≤480px): Compact typography without losing readability
+
+3. **Mobile-Specific Enhancements**
+   - Smooth scrolling with `-webkit-overflow-scrolling: touch`
+   - Prevented text selection on buttons and interactive elements
+   - Active state feedback (scale 0.97, opacity 0.9) for tactile response
+   - Landscape orientation optimization for horizontal viewing
+
+4. **iPhone-Specific Support**
+   - Safe area insets for notched devices (iPhone X and newer)
+   - `viewport-fit=cover` for edge-to-edge display
+   - PWA meta tags for Add to Home Screen support
+   - Apple-specific status bar styling (black-translucent)
+
+5. **"OPEN TO HIRE" Badge**
+   - Responsive, animated availability indicator
+   - Pulsing glow and dot animations
+   - Adapts size and layout for different screen sizes
+   - Green gradient with high visibility
+
+6. **Accessibility**
+   - Reduced motion support for users with vestibular disorders
+   - High DPI (Retina) display optimization with font smoothing
+   - Maintained keyboard navigation and focus indicators
+
+7. **Responsive Breakpoints**
+   - Desktop: >1024px
+   - Tablet: 769px-1024px
+   - Mobile: ≤768px
+   - Small phones: ≤480px
+   - Landscape mobile: ≤896px landscape orientation
+
 ### Browser Compatibility
 
 - Modern browser focus (ES6+ JavaScript)
 - CSS Grid and Flexbox for layouts
 - Custom properties (CSS variables) for theming
 - No legacy browser polyfills (targets modern browsers)
+- Full support for iOS Safari, Chrome Mobile, and Android browsers
 
 ## External Dependencies
 
