@@ -3530,7 +3530,7 @@ p {
     color: #ffffff;
     display: flex;
     justify-content: flex-start;
-    align-items: stretch;
+    align-items: flex-start;
     transform: rotateY(180deg);
     border-radius: 16px;
     overflow: visible;
@@ -3540,8 +3540,8 @@ p {
     top: 0;
     left: 0;
     width: 100%;
-    min-height: 100%;
     height: auto;
+    min-height: auto;
 }
 
 .card-back * {
@@ -3556,7 +3556,7 @@ p {
     padding: 10px 20px 20px;
     box-sizing: border-box;
     color: #ffffff;
-    flex: 1;
+    flex: 0 1 auto;
 }
 
 .card-items .p {
@@ -3850,7 +3850,7 @@ p {
     gap: 18px;
     margin-bottom: 10px;
     width: 100%;
-    flex: 1;
+    flex: 0 1 auto;
 }
 
 .framework-item {
