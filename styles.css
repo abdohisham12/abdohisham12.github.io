@@ -451,27 +451,50 @@ body {
     
     .card {
         height: auto;
-        transform: none !important;
         display: flex;
         flex-direction: column;
     }
     
-    .card:hover {
+    /* On mobile, disable 3D flip transform but keep structure for desktop */
+    .card:not(.flipped) {
         transform: none !important;
     }
     
-    .card-front {
+    .card.flipped {
+        /* Allow flip on mobile too, but ensure it works */
+        transform: rotateY(180deg) !important;
+    }
+    
+    .card:hover:not(.flipped) {
+        transform: none !important;
+    }
+    
+    /* On mobile, stack cards vertically when not flipped */
+    .card:not(.flipped) .card-front {
         transform: rotateY(0deg);
         position: relative;
         margin-bottom: 20px;
     }
     
-    .card-back {
+    .card:not(.flipped) .card-back {
         position: relative;
         transform: rotateY(0deg);
         backface-visibility: visible;
         display: block;
         opacity: 1;
+    }
+    
+    /* When flipped on mobile, maintain 3D structure */
+    .card.flipped .card-front {
+        position: absolute;
+        transform: rotateY(0deg);
+        backface-visibility: hidden;
+    }
+    
+    .card.flipped .card-back {
+        position: absolute;
+        transform: rotateY(180deg);
+        backface-visibility: hidden;
     }
     
     .projects .project-container ul {
@@ -3387,6 +3410,7 @@ p {
     justify-content: center;
     flex: 0 0 100%;
     padding-bottom: 8px;
+    perspective: 1000px;
 }
 
 
@@ -3396,6 +3420,7 @@ p {
     height: 520px;
     position: relative;
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
     transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.8s ease;
     border-radius: 20px;
     border: 2px solid rgba(0, 146, 204, 0.35);
@@ -3414,10 +3439,49 @@ p {
 }
 
 /* Card flip on hover for simple slider */
-.projects-carousel-track .project-container:hover .card {
+.projects-carousel-track .project-container:hover .card:not(.flipped) {
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
     box-shadow: 0 20px 60px rgba(0, 146, 204, 0.4), 0 0 40px rgba(0, 146, 204, 0.2);
     border-color: #00b4e6;
+}
+
+.projects-carousel-track .project-container:hover .card:not(.flipped) .card-front {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.projects-carousel-track .project-container:hover .card:not(.flipped) .card-back {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+    z-index: 3;
+}
+
+/* Card flip on click - flipped state */
+.projects-carousel-track .project-container .card.flipped {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    box-shadow: 0 20px 60px rgba(0, 146, 204, 0.4), 0 0 40px rgba(0, 146, 204, 0.2);
+    border-color: #00b4e6;
+}
+
+.projects-carousel-track .project-container .card.flipped .card-front {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.projects-carousel-track .project-container .card.flipped .card-back {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+    z-index: 3;
 }
 
 .project-container {
@@ -3443,11 +3507,22 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    transition: transform 0.6s ease, opacity 0.3s ease;
+    transition: transform 0.6s ease, opacity 0.6s ease, visibility 0.6s ease;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     border-radius: 16px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+}
+
+.card-front {
+    opacity: 1;
+    visibility: visible;
+}
+
+.card-back {
+    opacity: 0;
+    visibility: hidden;
 }
 
 .card-front {
@@ -3460,10 +3535,18 @@ p {
     padding: clamp(16px, 2vw, 28px);
     gap: clamp(12px, 2vw, 18px);
     transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
+    z-index: 2;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
 }
 
 .card-front * {
     pointer-events: auto;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
 }
 
 .project-media {
@@ -3533,10 +3616,18 @@ p {
     overflow: auto;
     padding: 20px;
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    z-index: 2;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
 }
 
 .card-back * {
     pointer-events: auto;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
 }
 
 .card-items {

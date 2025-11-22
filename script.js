@@ -1538,7 +1538,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const card = container.querySelector('.card');
                 if (card) {
                     card.classList.remove('flipped');
-                    card.style.transform = 'rotateY(0deg)';
                 }
             });
         }
@@ -1554,14 +1553,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             return;
                         }
                         
-                        // Toggle flip state
-                        if (card.classList.contains('flipped')) {
-                            card.classList.remove('flipped');
-                            card.style.transform = 'rotateY(0deg)';
-                        } else {
-                            card.classList.add('flipped');
-                            card.style.transform = 'rotateY(180deg)';
-                        }
+                        // Toggle flip state - CSS handles the transform
+                        card.classList.toggle('flipped');
                     });
                 }
             });
