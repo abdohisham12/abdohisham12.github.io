@@ -3393,7 +3393,7 @@ p {
 .card {
     width: 100%;
     max-width: 1040px;
-    min-height: 360px;
+    min-height: auto;
     height: auto;
     position: relative;
     transform-style: preserve-3d;
@@ -3481,7 +3481,7 @@ p {
     display: flex;
     flex-direction: column;
     gap: clamp(10px, 2vw, 18px);
-    flex: 1;
+    flex: 0 1 auto;
     padding: 0 clamp(4px, 1vw, 12px) clamp(4px, 1vw, 12px);
 }
 
