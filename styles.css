@@ -3459,6 +3459,7 @@ p {
     flex-direction: column;
     padding: clamp(16px, 2vw, 28px);
     gap: clamp(12px, 2vw, 18px);
+    transform: rotateY(0deg);
 }
 
 .card-front * {
@@ -3531,6 +3532,7 @@ p {
     border-radius: 16px;
     overflow: auto;
     padding: 20px;
+    transform: rotateY(180deg);
 }
 
 .card-back * {
