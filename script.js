@@ -1532,10 +1532,23 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
+        // Reset all card flips to front state
+        function resetCardFlips() {
+            projectContainers.forEach(container => {
+                const card = container.querySelector('.card');
+                if (card) {
+                    card.style.transform = 'rotateY(0deg)';
+                }
+            });
+        }
+        
         // Go to specific slide
         function goToSlide(index) {
             if (index < 0) index = projectContainers.length - 1;
             if (index >= projectContainers.length) index = 0;
+            
+            // Reset all cards to front state before sliding
+            resetCardFlips();
             
             currentIndex = index;
             const translateX = -currentIndex * 100;
