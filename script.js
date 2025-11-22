@@ -1169,91 +1169,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Project card height adjustment on hover - smooth expansion
-    const projectCards = document.querySelectorAll('.projects .card');
-    projectCards.forEach(card => {
-        const front = card.querySelector('.card-front');
-        const back = card.querySelector('.card-back');
-        const container = card.closest('.project-container');
-        
-        if (front && back && container) {
-            const measureFaceHeight = (element) => {
-                const clone = element.cloneNode(true);
-                const referenceWidth = card.getBoundingClientRect().width || element.offsetWidth;
-                clone.style.position = 'fixed';
-                clone.style.visibility = 'hidden';
-                clone.style.transform = 'none';
-                clone.style.top = '-9999px';
-                clone.style.left = '-9999px';
-                clone.style.width = `${referenceWidth}px`;
-                clone.style.height = 'auto';
-                clone.style.opacity = '1';
-                clone.style.pointerEvents = 'none';
-                document.body.appendChild(clone);
-                
-                // Force reflow
-                const measuredHeight = clone.scrollHeight;
-                
-                document.body.removeChild(clone);
-                return measuredHeight;
-            };
-
-            // Measure heights function
-            const measureHeights = () => {
-                const frontHeight = measureFaceHeight(front);
-                const backHeight = measureFaceHeight(back);
-                return { frontHeight, backHeight };
-            };
-            
-            // Initial measurement and setup
-            const { frontHeight, backHeight } = measureHeights();
-            card.style.height = frontHeight + 'px';
-            card.style.minHeight = frontHeight + 'px';
-            // Ensure container matches card height
-            container.style.height = frontHeight + 'px';
-            
-            // Smooth height transition on hover
-            card.addEventListener('mouseenter', function() {
-                // Re-measure to ensure accuracy
-                const heights = measureHeights();
-                // Expand card to back card height - use both height and min-height
-                card.style.height = heights.backHeight + 'px';
-                card.style.minHeight = heights.backHeight + 'px';
-                // Expand container to match - this pushes other cards down
-                container.style.height = heights.backHeight + 'px';
-            });
-            
-            // Return to front card height on mouse leave
-            card.addEventListener('mouseleave', function() {
-                // Re-measure front height
-                const heights = measureHeights();
-                // Shrink back to front card height
-                card.style.height = heights.frontHeight + 'px';
-                card.style.minHeight = heights.frontHeight + 'px';
-                // Shrink container to match
-                container.style.height = heights.frontHeight + 'px';
-            });
-            
-            // Update on resize
-            let resizeTimeout;
-            window.addEventListener('resize', function() {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
-                    const heights = measureHeights();
-                    if (!card.matches(':hover')) {
-                        card.style.height = heights.frontHeight + 'px';
-                        card.style.minHeight = heights.frontHeight + 'px';
-                        container.style.height = heights.frontHeight + 'px';
-                    } else {
-                        card.style.height = heights.backHeight + 'px';
-                        card.style.minHeight = heights.backHeight + 'px';
-                        container.style.height = heights.backHeight + 'px';
-                    }
-                }, 100);
-            });
-        }
-    });
-
     // Work History Carousel
     const workHistoryTrack = document.getElementById('work-history-track');
     const prevWorkHistoryBtn = document.getElementById('work-history-prev');
@@ -1546,17 +1461,135 @@ document.addEventListener('DOMContentLoaded', () => {
         function initCardFlipListeners() {
             projectContainers.forEach(container => {
                 const card = container.querySelector('.card');
-                if (card) {
-                    card.addEventListener('click', (e) => {
-                        // Don't flip if clicking on buttons or links
-                        if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.closest('a')) {
-                            return;
+                if (!card) return;
+                
+                const front = card.querySelector('.card-front');
+                const back = card.querySelector('.card-back');
+                
+                if (!front || !back) return;
+                
+                // Function to measure element height by temporarily cloning it with proper styles
+                const measureElementHeight = (element) => {
+                    // Get computed styles from original element
+                    const computedStyle = window.getComputedStyle(element);
+                    const cardWidth = card.getBoundingClientRect().width;
+                    
+                    // Clone the element
+                    const clone = element.cloneNode(true);
+                    
+                    // Create a wrapper to position off-screen while keeping clone in normal flow
+                    const wrapper = document.createElement('div');
+                    wrapper.style.cssText = `
+                        position: fixed !important;
+                        top: -9999px !important;
+                        left: -9999px !important;
+                        width: ${cardWidth}px !important;
+                        visibility: hidden !important;
+                        pointer-events: none !important;
+                    `;
+                    
+                    // Set up clone for measurement - use static positioning to allow natural height
+                    clone.style.cssText = `
+                        position: static !important;
+                        visibility: visible !important;
+                        width: 100% !important;
+                        height: auto !important;
+                        max-height: none !important;
+                        min-height: auto !important;
+                        overflow: visible !important;
+                        opacity: 1 !important;
+                        transform: none !important;
+                        margin: 0 !important;
+                        padding: ${computedStyle.paddingTop} ${computedStyle.paddingRight} ${computedStyle.paddingBottom} ${computedStyle.paddingLeft} !important;
+                        box-sizing: ${computedStyle.boxSizing} !important;
+                        display: ${computedStyle.display} !important;
+                        flex-direction: ${computedStyle.flexDirection} !important;
+                        gap: ${computedStyle.gap} !important;
+                    `;
+                    
+                    // Add clone to wrapper, then wrapper to DOM
+                    wrapper.appendChild(clone);
+                    document.body.appendChild(wrapper);
+                    
+                    // Force reflow to ensure accurate measurement
+                    void clone.offsetHeight;
+                    
+                    // Measure the actual content height
+                    const height = clone.scrollHeight;
+                    
+                    // Remove wrapper (which contains clone)
+                    document.body.removeChild(wrapper);
+                    
+                    return height;
+                };
+                
+                // Function to measure and update card height based on visible side
+                const updateCardHeight = () => {
+                    try {
+                        // Ensure card has a valid width before measuring
+                        if (card.offsetWidth === 0) {
+                            return; // Card not visible yet
                         }
                         
-                        // Toggle flip state - CSS handles the transform
-                        card.classList.toggle('flipped');
-                    });
-                }
+                        // Measure both sides
+                        const frontHeight = measureElementHeight(front);
+                        const backHeight = measureElementHeight(back);
+                        
+                        // Ensure we have valid measurements (at least 200px, reasonable max of 2000px)
+                        const validFrontHeight = Math.max(200, Math.min(2000, frontHeight));
+                        const validBackHeight = Math.max(200, Math.min(2000, backHeight));
+                        
+                        // Set card height based on which side is visible
+                        const isFlipped = card.classList.contains('flipped');
+                        const targetHeight = isFlipped ? validBackHeight : validFrontHeight;
+                        
+                        // Only update if the height is different to avoid unnecessary reflows
+                        const currentHeight = parseInt(card.style.height) || card.offsetHeight;
+                        if (Math.abs(currentHeight - targetHeight) > 5) {
+                            card.style.height = `${targetHeight}px`;
+                            card.style.minHeight = `${targetHeight}px`;
+                        }
+                    } catch (error) {
+                        console.warn('Error updating card height:', error);
+                        // Fallback to default height if measurement fails
+                        if (!card.style.height) {
+                            card.style.height = '520px';
+                            card.style.minHeight = '520px';
+                        }
+                    }
+                };
+                
+                // Set initial height after content is loaded
+                // Use requestAnimationFrame to ensure DOM is ready
+                requestAnimationFrame(() => {
+                    setTimeout(updateCardHeight, 200);
+                });
+                
+                // Update on window resize with debouncing
+                let resizeTimeout;
+                const handleResize = () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        requestAnimationFrame(updateCardHeight);
+                    }, 150);
+                };
+                window.addEventListener('resize', handleResize);
+                
+                // Add click listener with height update
+                card.addEventListener('click', (e) => {
+                    // Don't flip if clicking on buttons or links
+                    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.closest('a')) {
+                        return;
+                    }
+                    
+                    // Toggle flip state - CSS handles the transform
+                    card.classList.toggle('flipped');
+                    
+                    // Update height after flip animation completes (800ms for transform + buffer)
+                    setTimeout(() => {
+                        requestAnimationFrame(updateCardHeight);
+                    }, 850);
+                });
             });
         }
         
