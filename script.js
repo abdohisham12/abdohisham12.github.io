@@ -1537,7 +1537,32 @@ document.addEventListener('DOMContentLoaded', () => {
             projectContainers.forEach(container => {
                 const card = container.querySelector('.card');
                 if (card) {
+                    card.classList.remove('flipped');
                     card.style.transform = 'rotateY(0deg)';
+                }
+            });
+        }
+        
+        // Add click-to-flip functionality to cards
+        function initCardFlipListeners() {
+            projectContainers.forEach(container => {
+                const card = container.querySelector('.card');
+                if (card) {
+                    card.addEventListener('click', (e) => {
+                        // Don't flip if clicking on buttons or links
+                        if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.closest('a')) {
+                            return;
+                        }
+                        
+                        // Toggle flip state
+                        if (card.classList.contains('flipped')) {
+                            card.classList.remove('flipped');
+                            card.style.transform = 'rotateY(0deg)';
+                        } else {
+                            card.classList.add('flipped');
+                            card.style.transform = 'rotateY(180deg)';
+                        }
+                    });
                 }
             });
         }
@@ -1623,6 +1648,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Initialize
         createIndicators();
+        initCardFlipListeners();
         goToSlide(0);
         
         // Start auto-rotation after a short delay
