@@ -3454,7 +3454,6 @@ p {
     background-color: #09151a;
     color: #ffffff;
     border-radius: 16px;
-    transform: rotateY(0deg);
     overflow: auto;
     display: flex;
     flex-direction: column;
@@ -3529,7 +3528,6 @@ p {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    transform: rotateY(180deg);
     border-radius: 16px;
     overflow: auto;
     padding: 20px;
