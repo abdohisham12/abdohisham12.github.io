@@ -1685,28 +1685,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Mark as transitioning
                     isTransitioning = true;
                     
-                    // Update height after flip animation completes
-                    // Transition is 0.6s (600ms), wait for it to complete plus a buffer
-                    // Use longer delay to ensure all CSS transitions and reflows are complete
+                    // Update height immediately when flip starts (not after it completes)
+                    // Use minimal delay (50ms) to allow DOM to settle, then start height adjustment
+                    // This synchronizes the height transition (0.6s) with the flip animation (0.6s)
                     setTimeout(() => {
                         // Double-check the flip state hasn't changed
                         if (card.classList.contains('flipped') === isFlipped) {
                             requestAnimationFrame(() => {
-                                // Wait one more frame to ensure DOM is stable
-                                requestAnimationFrame(() => {
-                                    // Only update if not transitioning (safety check)
-                                    if (!isTransitioning || card.classList.contains('flipped') === isFlipped) {
-                                        updateCardHeight();
-                                    }
-                                    // Clear transitioning flag
+                                // Update height immediately - this will animate simultaneously with flip
+                                if (!isTransitioning || card.classList.contains('flipped') === isFlipped) {
+                                    updateCardHeight();
+                                }
+                                // Clear transitioning flag after height update starts
+                                // Height transition will complete at same time as flip (both 0.6s)
+                                setTimeout(() => {
                                     isTransitioning = false;
-                                });
+                                }, 50);
                             });
                         } else {
                             // State changed, clear flag
                             isTransitioning = false;
                         }
-                    }, 700);
+                    }, 50);
                 });
             });
         }

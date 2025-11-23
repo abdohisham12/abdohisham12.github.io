@@ -590,6 +590,17 @@ body {
     .projects-carousel-track .project-container .card.flipped .card-back .card-items {
         transform: scaleX(-1) !important;
         -webkit-transform: scaleX(-1) !important;
+        /* Smooth transition synchronized with flip animation (0.6s) */
+        transition: transform 0.6s ease 0s !important;
+        -webkit-transition: -webkit-transform 0.6s ease 0s !important;
+    }
+    
+    /* Ensure card-items has no transform when not flipped */
+    .projects-carousel-track .project-container .card:not(.flipped) .card-back .card-items {
+        transform: scaleX(1) !important;
+        -webkit-transform: scaleX(1) !important;
+        transition: transform 0.6s ease 0s !important;
+        -webkit-transition: -webkit-transform 0.6s ease 0s !important;
     }
     
     /* Ensure card-front also has synchronized transitions when not flipped */
@@ -3599,7 +3610,7 @@ p {
     position: relative;
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.8s ease, height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.6s ease, height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 20px;
     border: 2px solid rgba(0, 146, 204, 0.35);
     box-shadow: 0 8px 30px rgba(0, 146, 204, 0.18);
