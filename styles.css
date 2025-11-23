@@ -453,15 +453,19 @@ body {
         height: auto;
         display: flex;
         flex-direction: column;
+        min-height: 420px;
+        overflow: visible !important;
     }
     
     /* On mobile, disable 3D flip transform but keep structure for desktop */
+    /* Note: Project cards have their own specific rules with higher specificity below */
     .card:not(.flipped) {
         transform: none !important;
     }
     
     .card.flipped {
         /* Allow flip on mobile too, but ensure it works */
+        /* Project cards override this with more specific selectors */
         transform: rotateY(180deg) !important;
     }
     
@@ -469,32 +473,128 @@ body {
         transform: none !important;
     }
     
-    /* On mobile, stack cards vertically when not flipped */
-    .card:not(.flipped) .card-front {
-        transform: rotateY(0deg);
-        position: relative;
-        margin-bottom: 20px;
+    /* Override base .card-back rule (line 3772-3786) for mobile project cards to prevent transform conflicts */
+    /* This rule applies to ALL project card-backs on mobile, ensuring base rule never interferes */
+    .projects-carousel-track .project-container .card .card-back {
+        /* IMPORTANT: Start card-back at 0deg (not 180deg) to prevent reversed appearance when flipped */
+        /* When card is at 0deg: card-back at 0deg = hidden (via opacity)
+           When card is at 180deg: card-back at 0deg = visible and correct orientation */
+        transform: rotateY(0deg) !important;
+        -webkit-transform: rotateY(0deg) !important;
+        /* Override base opacity/visibility immediately */
+        opacity: 0 !important;
+        visibility: hidden !important;
+        backface-visibility: hidden !important;
+        -webkit-backface-visibility: hidden !important;
     }
     
-    .card:not(.flipped) .card-back {
-        position: relative;
-        transform: rotateY(0deg);
-        backface-visibility: visible;
-        display: block;
-        opacity: 1;
+    /* On mobile, use proper 3D flip structure - both sides absolute positioned */
+    .projects-carousel-track .project-container .card:not(.flipped) .card-front {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        transform: rotateY(0deg) !important;
+        -webkit-transform: rotateY(0deg) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        backface-visibility: hidden !important;
+        -webkit-backface-visibility: hidden !important;
+        z-index: 2 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: visible !important;
+        transition: transform 0.6s ease 0s, opacity 0.6s ease 0s, visibility 0.6s ease 0s !important;
+    }
+    
+    /* Ensure card height matches front content on mobile */
+    .projects-carousel-track .project-container .card:not(.flipped) {
+        overflow: visible !important;
+        transform: none !important;
+        -webkit-transform: none !important;
+    }
+    
+    .projects-carousel-track .project-container .card:not(.flipped) .card-back {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        /* Keep card-back at 0deg when not flipped (matches global override above) */
+        transform: rotateY(0deg) !important;
+        -webkit-transform: rotateY(0deg) !important;
+        /* Override base .card-back opacity/visibility rules (line 3683-3684) immediately */
+        opacity: 0 !important;
+        visibility: hidden !important;
+        backface-visibility: hidden !important;
+        -webkit-backface-visibility: hidden !important;
+        z-index: 1 !important;
+        transition: opacity 0.6s ease 0s, visibility 0.6s ease 0s !important;
     }
     
     /* When flipped on mobile, maintain 3D structure */
-    .card.flipped .card-front {
-        position: absolute;
-        transform: rotateY(0deg);
-        backface-visibility: hidden;
+    .projects-carousel-track .project-container .card.flipped {
+        transform: rotateY(180deg) !important;
+        -webkit-transform: rotateY(180deg) !important;
+        overflow: visible !important;
     }
     
-    .card.flipped .card-back {
-        position: absolute;
-        transform: rotateY(180deg);
-        backface-visibility: hidden;
+    .projects-carousel-track .project-container .card.flipped .card-front {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        transform: rotateY(0deg) !important;
+        -webkit-transform: rotateY(0deg) !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        backface-visibility: hidden !important;
+        -webkit-backface-visibility: hidden !important;
+        z-index: 1 !important;
+        transition: transform 0.6s ease 0s, opacity 0.6s ease 0s, visibility 0.6s ease 0s !important;
+    }
+    
+    .projects-carousel-track .project-container .card.flipped .card-back {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        /* CRITICAL FIX: Card is at 180deg, keep card-back at 0deg */
+        /* Total: 180deg (card) + 0deg (back) = 180deg (shows backface, which is reversed) */
+        /* Solution: Apply scaleX(-1) to the content wrapper to correct the reversal */
+        transform: rotateY(0deg) !important;
+        -webkit-transform: rotateY(0deg) !important;
+        /* Override base .card-back opacity/visibility rules (line 3696-3698) immediately */
+        opacity: 1 !important;
+        visibility: visible !important;
+        backface-visibility: visible !important;
+        -webkit-backface-visibility: visible !important;
+        z-index: 3 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: visible !important;
+        /* CRITICAL: NO transition on transform - apply immediately to prevent reversed appearance during transition */
+        /* Only transition opacity/visibility, not transform */
+        transition: opacity 0.6s ease 0s, visibility 0.6s ease 0s !important;
+        /* Ensure no transform inheritance or conflicts */
+        transform-origin: center center !important;
+        -webkit-transform-origin: center center !important;
+        /* Force immediate application to prevent base rule interference */
+        will-change: opacity, visibility !important;
+    }
+    
+    /* Fix reversed content by flipping the content wrapper horizontally */
+    .projects-carousel-track .project-container .card.flipped .card-back .card-items {
+        transform: scaleX(-1) !important;
+        -webkit-transform: scaleX(-1) !important;
+    }
+    
+    /* Ensure card-front also has synchronized transitions when not flipped */
+    .projects-carousel-track .project-container .card:not(.flipped) .card-front {
+        transition: transform 0.6s ease 0s, opacity 0.6s ease 0s, visibility 0.6s ease 0s !important;
     }
     
     .projects .project-container ul {
@@ -695,6 +795,67 @@ a:hover {
     box-shadow: 0 2px 10px rgba(0, 146, 204, 0.3);
 }
 
+/* CV Icon - Font Awesome for mobile, custom for desktop */
+.cv-icon-fa {
+    display: none; /* Hidden on desktop, shown on mobile */
+    font-size: 1.1em;
+    margin-right: 0;
+}
+
+/* Custom CV Icon - Blue square with white document design */
+.cv-icon-custom {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(135deg, #0092CC 0%, #007bb5 100%);
+    border-radius: 3px;
+    position: relative;
+    flex-shrink: 0;
+    overflow: visible;
+}
+
+/* Top horizontal bar above document (wider than text lines) */
+.cv-icon-custom::before {
+    content: '';
+    position: absolute;
+    top: 3.5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 1.3px;
+    background: white;
+    border-radius: 0.65px;
+    z-index: 1;
+}
+
+/* Bottom horizontal bar, document shape, fold, and text lines */
+.cv-icon-custom::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 1.3px;
+    background: white;
+    border-radius: 0.65px;
+    z-index: 1;
+    /* Create document shape, fold, and text lines using box-shadow */
+    box-shadow: 
+        /* Main document rectangle body (centered vertically around the ::after element) */
+        0 -5.5px 0 0 white,
+        0 -5.5px 0 1px transparent,
+        /* Document fold in top-right corner (diagonal/triangular) */
+        -2px -7.2px 0 -0.5px white,
+        -1.5px -6.7px 0 -0.3px white,
+        /* Three horizontal text lines inside document (narrower than bars) */
+        0 -6.5px 0 0 white,
+        0 -5.5px 0 0 white,
+        0 -4.5px 0 0 white,
+        /* Bottom bar - positioned relative to center */
+        0 5.2px 0 0 white;
+}
+
 .nav-cv-button:hover {
     background: linear-gradient(135deg, #00b4e6 0%, #0092CC 100%);
     transform: translateY(-2px);
@@ -780,6 +941,11 @@ a:hover {
     z-index: 1001;
     opacity: 0;
     transition: opacity 0.3s ease;
+    pointer-events: none; /* Allow clicks to pass through when not active */
+}
+
+.nav-backdrop.active {
+    pointer-events: auto; /* Only block clicks when menu is open */
 }
 
 .nav-backdrop.active {
@@ -810,10 +976,21 @@ a:hover {
         display: none;
     }
     
+    /* Show Font Awesome icon on mobile, hide custom icon */
+    .nav-cv-button .cv-icon-fa {
+        display: inline-block;
+    }
+    
+    .nav-cv-button .cv-icon-custom {
+        display: none;
+    }
+    
     .nav-cv-button,
     .nav-contact-button {
         padding: 10px 12px;
         font-size: 1.1em;
+        z-index: 1003; /* Ensure CV button is above backdrop */
+        position: relative;
     }
     
     .hamburger-menu {
@@ -3439,50 +3616,54 @@ p {
     }
 }
 
-/* Card flip on hover for simple slider */
-.projects-carousel-track .project-container:hover .card:not(.flipped) {
-    transform: rotateY(180deg);
-    -webkit-transform: rotateY(180deg);
-    box-shadow: 0 20px 60px rgba(0, 146, 204, 0.4), 0 0 40px rgba(0, 146, 204, 0.2);
-    border-color: #00b4e6;
+/* Card flip on hover for simple slider - Desktop only */
+@media (min-width: 769px) {
+    .projects-carousel-track .project-container:hover .card:not(.flipped) {
+        transform: rotateY(180deg);
+        -webkit-transform: rotateY(180deg);
+        box-shadow: 0 20px 60px rgba(0, 146, 204, 0.4), 0 0 40px rgba(0, 146, 204, 0.2);
+        border-color: #00b4e6;
+    }
+
+    .projects-carousel-track .project-container:hover .card:not(.flipped) .card-front {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .projects-carousel-track .project-container:hover .card:not(.flipped) .card-back {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: rotateY(180deg);
+        -webkit-transform: rotateY(180deg);
+        backface-visibility: visible !important;
+        -webkit-backface-visibility: visible !important;
+        z-index: 3;
+    }
 }
 
-.projects-carousel-track .project-container:hover .card:not(.flipped) .card-front {
-    opacity: 0;
-    visibility: hidden;
-}
+/* Card flip on click - flipped state (Desktop) */
+@media (min-width: 769px) {
+    .projects-carousel-track .project-container .card.flipped {
+        transform: rotateY(180deg);
+        -webkit-transform: rotateY(180deg);
+        box-shadow: 0 20px 60px rgba(0, 146, 204, 0.4), 0 0 40px rgba(0, 146, 204, 0.2);
+        border-color: #00b4e6;
+    }
 
-.projects-carousel-track .project-container:hover .card:not(.flipped) .card-back {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: rotateY(180deg);
-    -webkit-transform: rotateY(180deg);
-    backface-visibility: visible !important;
-    -webkit-backface-visibility: visible !important;
-    z-index: 3;
-}
+    .projects-carousel-track .project-container .card.flipped .card-front {
+        opacity: 0;
+        visibility: hidden;
+    }
 
-/* Card flip on click - flipped state */
-.projects-carousel-track .project-container .card.flipped {
-    transform: rotateY(180deg);
-    -webkit-transform: rotateY(180deg);
-    box-shadow: 0 20px 60px rgba(0, 146, 204, 0.4), 0 0 40px rgba(0, 146, 204, 0.2);
-    border-color: #00b4e6;
-}
-
-.projects-carousel-track .project-container .card.flipped .card-front {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.projects-carousel-track .project-container .card.flipped .card-back {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: rotateY(180deg);
-    -webkit-transform: rotateY(180deg);
-    backface-visibility: visible !important;
-    -webkit-backface-visibility: visible !important;
-    z-index: 3;
+    .projects-carousel-track .project-container .card.flipped .card-back {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: rotateY(180deg);
+        -webkit-transform: rotateY(180deg);
+        backface-visibility: visible !important;
+        -webkit-backface-visibility: visible !important;
+        z-index: 3;
+    }
 }
 
 .project-container {
@@ -3508,7 +3689,7 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    transition: transform 0.6s ease, opacity 0.6s ease, visibility 0.6s ease;
+    transition: transform 0.6s ease, opacity 0.6s ease 0s, visibility 0.6s ease 0s;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     border-radius: 16px;

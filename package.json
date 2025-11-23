@@ -1,0 +1,27 @@
+{
+  "name": "portfolio-website",
+  "version": "1.0.0",
+  "description": "Portfolio website for Abdulrahman Hisham Kamel - AI Engineer",
+  "scripts": {
+    "dev": "python server.py",
+    "start": "python server.py",
+    "build": "echo 'Build process: Minify CSS and JS files for production' && echo 'Use online tools or build tools like cssnano and terser'",
+    "lint:js": "echo 'Add ESLint configuration for JavaScript linting'",
+    "lint:css": "echo 'Add Stylelint configuration for CSS linting'"
+  },
+  "keywords": [
+    "portfolio",
+    "ai-engineer",
+    "machine-learning",
+    "website"
+  ],
+  "author": "Abdulrahman Hisham Kamel",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abdohisham12/abdohisham12.github.io.git"
+  },
+  "devDependencies": {
+  }
+}
+

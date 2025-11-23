@@ -552,6 +552,19 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
         
+        // Ensure CV button click works properly - close menu if open and allow navigation
+        const cvButton = document.querySelector('.nav-cv-button[data-cv-link="true"]');
+        if (cvButton) {
+            cvButton.addEventListener('click', (e) => {
+                // Close menu if it's open
+                if (hamburgerMenu.classList.contains('active')) {
+                    closeMenu();
+                }
+                // Allow the link to navigate normally - don't prevent default
+                // The link will open in new tab as specified in HTML
+            });
+        }
+        
         // Close menu on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && hamburgerMenu.classList.contains('active')) {
@@ -611,6 +624,44 @@ if (document.readyState === 'loading') {
 } else {
     initHeroAnimations();
 }
+
+// Global Error Handler for Production
+(function() {
+    'use strict';
+    
+    // Only log errors in development
+    const isDevelopment = window.location.hostname === 'localhost' || 
+                         window.location.hostname === '127.0.0.1' ||
+                         window.location.hostname.includes('dev');
+    
+    // Global error handler
+    window.addEventListener('error', function(event) {
+        if (isDevelopment) {
+            console.error('Global error:', event.error);
+        }
+        // In production, you could send this to an error tracking service
+        // Example: if (window.Sentry) { window.Sentry.captureException(event.error); }
+        
+        // Prevent default error handling for non-critical errors
+        if (event.filename && event.filename.includes('cobe')) {
+            event.preventDefault();
+            // Silently handle cobe library errors
+            return false;
+        }
+    }, true);
+    
+    // Unhandled promise rejection handler
+    window.addEventListener('unhandledrejection', function(event) {
+        if (isDevelopment) {
+            console.error('Unhandled promise rejection:', event.reason);
+        }
+        // In production, you could send this to an error tracking service
+        // Example: if (window.Sentry) { window.Sentry.captureException(event.reason); }
+        
+        // Prevent default error handling
+        event.preventDefault();
+    });
+})();
 
 // Animate project cards
 const projectCards = document.querySelectorAll('.project-container');
@@ -808,7 +859,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Contact Form Handling
+// Contact Form Handling with Rate Limiting
 document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.getElementById('contact-form');
     const submitBtn = document.getElementById('submit-btn');
@@ -824,6 +875,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!emailInput || !messageInput || !submitBtn || !formMessage || !emailError || !messageError) {
         // Contact form elements not found
         return;
+    }
+
+    // Rate limiting: Track submission attempts
+    const RATE_LIMIT_KEY = 'contact_form_submissions';
+    const RATE_LIMIT_WINDOW = 60000; // 1 minute in milliseconds
+    const MAX_SUBMISSIONS = 3; // Max 3 submissions per minute
+    
+    function checkRateLimit() {
+        const now = Date.now();
+        const submissions = JSON.parse(localStorage.getItem(RATE_LIMIT_KEY) || '[]');
+        // Filter out old submissions outside the time window
+        const recentSubmissions = submissions.filter(timestamp => now - timestamp < RATE_LIMIT_WINDOW);
+        
+        if (recentSubmissions.length >= MAX_SUBMISSIONS) {
+            const timeRemaining = Math.ceil((RATE_LIMIT_WINDOW - (now - recentSubmissions[0])) / 1000);
+            return {
+                allowed: false,
+                message: `Too many submissions. Please wait ${timeRemaining} seconds before trying again.`
+            };
+        }
+        
+        // Add current submission timestamp
+        recentSubmissions.push(now);
+        localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify(recentSubmissions));
+        return { allowed: true };
     }
 
     // Real-time validation
@@ -896,9 +972,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 300);
     }
 
-    // Form submission
+    // Form submission with rate limiting
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        // Check rate limit
+        const rateLimitCheck = checkRateLimit();
+        if (!rateLimitCheck.allowed) {
+            showFormMessage(rateLimitCheck.message, 'error');
+            return;
+        }
 
         // Validate all fields
         const isEmailValid = validateEmail();
@@ -1550,7 +1633,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             card.style.minHeight = `${targetHeight}px`;
                         }
                     } catch (error) {
-                        console.warn('Error updating card height:', error);
+                        // Silently handle error - fallback to default height
+                        // Error logged for debugging in development only
+                        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                            console.warn('Error updating card height:', error);
+                        }
                         // Fallback to default height if measurement fails
                         if (!card.style.height) {
                             card.style.height = '520px';
@@ -1575,6 +1662,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 window.addEventListener('resize', handleResize);
                 
+                // Track if card is currently transitioning to prevent height updates during flip
+                let isTransitioning = false;
+                
                 // Add click listener with height update
                 card.addEventListener('click', (e) => {
                     // Don't flip if clicking on buttons or links
@@ -1582,13 +1672,41 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
                     
-                    // Toggle flip state - CSS handles the transform
-                    card.classList.toggle('flipped');
+                    // Prevent multiple rapid clicks during transition
+                    if (isTransitioning) {
+                        return;
+                    }
                     
-                    // Update height after flip animation completes (800ms for transform + buffer)
+                    // Toggle flip state - CSS handles the transform
+                    const wasFlipped = card.classList.contains('flipped');
+                    card.classList.toggle('flipped');
+                    const isFlipped = card.classList.contains('flipped');
+                    
+                    // Mark as transitioning
+                    isTransitioning = true;
+                    
+                    // Update height after flip animation completes
+                    // Transition is 0.6s (600ms), wait for it to complete plus a buffer
+                    // Use longer delay to ensure all CSS transitions and reflows are complete
                     setTimeout(() => {
-                        requestAnimationFrame(updateCardHeight);
-                    }, 850);
+                        // Double-check the flip state hasn't changed
+                        if (card.classList.contains('flipped') === isFlipped) {
+                            requestAnimationFrame(() => {
+                                // Wait one more frame to ensure DOM is stable
+                                requestAnimationFrame(() => {
+                                    // Only update if not transitioning (safety check)
+                                    if (!isTransitioning || card.classList.contains('flipped') === isFlipped) {
+                                        updateCardHeight();
+                                    }
+                                    // Clear transitioning flag
+                                    isTransitioning = false;
+                                });
+                            });
+                        } else {
+                            // State changed, clear flag
+                            isTransitioning = false;
+                        }
+                    }, 700);
                 });
             });
         }
@@ -1731,6 +1849,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Make skills clickable to filter projects
     const skillContainers = document.querySelectorAll('.skill-container[data-skill-filter]');
+    const projectsSearch = document.getElementById('projects-search') || document.querySelector('#projects input[type="search"]');
+    
     skillContainers.forEach(skill => {
         skill.addEventListener('click', function() {
             const skillFilter = (this.getAttribute('data-skill-filter') || '').trim();
@@ -1741,9 +1861,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (projectsSection) {
                 projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-            // Set search query to filter by skill
+            // Set search query to filter by skill (if search input exists)
             if (projectsSearch && searchValue) {
                 projectsSearch.value = searchValue;
+                filterProjects('all', searchValue);
+            } else if (searchValue) {
+                // If no search input, just filter directly
                 filterProjects('all', searchValue);
             }
         });

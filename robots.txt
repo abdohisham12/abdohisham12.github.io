@@ -1,0 +1,12 @@
+# robots.txt for abdohisham12.github.io
+
+User-agent: *
+Allow: /
+
+# Disallow admin or private areas (if any exist in future)
+# Disallow: /admin/
+# Disallow: /private/
+
+# Sitemap location
+Sitemap: https://abdohisham12.github.io/sitemap.xml
+
