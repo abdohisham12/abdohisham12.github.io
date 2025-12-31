@@ -1229,31 +1229,55 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Experience card flip functionality
-    const experienceCards = document.querySelectorAll('.experience-card[data-card-type="experience"]');
-    experienceCards.forEach(card => {
-        const front = card.querySelector('.experience-card-front');
-        const back = card.querySelector('.experience-card-back');
+    // Experience card flip functionality with Global Event Delegation
+    if (!window.USE_INLINE_FALLBACK) {
+        // Initialize heights
+        const experienceCards = document.querySelectorAll('.experience-card[data-card-type="experience"]');
+        experienceCards.forEach(card => {
+            const front = card.querySelector('.experience-card-front');
+            const back = card.querySelector('.experience-card-back');
+            if (front && back) {
+                const updateCardHeight = () => {
+                    const targetHeight = card.classList.contains('flipped') ? back.offsetHeight : front.offsetHeight;
+                    card.style.minHeight = `${targetHeight}px`;
+                    card.style.height = `${targetHeight}px`;
+                };
+                updateCardHeight();
+                window.addEventListener('resize', updateCardHeight);
 
-        const updateCardHeight = () => {
-            if (!front || !back) return;
-            const targetHeight = card.classList.contains('flipped')
-                ? back.offsetHeight
-                : front.offsetHeight;
-            card.style.minHeight = `${targetHeight}px`;
-            card.style.height = `${targetHeight}px`;
-        };
-
-        updateCardHeight();
-        window.addEventListener('resize', updateCardHeight);
-
-        card.addEventListener('click', function () {
-            this.classList.toggle('flipped');
-            setTimeout(updateCardHeight, 300);
+                // attach helper for the delegation to find
+                card.updateHeightHelper = updateCardHeight;
+            }
         });
-    });
+
+        // Global delegation for clicks
+        document.addEventListener('click', function (e) {
+            const card = e.target.closest('.experience-card[data-card-type="experience"]');
+            if (!card) return; // Not clicking a card
+
+            // Prevent if clicking a link
+            if (e.target.tagName === 'A' || e.target.closest('a')) return;
+
+            // Toggle
+            card.classList.toggle('flipped');
+
+            // Update height
+            setTimeout(() => {
+                if (card.updateHeightHelper) {
+                    card.updateHeightHelper();
+                }
+            }, 300);
+        });
+    }
 
     // Work History Carousel
     const workHistoryTrack = document.getElementById('work-history-track');
+    // Ensure track is visible
+    if (workHistoryTrack) {
+        workHistoryTrack.style.display = 'flex';
+        workHistoryTrack.style.opacity = '1';
+    }
+
     const prevWorkHistoryBtn = document.getElementById('work-history-prev');
     const nextWorkHistoryBtn = document.getElementById('work-history-next');
     const pauseWorkHistoryBtn = document.getElementById('work-history-pause');
@@ -1261,7 +1285,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const positionIndicator = document.getElementById('work-history-position');
     const totalIndicator = document.getElementById('work-history-total');
 
-    if (workHistoryTrack) {
+    if (workHistoryTrack && !window.USE_INLINE_FALLBACK) {
         const AUTO_ROTATION_DELAY = 3000;
         let currentSlide = 0;
         let autoRotationInterval = null;

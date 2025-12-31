@@ -19,13 +19,13 @@ class MissionAssistant {
         // Knowledge Base - Friendly & Advocating Persona
         this.knowledgeBase = {
             'greetings': {
-                keywords: ['hello', 'hi', 'hey', 'start', 'begin', 'init', 'yo'],
-                response: "Hello! slightly_smiling_face I'm here to show you why Abdulrahman is the perfect addition to your engineering team. Ask me about his <strong>Projects</strong>, <strong>Experience</strong>, or <strong>Skills</strong>!",
+                keywords: ['hello', 'hi', 'hey', 'start', 'begin', 'init', 'yo', 'greetings'],
+                response: "Hello! 🙂 I'm here to show you why Abdulrahman is the perfect addition to your engineering team. You can ask me about his <strong>Projects</strong>, <strong>Experience</strong>, or <strong>Skills</strong>!",
                 action: null
             },
             'how_are_you': {
-                keywords: ['how are you', 'how r u', 'status', 'report'],
-                response: "I'm operating at peak efficiency—just like the code Abdulrahman writes! Thanks for asking. How can I help you with your hiring decision?",
+                keywords: ['how are you', 'how r u', 'how do you do', 'how is it going'],
+                response: "I'm doing great, thanks for asking! 🙂 I'm just an AI, but I'm super excited to help you hire Abdulrahman. How can I assume the role of his advocate today?",
                 action: null
             },
             'who_are_you': {
@@ -233,10 +233,29 @@ class MissionAssistant {
     addMessage(text, sender) {
         const msgDiv = document.createElement('div');
         msgDiv.className = `message ${sender}-message`;
-        msgDiv.className = `message ${sender}-message`;
-        msgDiv.innerHTML = text; // Use innerHTML to allow styling and buttons
+
+        // Process text for clickable keywords if it's from the bot
+        let processedText = text;
+        if (sender === 'bot') {
+            // Replace keywords with clickable spans
+            // We use a regex that matches the keywords but avoids replacing inside existing HTML tags if possible
+            const keywords = [
+                { word: 'Projects', action: 'projects' },
+                { word: 'Experience', action: 'experience' },
+                { word: 'Skills', action: 'skills' },
+                { word: 'Featured Work', action: 'featured-work' }
+            ];
+
+            keywords.forEach(kw => {
+                const regex = new RegExp(`\\b${kw.word}\\b`, 'g');
+                processedText = processedText.replace(regex, `<span class="chat-link" data-action="${kw.action}">${kw.word}</span>`);
+            });
+        }
+
+        msgDiv.innerHTML = processedText;
         this.messagesContainer.appendChild(msgDiv);
-        // Add click event listeners for any suggestion chips we just added
+
+        // Add click event listeners for suggestion chips
         const chips = msgDiv.querySelectorAll('.suggestion-chip');
         chips.forEach(chip => {
             chip.addEventListener('click', (e) => {
@@ -244,7 +263,16 @@ class MissionAssistant {
                 this.handleInput(command); // Feed it back as input
             });
         });
-        this.scrollToBottom();
+
+        // Add click event listeners for chat links
+        const links = msgDiv.querySelectorAll('.chat-link');
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const actionId = e.target.dataset.action;
+                this.executeAction(actionId);
+            });
+        });
+
         this.scrollToBottom();
     }
 
