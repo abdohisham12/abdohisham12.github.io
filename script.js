@@ -310,6 +310,9 @@ if (document.readyState === 'loading') {
 document.addEventListener('DOMContentLoaded', () => {
     const certificationsSection = document.querySelector('.certifications-showcase');
     if (certificationsSection) {
+        // Add animate-on-scroll class to enable the hidden state (JS is working)
+        certificationsSection.classList.add('animate-on-scroll');
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
