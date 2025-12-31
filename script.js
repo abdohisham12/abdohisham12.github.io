@@ -4,17 +4,17 @@
 function initStatsCarousel() {
     const carousel = document.querySelector('.hero-stats-carousel');
     if (!carousel) return;
-    
+
     const statItems = carousel.querySelectorAll('.stat-item');
     const statNumbers = carousel.querySelectorAll('.stat-number');
-    
+
     // Animate numbers
     function animateNumber(element) {
         const target = parseInt(element.getAttribute('data-target'));
         const duration = 2000;
         const increment = target / (duration / 16);
         let current = 0;
-        
+
         const timer = setInterval(() => {
             current += increment;
             if (current >= target) {
@@ -25,7 +25,7 @@ function initStatsCarousel() {
             }
         }, 16);
     }
-    
+
     // Rotate through stats
     let currentIndex = 0;
     function rotateStats() {
@@ -40,7 +40,7 @@ function initStatsCarousel() {
         }
         currentIndex = (currentIndex + 1) % statItems.length;
     }
-    
+
     // Start rotation after initial animation
     setTimeout(() => {
         rotateStats();
@@ -59,10 +59,10 @@ if (document.readyState === 'loading') {
 function initQuickNav() {
     const quickNav = document.getElementById('quick-nav-sidebar');
     if (!quickNav) return;
-    
+
     const navLinks = quickNav.querySelectorAll('.quick-nav-link');
     const sections = document.querySelectorAll('section[id]');
-    
+
     // Show sidebar after scrolling
     function toggleSidebar() {
         if (window.scrollY > 300) {
@@ -71,16 +71,16 @@ function initQuickNav() {
             quickNav.classList.remove('visible');
         }
     }
-    
+
     // Update active link based on scroll position
     function updateActiveLink() {
         const scrollPosition = window.pageYOffset + 200;
-        
+
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.offsetHeight;
             const sectionId = section.getAttribute('id');
-            
+
             if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                 navLinks.forEach(link => {
                     link.classList.remove('active');
@@ -91,7 +91,7 @@ function initQuickNav() {
             }
         });
     }
-    
+
     // Smooth scroll on click
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -103,15 +103,15 @@ function initQuickNav() {
             }
         });
     });
-    
+
     // Throttled scroll handler for better performance
     const throttledScrollHandler = throttle(() => {
         toggleSidebar();
         updateActiveLink();
     }, 100);
-    
+
     window.addEventListener('scroll', throttledScrollHandler, { passive: true });
-    
+
     toggleSidebar();
     updateActiveLink();
 }
@@ -171,13 +171,13 @@ function initSkillTooltips() {
             }
         });
     }
-    
+
     skillContainers.forEach(container => {
         const heading = container.querySelector('.skill-name .h3');
         const rawName = heading?.textContent?.trim() || '';
         const lookupKey = rawName.split(' ')[0];
         const projectList = projectMap[rawName] || projectMap[lookupKey] || 'Multiple projects';
-        
+
         container.setAttribute('tabindex', '0');
         container.setAttribute('role', 'button');
         container.setAttribute('aria-expanded', persistentQuery.matches ? 'true' : 'false');
@@ -254,13 +254,13 @@ if (document.readyState === 'loading') {
 // Animated Counters for Metrics Dashboard
 function initMetricCounters() {
     const metricValues = document.querySelectorAll('.metric-value[data-target]');
-    
+
     const animateCounter = (element) => {
         const target = parseInt(element.getAttribute('data-target'));
         const duration = 2000;
         const increment = target / (duration / 16);
         let current = 0;
-        
+
         const timer = setInterval(() => {
             current += increment;
             if (current >= target) {
@@ -271,13 +271,13 @@ function initMetricCounters() {
             }
         }, 16);
     };
-    
+
     // Use Intersection Observer to trigger animation when section is visible
     const observerOptions = {
         threshold: 0.3,
         rootMargin: '0px'
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -290,7 +290,7 @@ function initMetricCounters() {
             }
         });
     }, observerOptions);
-    
+
     metricValues.forEach(value => {
         const metricCard = value.closest('.metric-card');
         if (metricCard) {
@@ -318,10 +318,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }, { threshold: 0.1 });
-        
+
         observer.observe(certificationsSection);
     }
-    
+
     // Also observe metrics dashboard
     const metricsDashboard = document.querySelector('.metrics-dashboard');
     if (metricsDashboard) {
@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }, { threshold: 0.1 });
-        
+
         observer.observe(metricsDashboard);
     }
 });
@@ -342,19 +342,19 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateActiveNavLink() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
-    
+
     let currentSection = '';
     const scrollPosition = window.pageYOffset + 200;
-    
+
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
-        
+
         if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
             currentSection = section.getAttribute('id');
         }
     });
-    
+
     navLinks.forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('href') === `#${currentSection}`) {
@@ -408,7 +408,7 @@ window.addEventListener('load', updateActiveNavLink);
 // Scroll Progress Indicator - Using throttled version defined above
 document.addEventListener('DOMContentLoaded', () => {
     const scrollProgress = document.getElementById('scroll-progress');
-    
+
     if (scrollProgress) {
         window.addEventListener('scroll', throttledUpdateScrollProgress, { passive: true });
         throttledUpdateScrollProgress(); // Initial update
@@ -418,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Back to Top Button
 document.addEventListener('DOMContentLoaded', () => {
     const backToTopBtn = document.getElementById('back-to-top');
-    
+
     if (backToTopBtn) {
         function toggleBackToTop() {
             if (window.scrollY > 300) {
@@ -433,25 +433,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 300);
             }
         }
-        
+
         backToTopBtn.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
         });
-        
+
         const throttledToggleBackToTop = throttle(toggleBackToTop, 100);
         window.addEventListener('scroll', throttledToggleBackToTop, { passive: true });
         toggleBackToTop();
     }
-    
+
     // Smooth Scroll Animations with Intersection Observer
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -459,32 +459,32 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }, observerOptions);
-    
+
     // Observe all sections and cards
     const animatedElements = document.querySelectorAll(
         '.highlight-card, .education-card, .experience-card, .project-container, .skill-container, .executive-summary-card, .quick-facts-card'
     );
-    
+
     animatedElements.forEach(el => {
         el.classList.add('fade-in-element');
         observer.observe(el);
     });
-    
+
     // Parallax Effect for Hero Section
     const hero = document.querySelector('.hero');
     const heroShapes = document.querySelectorAll('.shape');
-    
+
     if (hero && heroShapes.length > 0) {
         const throttledParallax = throttle(() => {
             const scrolled = window.pageYOffset;
             const rate = scrolled * 0.5;
-            
+
             heroShapes.forEach((shape, index) => {
                 const speed = 0.3 + (index * 0.1);
                 shape.style.transform = `translateY(${rate * speed}px)`;
             });
         }, 16); // ~60fps for smooth parallax
-        
+
         window.addEventListener('scroll', throttledParallax, { passive: true });
     }
 });
@@ -494,7 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hamburgerMenu = document.querySelector('.hamburger-menu');
     const navLinks = document.querySelector('.nav-links');
     const body = document.body;
-    
+
     // Create backdrop element if it doesn't exist
     let backdrop = document.querySelector('.nav-backdrop');
     if (!backdrop) {
@@ -503,7 +503,7 @@ document.addEventListener('DOMContentLoaded', () => {
         backdrop.setAttribute('aria-hidden', 'true');
         document.body.appendChild(backdrop);
     }
-    
+
     // Function to open menu
     const openMenu = () => {
         hamburgerMenu.classList.add('active');
@@ -514,7 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Prevent body scroll when menu is open
         body.style.overflow = 'hidden';
     };
-    
+
     // Function to close menu
     const closeMenu = () => {
         hamburgerMenu.classList.remove('active');
@@ -525,7 +525,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Restore body scroll
         body.style.overflow = '';
     };
-    
+
     if (hamburgerMenu && navLinks && backdrop) {
         // Toggle menu on hamburger click
         hamburgerMenu.addEventListener('click', (e) => {
@@ -537,13 +537,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 openMenu();
             }
         });
-        
+
         // Close menu when clicking on backdrop
         backdrop.addEventListener('click', (e) => {
             e.stopPropagation();
             closeMenu();
         });
-        
+
         // Close menu when clicking on a nav link
         const navLinkElements = navLinks.querySelectorAll('.nav-link');
         navLinkElements.forEach(link => {
@@ -551,7 +551,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 closeMenu();
             });
         });
-        
+
         // Ensure CV button click works properly - close menu if open and allow navigation
         const cvButton = document.querySelector('.nav-cv-button[data-cv-link="true"]');
         if (cvButton) {
@@ -564,14 +564,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 // The link will open in new tab as specified in HTML
             });
         }
-        
+
         // Close menu on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && hamburgerMenu.classList.contains('active')) {
                 closeMenu();
             }
         });
-        
+
         // Close menu when window is resized to desktop size
         let resizeTimer;
         window.addEventListener('resize', () => {
@@ -589,7 +589,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initHeroAnimations() {
     // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
+
     if (prefersReducedMotion) {
         // Skip animations for users who prefer reduced motion
         const heroElements = document.querySelectorAll('.animate-fade-in-up, .animate-scale-in');
@@ -600,9 +600,9 @@ function initHeroAnimations() {
         });
         return;
     }
-    
+
     const heroElements = document.querySelectorAll('.animate-fade-in-up, .animate-scale-in');
-    
+
     heroElements.forEach((element) => {
         const delay = element.getAttribute('data-delay') || '0s';
         // Use CSS animation delay instead of setTimeout for better performance
@@ -626,22 +626,22 @@ if (document.readyState === 'loading') {
 }
 
 // Global Error Handler for Production
-(function() {
+(function () {
     'use strict';
-    
+
     // Only log errors in development
-    const isDevelopment = window.location.hostname === 'localhost' || 
-                         window.location.hostname === '127.0.0.1' ||
-                         window.location.hostname.includes('dev');
-    
+    const isDevelopment = window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.hostname.includes('dev');
+
     // Global error handler
-    window.addEventListener('error', function(event) {
+    window.addEventListener('error', function (event) {
         if (isDevelopment) {
             console.error('Global error:', event.error);
         }
         // In production, you could send this to an error tracking service
         // Example: if (window.Sentry) { window.Sentry.captureException(event.error); }
-        
+
         // Prevent default error handling for non-critical errors
         if (event.filename && event.filename.includes('cobe')) {
             event.preventDefault();
@@ -649,15 +649,15 @@ if (document.readyState === 'loading') {
             return false;
         }
     }, true);
-    
+
     // Unhandled promise rejection handler
-    window.addEventListener('unhandledrejection', function(event) {
+    window.addEventListener('unhandledrejection', function (event) {
         if (isDevelopment) {
             console.error('Unhandled promise rejection:', event.reason);
         }
         // In production, you could send this to an error tracking service
         // Example: if (window.Sentry) { window.Sentry.captureException(event.reason); }
-        
+
         // Prevent default error handling
         event.preventDefault();
     });
@@ -743,7 +743,7 @@ function showVisibleSections() {
             section.classList.add('fade-in');
         }
     });
-    
+
     const allJobs = document.querySelectorAll('.job');
     allJobs.forEach(job => {
         const rect = job.getBoundingClientRect();
@@ -751,7 +751,7 @@ function showVisibleSections() {
             job.classList.add('fade-in');
         }
     });
-    
+
     const allProjects = document.querySelectorAll('.project-container');
     allProjects.forEach(project => {
         const rect = project.getBoundingClientRect();
@@ -778,12 +778,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (education) {
         education.classList.add('fade-in');
     }
-    
+
     const aboutMe = document.querySelector('#about-me');
     if (aboutMe) {
         aboutMe.classList.add('fade-in');
     }
-    
+
     // Show experience section and all jobs immediately
     const experienceSection = document.querySelector('.experience');
     if (experienceSection) {
@@ -796,7 +796,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, index * 100); // Stagger the animations slightly
         });
     }
-    
+
     // Show projects section and all project containers immediately
     const projectsSection = document.querySelector('.projects');
     if (projectsSection) {
@@ -809,7 +809,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, index * 150); // Stagger the animations slightly
         });
     }
-    
+
     const sections = document.querySelectorAll('.skills');
     sections.forEach(section => {
         // Check if section is already in viewport on load
@@ -851,7 +851,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-    
+
     // Show contact section immediately
     const contactSection = document.querySelector('.contact-section');
     if (contactSection) {
@@ -870,7 +870,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageError = document.getElementById('message-error');
 
     if (!contactForm) return;
-    
+
     // Check if all required elements exist
     if (!emailInput || !messageInput || !submitBtn || !formMessage || !emailError || !messageError) {
         // Contact form elements not found
@@ -881,13 +881,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const RATE_LIMIT_KEY = 'contact_form_submissions';
     const RATE_LIMIT_WINDOW = 60000; // 1 minute in milliseconds
     const MAX_SUBMISSIONS = 3; // Max 3 submissions per minute
-    
+
     function checkRateLimit() {
         const now = Date.now();
         const submissions = JSON.parse(localStorage.getItem(RATE_LIMIT_KEY) || '[]');
         // Filter out old submissions outside the time window
         const recentSubmissions = submissions.filter(timestamp => now - timestamp < RATE_LIMIT_WINDOW);
-        
+
         if (recentSubmissions.length >= MAX_SUBMISSIONS) {
             const timeRemaining = Math.ceil((RATE_LIMIT_WINDOW - (now - recentSubmissions[0])) / 1000);
             return {
@@ -895,7 +895,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 message: `Too many submissions. Please wait ${timeRemaining} seconds before trying again.`
             };
         }
-        
+
         // Add current submission timestamp
         recentSubmissions.push(now);
         localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify(recentSubmissions));
@@ -909,7 +909,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function validateEmail() {
         const email = emailInput.value.trim();
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        
+
         if (!email) {
             showError(emailError, 'Email is required');
             emailInput.classList.add('error');
@@ -927,7 +927,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function validateMessage() {
         const message = messageInput.value.trim();
-        
+
         if (!message) {
             showError(messageError, 'Message is required');
             messageInput.classList.add('error');
@@ -959,7 +959,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!formMessage) return;
         formMessage.textContent = message;
         formMessage.className = `form-message ${type} show`;
-        
+
         // Scroll to message
         formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
@@ -1061,7 +1061,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Re-enable submit button
             submitBtn.disabled = false;
             submitBtn.classList.remove('loading');
-            
+
             // Hide message after 5 seconds
             setTimeout(() => {
                 hideFormMessage();
@@ -1198,7 +1198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     educationCards.forEach(card => {
         const front = card.querySelector('.education-card-front');
         const back = card.querySelector('.education-card-back');
-        
+
         // Set initial height based on front card
         if (front && back) {
             const updateCardHeight = () => {
@@ -1208,21 +1208,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     card.style.minHeight = front.offsetHeight + 'px';
                 }
             };
-            
+
             // Set initial height
             updateCardHeight();
-            
+
             // Update on resize
             window.addEventListener('resize', updateCardHeight);
-            
-            card.addEventListener('click', function() {
+
+            card.addEventListener('click', function () {
                 this.classList.toggle('flipped');
                 // Update height after flip animation
                 setTimeout(updateCardHeight, 300);
             });
         } else {
             // Fallback if structure is different
-            card.addEventListener('click', function() {
+            card.addEventListener('click', function () {
                 this.classList.toggle('flipped');
             });
         }
@@ -1246,7 +1246,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCardHeight();
         window.addEventListener('resize', updateCardHeight);
 
-        card.addEventListener('click', function() {
+        card.addEventListener('click', function () {
             this.classList.toggle('flipped');
             setTimeout(updateCardHeight, 300);
         });
@@ -1286,7 +1286,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function buildSlide(position, index) {
             const locationLabel = position.location ? `Inside ${position.location}` : `Inside ${position.company}`;
-            
+
             // Show all responsibilities if available, otherwise show highlights
             let contentHTML = '';
             if (position.responsibilities && position.responsibilities.length > 0) {
@@ -1488,17 +1488,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const prevBtn = document.getElementById('projects-carousel-prev');
         const nextBtn = document.getElementById('projects-carousel-next');
         const indicatorsContainer = document.getElementById('projects-carousel-indicators');
-        
+
         if (!carousel || !track) return;
-        
+
         const projectContainers = track.querySelectorAll('.project-container');
         if (projectContainers.length === 0) return;
-        
+
         let currentIndex = 0;
         let isPaused = false;
         let autoRotationInterval = null;
         const ROTATION_DELAY = 3000; // 3 seconds
-        
+
         // Create indicators
         function createIndicators() {
             if (!indicatorsContainer) return;
@@ -1514,7 +1514,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             updateIndicators();
         }
-        
+
         // Update indicators
         function updateIndicators() {
             const indicators = indicatorsContainer?.querySelectorAll('.projects-carousel-indicator');
@@ -1529,7 +1529,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-        
+
         // Reset all card flips to front state
         function resetCardFlips() {
             projectContainers.forEach(container => {
@@ -1539,27 +1539,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-        
+
         // Add click-to-flip functionality to cards
         function initCardFlipListeners() {
             projectContainers.forEach(container => {
                 const card = container.querySelector('.card');
                 if (!card) return;
-                
+
                 const front = card.querySelector('.card-front');
                 const back = card.querySelector('.card-back');
-                
+
                 if (!front || !back) return;
-                
+
                 // Function to measure element height by temporarily cloning it with proper styles
                 const measureElementHeight = (element) => {
                     // Get computed styles from original element
                     const computedStyle = window.getComputedStyle(element);
                     const cardWidth = card.getBoundingClientRect().width;
-                    
+
                     // Clone the element
                     const clone = element.cloneNode(true);
-                    
+
                     // Create a wrapper to position off-screen while keeping clone in normal flow
                     const wrapper = document.createElement('div');
                     wrapper.style.cssText = `
@@ -1570,7 +1570,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         visibility: hidden !important;
                         pointer-events: none !important;
                     `;
-                    
+
                     // Set up clone for measurement - use static positioning to allow natural height
                     clone.style.cssText = `
                         position: static !important;
@@ -1589,23 +1589,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         flex-direction: ${computedStyle.flexDirection} !important;
                         gap: ${computedStyle.gap} !important;
                     `;
-                    
+
                     // Add clone to wrapper, then wrapper to DOM
                     wrapper.appendChild(clone);
                     document.body.appendChild(wrapper);
-                    
+
                     // Force reflow to ensure accurate measurement
                     void clone.offsetHeight;
-                    
+
                     // Measure the actual content height
                     const height = clone.scrollHeight;
-                    
+
                     // Remove wrapper (which contains clone)
                     document.body.removeChild(wrapper);
-                    
+
                     return height;
                 };
-                
+
                 // Function to measure and update card height based on visible side
                 const updateCardHeight = () => {
                     try {
@@ -1613,19 +1613,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (card.offsetWidth === 0) {
                             return; // Card not visible yet
                         }
-                        
+
                         // Measure both sides
                         const frontHeight = measureElementHeight(front);
                         const backHeight = measureElementHeight(back);
-                        
+
                         // Ensure we have valid measurements (at least 200px, reasonable max of 2000px)
                         const validFrontHeight = Math.max(200, Math.min(2000, frontHeight));
                         const validBackHeight = Math.max(200, Math.min(2000, backHeight));
-                        
+
                         // Set card height based on which side is visible
                         const isFlipped = card.classList.contains('flipped');
                         const targetHeight = isFlipped ? validBackHeight : validFrontHeight;
-                        
+
                         // Only update if the height is different to avoid unnecessary reflows
                         const currentHeight = parseInt(card.style.height) || card.offsetHeight;
                         if (Math.abs(currentHeight - targetHeight) > 5) {
@@ -1645,13 +1645,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 };
-                
+
                 // Set initial height after content is loaded
                 // Use requestAnimationFrame to ensure DOM is ready
                 requestAnimationFrame(() => {
                     setTimeout(updateCardHeight, 200);
                 });
-                
+
                 // Update on window resize with debouncing
                 let resizeTimeout;
                 const handleResize = () => {
@@ -1661,30 +1661,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 150);
                 };
                 window.addEventListener('resize', handleResize);
-                
+
                 // Track if card is currently transitioning to prevent height updates during flip
                 let isTransitioning = false;
-                
+
                 // Add click listener with height update
                 card.addEventListener('click', (e) => {
                     // Don't flip if clicking on buttons or links
                     if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.closest('a')) {
                         return;
                     }
-                    
+
                     // Prevent multiple rapid clicks during transition
                     if (isTransitioning) {
                         return;
                     }
-                    
+
                     // Toggle flip state - CSS handles the transform
                     const wasFlipped = card.classList.contains('flipped');
                     card.classList.toggle('flipped');
                     const isFlipped = card.classList.contains('flipped');
-                    
+
                     // Mark as transitioning
                     isTransitioning = true;
-                    
+
                     // Update height immediately when flip starts (not after it completes)
                     // Use minimal delay (50ms) to allow DOM to settle, then start height adjustment
                     // This synchronizes the height transition (0.6s) with the flip animation (0.6s)
@@ -1710,20 +1710,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
         }
-        
+
         // Go to specific slide
         function goToSlide(index) {
             if (index < 0) index = projectContainers.length - 1;
             if (index >= projectContainers.length) index = 0;
-            
+
             // Reset all cards to front state before sliding
             resetCardFlips();
-            
+
             currentIndex = index;
             const translateX = -currentIndex * 100;
             track.style.transform = `translateX(${translateX}%)`;
             updateIndicators();
-            
+
             // Update ARIA live region
             const ariaLiveRegion = document.getElementById('projects-aria-live');
             if (ariaLiveRegion) {
@@ -1731,24 +1731,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 ariaLiveRegion.textContent = `Showing project ${currentIndex + 1} of ${projectContainers.length}: ${projectTitle}`;
             }
         }
-        
+
         // Next slide
         function nextSlide() {
             goToSlide(currentIndex + 1);
         }
-        
+
         // Previous slide
         function prevSlide() {
             goToSlide(currentIndex - 1);
         }
-        
+
         // Start auto-rotation
         function startAutoRotation() {
             if (isPaused || projectContainers.length <= 1) return;
             stopAutoRotation();
             autoRotationInterval = setInterval(nextSlide, ROTATION_DELAY);
         }
-        
+
         // Stop auto-rotation
         function stopAutoRotation() {
             if (autoRotationInterval) {
@@ -1756,19 +1756,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 autoRotationInterval = null;
             }
         }
-        
+
         // Pause on hover
         carousel.addEventListener('mouseenter', () => {
             isPaused = true;
             stopAutoRotation();
         });
-        
+
         // Resume on mouse leave
         carousel.addEventListener('mouseleave', () => {
             isPaused = false;
             startAutoRotation();
         });
-        
+
         // Navigation buttons
         if (prevBtn) {
             prevBtn.addEventListener('click', () => {
@@ -1779,7 +1779,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-        
+
         if (nextBtn) {
             nextBtn.addEventListener('click', () => {
                 nextSlide();
@@ -1789,17 +1789,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-        
+
         // Initialize
         createIndicators();
         initCardFlipListeners();
         goToSlide(0);
-        
+
         // Start auto-rotation after a short delay
         setTimeout(() => {
             startAutoRotation();
         }, 1000);
-        
+
         // Handle window resize
         let resizeTimeout;
         window.addEventListener('resize', () => {
@@ -1809,14 +1809,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 100);
         });
     }
-    
+
     // Initialize carousel when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initProjectsCarousel);
     } else {
         initProjectsCarousel();
     }
-    
+
     // Image error handling - graceful fallback
     document.addEventListener('error', (e) => {
         if (e.target.tagName === 'IMG') {
@@ -1826,33 +1826,33 @@ document.addEventListener('DOMContentLoaded', () => {
             e.target.classList.add('image-error');
         }
     }, true);
-    
+
     // Define filterProjects function for projects search/filtering
-    window.filterProjects = function(filter, searchQuery) {
+    window.filterProjects = function (filter, searchQuery) {
         // Projects filtering logic - can be enhanced based on needs
         const projectContainers = document.querySelectorAll('.project-container');
         projectContainers.forEach(container => {
             let shouldShow = true;
-            
+
             if (searchQuery) {
                 const projectText = container.textContent.toLowerCase();
                 shouldShow = projectText.includes(searchQuery.toLowerCase());
             }
-            
+
             container.style.display = shouldShow ? 'block' : 'none';
         });
     };
-    
+
     // Initialize with default filter (all projects)
     const activeFilter = 'all';
     filterProjects(activeFilter);
-    
+
     // Make skills clickable to filter projects
     const skillContainers = document.querySelectorAll('.skill-container[data-skill-filter]');
     const projectsSearch = document.getElementById('projects-search') || document.querySelector('#projects input[type="search"]');
-    
+
     skillContainers.forEach(skill => {
-        skill.addEventListener('click', function() {
+        skill.addEventListener('click', function () {
             const skillFilter = (this.getAttribute('data-skill-filter') || '').trim();
             const fallbackLabel = this.querySelector('.skill-name .h3')?.textContent?.trim().toLowerCase().split(' ')[0] || '';
             const searchValue = skillFilter || fallbackLabel;
@@ -1880,11 +1880,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!canvas || !globeWrapper) {
         return; // Exit if canvas or wrapper not available
     }
-    
+
     let globe = null;
     let isInitialized = false;
     const MOVEMENT_DAMPING = 1400;
-    
+
     function getCobeLibrary() {
         // Try different ways cobe might be exposed from CDN
         if (window.cobe && window.cobe.createGlobe) {
@@ -1899,14 +1899,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return null;
     }
-    
+
     function initGlobe() {
         if (isInitialized) return;
-        
+
         // Wait for cobe library to be available
         let retryCount = 0;
         const maxRetries = 100; // Increased retries
-        
+
         const tryInit = () => {
             retryCount++;
             if (retryCount > maxRetries) {
@@ -1918,17 +1918,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 return;
             }
-            
+
             const cobeLib = getCobeLibrary();
             if (!cobeLib || !cobeLib.createGlobe) {
                 setTimeout(tryInit, 100);
                 return;
             }
-            
+
             // Cobe library loaded successfully, initializing globe
-            
+
             isInitialized = true;
-            
+
             const phiRef = { current: 0 };
             const widthRef = { current: 0 };
             const pointerInteracting = { current: null };
@@ -1964,13 +1964,13 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             window.addEventListener('resize', onResize);
-            
+
             // Get initial width - ensure we have dimensions
             // Wait a bit for layout to settle
             const initializeDimensions = () => {
                 // Force a layout calculation by checking multiple times
                 widthRef.current = canvas.offsetWidth || globeWrapper.offsetWidth || 400;
-                
+
                 if (widthRef.current === 0) {
                     // Force a layout calculation
                     canvas.style.display = 'block';
@@ -1980,39 +1980,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     void canvas.offsetWidth;
                     widthRef.current = canvas.offsetWidth || globeWrapper.offsetWidth || 400;
                 }
-                
+
                 // Ensure minimum width
                 if (widthRef.current < 300) {
                     widthRef.current = 300;
                 }
-                
+
                 // Ensure maximum width for performance
                 if (widthRef.current > 500) {
                     widthRef.current = 500;
                 }
-                
+
                 // Set canvas internal dimensions (important for rendering)
                 const canvasWidth = widthRef.current * 2;
                 const canvasHeight = widthRef.current * 2;
                 canvas.width = canvasWidth;
                 canvas.height = canvasHeight;
-                
+
                 // Verify dimensions were set
                 if (canvas.width === 0 || canvas.height === 0) {
                     // Canvas dimensions are zero, retrying
                     setTimeout(initializeDimensions, 100);
                     return;
                 }
-                
+
                 // Now create the globe with proper dimensions
                 createGlobeInstance();
             };
-            
+
             // Try multiple times to ensure layout is ready
             setTimeout(initializeDimensions, 50);
             setTimeout(initializeDimensions, 200);
             setTimeout(initializeDimensions, 500);
-            
+
             function createGlobeInstance() {
                 const canvasWidth = widthRef.current * 2;
                 const canvasHeight = widthRef.current * 2;
@@ -2048,9 +2048,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         diffuse: 0.4,
                         mapSamples: 16000,
                         mapBrightness: 1.2,
-                        baseColor: [0.85, 0.85, 0.85],
-                        markerColor: [0.85, 0.55, 0.15], // Orange/amber color
-                        glowColor: [0.9, 0.9, 0.9],
+                        baseColor: [0.05, 0.1, 0.15], // Deep space dark
+                        markerColor: [0, 0.95, 1], // Cyan markers
+                        glowColor: [0, 0.57, 0.8], // Blue glow
                         markers: markers,
                         onRender: (state) => {
                             if (!pointerInteracting.current) {
@@ -2063,13 +2063,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
                     // Globe created successfully
-                    
+
                     // Make canvas visible immediately after globe creation
                     if (canvas) {
                         canvas.style.opacity = '1';
                         canvas.style.visibility = 'visible';
                     }
-                    
+
                     // Pointer event handlers
                     canvas.addEventListener('pointerdown', (e) => {
                         pointerInteracting.current = e.clientX;
@@ -2112,10 +2112,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         };
-        
+
         tryInit();
     }
-    
+
     // Use Intersection Observer to lazy-load globe when it enters viewport
     if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries) => {
@@ -2128,13 +2128,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }, {
             threshold: 0.1 // Trigger when 10% of the component is visible
         });
-        
+
         observer.observe(globeWrapper);
     } else {
         // Fallback for browsers without IntersectionObserver
         initGlobe();
     }
-    
+
     // Also try to initialize immediately if already in viewport
     const checkIfInViewport = () => {
         const rect = globeWrapper.getBoundingClientRect();
@@ -2143,7 +2143,7 @@ document.addEventListener('DOMContentLoaded', () => {
             initGlobe();
         }
     };
-    
+
     // Check immediately and after delays to ensure initialization
     checkIfInViewport();
     setTimeout(checkIfInViewport, 100);
@@ -2155,33 +2155,33 @@ document.addEventListener('DOMContentLoaded', () => {
 function initHRSummaryCarousel() {
     const carousel = document.getElementById('hr-summary-carousel');
     const track = document.getElementById('hr-summary-carousel-track');
-    
+
     if (!carousel || !track) return;
-    
+
     const items = track.querySelectorAll('.hr-summary-item');
     if (items.length === 0) return;
-    
+
     let currentIndex = 0;
     let isPaused = false;
     let rotationInterval = null;
     const rotationDuration = 4500; // 4.5 seconds between rotations
     const transitionDuration = 800; // 0.8s transition time
-    
+
     // Function to move to next card
     function moveToNext() {
         if (isPaused) return;
-        
+
         currentIndex = (currentIndex + 1) % items.length;
         const translateX = -currentIndex * 100;
         track.style.transform = `translateX(${translateX}%)`;
     }
-    
+
     // Start auto-rotation
     function startRotation() {
         if (rotationInterval) clearInterval(rotationInterval);
         rotationInterval = setInterval(moveToNext, rotationDuration);
     }
-    
+
     // Pause rotation
     function pauseRotation() {
         isPaused = true;
@@ -2190,7 +2190,7 @@ function initHRSummaryCarousel() {
             rotationInterval = null;
         }
     }
-    
+
     // Resume rotation
     function resumeRotation() {
         isPaused = false;
@@ -2201,17 +2201,17 @@ function initHRSummaryCarousel() {
             }
         }, 100);
     }
-    
+
     // Initialize: show first card
     track.style.transform = 'translateX(0%)';
-    
+
     // Start rotation after a short delay
     setTimeout(startRotation, 1000);
-    
+
     // Add hover event listeners - pause when mouse enters carousel or any item
     carousel.addEventListener('mouseenter', pauseRotation);
     carousel.addEventListener('mouseleave', resumeRotation);
-    
+
     // Pause on individual item hover - this ensures pause when hovering over the current card
     items.forEach(item => {
         item.addEventListener('mouseenter', () => {
@@ -2234,7 +2234,110 @@ function initHRSummaryCarousel() {
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initHRSummaryCarousel);
 } else {
-    initHRSummaryCarousel();
-}
+    // Solar System Visualization Logic
+    document.addEventListener('DOMContentLoaded', () => {
+        const solarSystem = document.getElementById('solar-system');
+        const container = document.querySelector('.solar-system-wrapper');
+        const planets = document.querySelectorAll('.planet');
+        const hud = document.getElementById('skill-hud');
+
+        if (!solarSystem || !container) return; // Exit if elements don't exist
+
+        // Skill data mapping for HUD
+        const skillData = {
+            'python': { name: 'PYTHON PROTOCOL', desc: 'Primary mission language. High proficiency in data analysis and automation scripts.', level: '95%', projects: '10+' },
+            'sql': { name: 'SQL DATABASE', desc: 'Structured query language for complex data retrieval and management.', level: '85%', projects: '8' },
+            'c++': { name: 'C++ SYSTEMS', desc: 'Low-level systems programming for performance-critical applications.', level: '75%', projects: '4' },
+            'tensorflow': { name: 'TENSORFLOW CORE', desc: 'Deep learning framework for building and training neural networks.', level: '90%', projects: '6' },
+            'pytorch': { name: 'PYTORCH ENGINE', desc: 'Dynamic neural network library for research and production.', level: '85%', projects: '5' },
+            'scikit': { name: 'SCIKIT-LEARN', desc: 'Machine learning library for predictive data analysis.', level: '90%', projects: '7' },
+            'opencv': { name: 'OPENCV VISION', desc: 'Computer vision library for image processing and analysis.', level: '80%', projects: '3' },
+            'pandas': { name: 'PANDAS DATA', desc: 'Data manipulation and analysis library.', level: '95%', projects: '12+' },
+            'numpy': { name: 'NUMPY MATH', desc: 'Numerical computing library for arrays and matrices.', level: '90%', projects: '10+' },
+            'docker': { name: 'DOCKER CONT.', desc: 'Containerization platform for reliable application deployment.', level: '80%', projects: '5' },
+            'git': { name: 'GIT VERSION', desc: 'Distributed version control system for tracking changes.', level: '95%', projects: 'All' },
+            'azure': { name: 'CLOUDOPS', desc: 'Cloud infrastructure services for scaling AI solutions.', level: '75%', projects: '4' }
+        };
+
+        // 3D Tilt Effect on Mouse Move
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Calculate percentages
+            const xPct = x / rect.width;
+            const yPct = y / rect.height;
+
+            // Calculate rotation (max tilt 20 degrees)
+            const xTilt = (0.5 - yPct) * 40; // Tilt X axis based on Y position
+            const yTilt = (xPct - 0.5) * 40; // Tilt Y axis based on X position
+
+            // Apply transform
+            solarSystem.style.transform = `rotateX(${20 + xTilt}deg) rotateY(${yTilt}deg)`;
+        });
+
+        // Reset Tilt on Mouse Leave
+        container.addEventListener('mouseleave', () => {
+            solarSystem.style.transform = `rotateX(20deg) rotateY(0deg)`;
+            hud.classList.add('hidden');
+            container.classList.remove('paused');
+        });
+
+        // Planet Hover Interaction
+        planets.forEach(planet => {
+            planet.addEventListener('mouseenter', (e) => {
+                // Pause all orbits
+                container.classList.add('paused');
+
+                // Get selected skill data
+                const skillKey = planet.getAttribute('data-skill');
+                const data = skillData[skillKey] || { name: 'UNKNOWN ARTIFACT', desc: 'No telemetry data available.', level: '0%', projects: '0' };
+
+                // Populate HUD
+                document.getElementById('hud-title').textContent = data.name;
+                document.getElementById('hud-desc').textContent = data.desc;
+                document.getElementById('hud-bar').style.width = data.level;
+                document.getElementById('hud-projects').textContent = data.projects;
+
+                // Show HUD
+                hud.classList.remove('hidden');
+            });
+
+            planet.addEventListener('mouseleave', () => {
+                // Unpause orbits handled by container mouseleave, or:
+                // Don't remove 'paused' here, wait until mouse leaves the whole system? 
+                // Actually, if we move between planets, we want it to stay paused.
+                // But if we move to empty space, we want to resume?
+                // Let's keep it simple: Pause IF hovering a planet.
+                container.classList.remove('paused');
+                hud.classList.add('hidden');
+            });
+
+            // Click to Filter
+            planet.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent drag interaction if any
+                const skillFilter = planet.getAttribute('data-skill-filter');
+
+                // Scroll to projects
+                const projectsSection = document.getElementById('projects');
+                if (projectsSection) {
+                    projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+
+                // Trigger Filter
+                if (window.filterProjects) {
+                    window.filterProjects('all', skillFilter);
+
+                    // Update search box if exists
+                    const projectsSearch = document.getElementById('projects-search') || document.querySelector('#projects input[type="search"]');
+                    if (projectsSearch) {
+                        projectsSearch.value = skillFilter;
+                    }
+                }
+            });
+        });
+    });
+
 
 
