@@ -1645,9 +1645,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         const frontHeight = measureElementHeight(front);
                         const backHeight = measureElementHeight(back);
 
-                        // Ensure we have valid measurements (at least 200px, reasonable max of 2000px)
-                        const validFrontHeight = Math.max(200, Math.min(2000, frontHeight));
-                        const validBackHeight = Math.max(200, Math.min(2000, backHeight));
+                        // Ensure we have valid measurements (at least 420px to match CSS min-height, reasonable max of 2000px)
+                        const validFrontHeight = Math.max(420, Math.min(2000, frontHeight));
+                        const validBackHeight = Math.max(420, Math.min(2000, backHeight));
 
                         // Set card height based on which side is visible
                         const isFlipped = card.classList.contains('flipped');
@@ -1735,6 +1735,38 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }, 50);
                 });
+
+                // Desktop Hover Support: Expand card height on hover
+                // Check if device supports hover to avoid issues on mobile
+                const mediaQuery = window.matchMedia('(hover: hover)');
+
+                if (mediaQuery.matches) {
+                    container.addEventListener('mouseenter', () => {
+                        // Only adjust height if not already flipped by click
+                        if (!card.classList.contains('flipped')) {
+                            // Calculate back height
+                            const backHeight = measureElementHeight(back);
+                            const validBackHeight = Math.max(420, Math.min(2000, backHeight));
+
+                            // Apply new height
+                            card.style.height = `${validBackHeight}px`;
+                            card.style.minHeight = `${validBackHeight}px`;
+                        }
+                    });
+
+                    container.addEventListener('mouseleave', () => {
+                        // Only revert height if not turned over by click
+                        if (!card.classList.contains('flipped')) {
+                            // Calculate front height
+                            const frontHeight = measureElementHeight(front);
+                            const validFrontHeight = Math.max(420, Math.min(2000, frontHeight));
+
+                            // Revert height
+                            card.style.height = `${validFrontHeight}px`;
+                            card.style.minHeight = `${validFrontHeight}px`;
+                        }
+                    });
+                }
             });
         }
 
@@ -2365,6 +2397,148 @@ if (document.readyState === 'loading') {
             });
         });
     });
+});
 
+// ==========================================================================
+// Interactive Skill Galaxy - New Design  
+// ==========================================================================
 
+function initSkillGalaxy() {
+    const skillNodes = document.querySelectorAll('.skill-node');
+    const skillHud = document.getElementById('skill-hud');
+    const hudTitle = document.getElementById('hud-title');
+    const hudDesc = document.getElementById('hud-desc');
+    const hudBar = document.getElementById('hud-bar');
 
+    if (!skillNodes.length) return; // Exit if no skill nodes found
+
+    // Skill Data - proficiency and descriptions
+    const skillData = {
+        // Languages
+        'python': { name: 'Python', proficiency: 95, desc: 'Expert-level proficiency with 4+ years of experience in ML/AI development' },
+        'sql': { name: 'SQL', proficiency: 85, desc: 'Advanced database design, complex queries, and optimization' },
+        'cpp': { name: 'C++', proficiency: 75, desc: 'Systems programming and embedded systems development' },
+        'matlab': { name: 'MATLAB', proficiency: 80, desc: 'Scientific computing, aerospace simulations, and data analysis' },
+
+        // AI/ML Frameworks
+        'tensorflow': { name: 'TensorFlow', proficiency: 90, desc: 'Deep learning model development and deployment' },
+        'pytorch': { name: 'PyTorch', proficiency: 85, desc: 'Neural network research and prototyping' },
+        'langchain': { name: 'LangChain', proficiency: 90, desc: 'Building production-ready LLM applications and RAG systems' },
+        'sklearn': { name: 'Scikit-learn', proficiency: 90, desc: 'Classical machine learning and data preprocessing' },
+        'transformers': { name: 'Transformers', proficiency: 85, desc: 'Hugging Face library for NLP and LLM fine-tuning' },
+        'mlflow': { name: 'MLflow', proficiency: 80, desc: 'ML experiment tracking, model versioning, and deployment' },
+
+        // Cloud & DevOps
+        'azure': { name: 'Azure', proficiency: 90, desc: 'Azure AI services, ML Studio, and cloud infrastructure' },
+        'aws': { name: 'AWS', proficiency: 85, desc: 'AWS certified - SageMaker, Lambda, and cloud ML services' },
+        'gcp': { name: 'GCP', proficiency: 75, desc: 'Google Cloud AI Platform and Vertex AI' },
+        'docker': { name: 'Docker', proficiency: 85, desc: 'Containerization for ML model deployment' },
+        'git': { name: 'Git', proficiency: 90, desc: 'Version control, CI/CD pipelines, and collaboration' },
+
+        // Data Science & Web
+        'pandas': { name: 'Pandas', proficiency: 95, desc: 'Data manipulation, cleaning, and analysis at scale' },
+        'numpy': { name: 'NumPy', proficiency: 90, desc: 'Numerical computing and array operations' },
+        'jupyter': { name: 'Jupyter', proficiency: 90, desc: 'Interactive development and documentation' },
+        'react': { name: 'React', proficiency: 75, desc: 'Frontend development for AI dashboards' },
+        'html-css': { name: 'HTML/CSS', proficiency: 85, desc: 'Web design and responsive interfaces' },
+        'javascript': { name: 'JavaScript', proficiency: 80, desc: 'Frontend interactivity and web applications' },
+        'streamlit': { name: 'Streamlit', proficiency: 90, desc: 'Rapid ML app prototyping and deployment' },
+
+        // AI Specialties
+        'llms': { name: 'LLMs', proficiency: 95, desc: 'Large Language Models - fine-tuning, prompting, RAG' },
+        'rag': { name: 'RAG', proficiency: 95, desc: 'Retrieval-Augmented Generation systems' },
+        'cv': { name: 'Computer Vision', proficiency: 85, desc: 'Object detection, image classification, OCR' },
+        'nlp': { name: 'NLP', proficiency: 90, desc: 'Text analysis, sentiment, entity recognition' },
+        'deep-learning': { name: 'Deep Learning', proficiency: 90, desc: 'Neural networks, CNNs, RNNs, Transformers' },
+        'mlops': { name: 'MLOps', proficiency: 85, desc: 'Production ML pipelines and monitoring' },
+        'finetuning': { name: 'Fine-tuning', proficiency: 90, desc: 'Model adaptation and transfer learning' },
+        'deployment': { name: 'Deployment', proficiency: 85, desc: 'Production model serving and scaling' }
+    };
+
+    let activeNode = null;
+
+    skillNodes.forEach(node => {
+        const skill = node.getAttribute('data-skill');
+        const data = skillData[skill] || { name: skill, proficiency: 75, desc: 'Technical skill' };
+
+        // Click handler
+        node.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            // Remove active from previous
+            if (activeNode) {
+                activeNode.classList.remove('active');
+            }
+
+            // Set new active
+            node.classList.add('active');
+            activeNode = node;
+
+            // Update HUD
+            if (skillHud) {
+                skillHud.classList.remove('hidden');
+                if (hudTitle) hudTitle.textContent = data.name.toUpperCase();
+                if (hudDesc) hudDesc.textContent = data.desc;
+                if (hudBar) {
+                    hudBar.style.width = '0%';
+                    // Animate the bar
+                    setTimeout(() => {
+                        hudBar.style.width = data.proficiency + '%';
+                    }, 100);
+                }
+            }
+        });
+
+        // Hover effects for desktop
+        node.addEventListener('mouseenter', () => {
+            if (skillHud && !activeNode) {
+                skillHud.classList.remove('hidden');
+                if (hudTitle) hudTitle.textContent = data.name.toUpperCase();
+                if (hudDesc) hudDesc.textContent = data.desc;
+                if (hudBar) {
+                    hudBar.style.width = data.proficiency + '%';
+                }
+            }
+        });
+
+        node.addEventListener('mouseleave', () => {
+            if (!activeNode && skillHud) {
+                skillHud.classList.add('hidden');
+            }
+        });
+    });
+
+    // Click outside to deselect
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.skill-node') && !e.target.closest('.skill-hud')) {
+            if (activeNode) {
+                activeNode.classList.remove('active');
+                activeNode = null;
+            }
+            if (skillHud) {
+                skillHud.classList.add('hidden');
+            }
+        }
+    });
+
+    // Touch support for mobile - pause animations
+    const galaxy = document.querySelector('.skill-galaxy-wrapper');
+    if (galaxy) {
+        galaxy.addEventListener('touchstart', () => {
+            galaxy.classList.add('touch-active');
+        }, { passive: true });
+
+        galaxy.addEventListener('touchend', () => {
+            setTimeout(() => {
+                galaxy.classList.remove('touch-active');
+            }, 300);
+        }, { passive: true });
+    }
+}
+
+// Initialize skill galaxy
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSkillGalaxy);
+} else {
+    initSkillGalaxy();
+}

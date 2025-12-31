@@ -88,7 +88,7 @@
     </script>
     -->
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=1.1">
     <!-- Cobe library loaded asynchronously for better performance -->
     <script src="https://unpkg.com/cobe@0.6.0/dist/cobe.umd.js" async defer></script>
     <script src="script.js" defer></script>
@@ -142,6 +142,17 @@
         /* Smooth scroll */
         html {
             scroll-behavior: smooth;
+        }
+
+        /* Force contact section spacing */
+        .contact-section {
+            gap: 200px !important;
+        }
+
+        @media (max-width: 968px) {
+            .contact-section {
+                gap: 50px !important;
+            }
         }
     </style>
 
@@ -285,7 +296,7 @@
                             <span class="btn-corner-tl"></span>
                             <span class="btn-corner-br"></span>
                         </a>
-                        <a href="#technology-stack" class="btn-tech-frame btn-secondary">
+                        <a href="#skills" class="btn-tech-frame btn-secondary">
                             <span class="btn-content">Why Hire Me</span>
                             <span class="btn-corner-tl"></span>
                             <span class="btn-corner-br"></span>
@@ -1215,110 +1226,6 @@
 
 
 
-        <!-- Technology Stack Summary Section -->
-        <section id="technology-stack" class="technology-stack" aria-label="Complete technology stack">
-            <div class="container">
-                <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Technology Stack</h2>
-                <p style="text-align: center; color: #b0b0b0; margin-bottom: 40px; font-size: 1.1em;">
-                    Comprehensive overview of technologies, frameworks, and tools used across all projects
-                </p>
-
-                <div class="tech-stack-grid">
-                    <div class="tech-stack-category">
-                        <h3 class="tech-category-title">Core AI/ML Technologies</h3>
-                        <div class="tech-tags">
-                            <span class="tech-tag">Large Language Models (LLMs)</span>
-                            <span class="tech-tag">RAG (Retrieval-Augmented Generation)</span>
-                            <span class="tech-tag">Computer Vision</span>
-                            <span class="tech-tag">Deep Learning</span>
-                            <span class="tech-tag">Neural Networks</span>
-                            <span class="tech-tag">Natural Language Processing (NLP)</span>
-                            <span class="tech-tag">Machine Learning</span>
-                            <span class="tech-tag">Transfer Learning</span>
-                            <span class="tech-tag">Fine-tuning</span>
-                        </div>
-                    </div>
-
-                    <div class="tech-stack-category">
-                        <h3 class="tech-category-title">MLOps & Production</h3>
-                        <div class="tech-tags">
-                            <span class="tech-tag">MLflow</span>
-                            <span class="tech-tag">Model Deployment</span>
-                            <span class="tech-tag">CI/CD</span>
-                            <span class="tech-tag">Model Versioning</span>
-                            <span class="tech-tag">Model Monitoring</span>
-                            <span class="tech-tag">Production AI Systems</span>
-                            <span class="tech-tag">Model Serving</span>
-                        </div>
-                    </div>
-
-                    <div class="tech-stack-category">
-                        <h3 class="tech-category-title">Programming Languages</h3>
-                        <div class="tech-tags">
-                            <span class="tech-tag">Python (Expert)</span>
-                            <span class="tech-tag">SQL/MySQL</span>
-                            <span class="tech-tag">C++</span>
-                            <span class="tech-tag">MATLAB</span>
-                        </div>
-                    </div>
-
-                    <div class="tech-stack-category">
-                        <h3 class="tech-category-title">ML/DL Frameworks</h3>
-                        <div class="tech-tags">
-                            <span class="tech-tag">TensorFlow</span>
-                            <span class="tech-tag">PyTorch</span>
-                            <span class="tech-tag">Scikit-learn</span>
-                            <span class="tech-tag">LangChain</span>
-                            <span class="tech-tag">Transformers</span>
-                        </div>
-                    </div>
-
-                    <div class="tech-stack-category">
-                        <h3 class="tech-category-title">Data Science Stack</h3>
-                        <div class="tech-tags">
-                            <span class="tech-tag">Pandas</span>
-                            <span class="tech-tag">NumPy</span>
-                            <span class="tech-tag">Matplotlib</span>
-                            <span class="tech-tag">Seaborn</span>
-                            <span class="tech-tag">Jupyter</span>
-                        </div>
-                    </div>
-
-                    <div class="tech-stack-category">
-                        <h3 class="tech-category-title">Cloud Platforms</h3>
-                        <div class="tech-tags">
-                            <span class="tech-tag">Microsoft Azure (Advanced)</span>
-                            <span class="tech-tag">AWS (Certified)</span>
-                            <span class="tech-tag">Google Cloud Service</span>
-                            <span class="tech-tag">Cloud Computing</span>
-                        </div>
-                    </div>
-
-                    <div class="tech-stack-category">
-                        <h3 class="tech-category-title">Development Tools</h3>
-                        <div class="tech-tags">
-                            <span class="tech-tag">Git</span>
-                            <span class="tech-tag">GitHub</span>
-                            <span class="tech-tag">VS Code</span>
-                        </div>
-                    </div>
-
-                    <div class="tech-stack-category">
-                        <h3 class="tech-category-title">Domain-Specific Tools</h3>
-                        <div class="tech-tags">
-                            <span class="tech-tag">SolidWorks</span>
-                            <span class="tech-tag">ArcGIS</span>
-                            <span class="tech-tag">FreeFlyer</span>
-                            <span class="tech-tag">Arduino</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-
-
 
 
 
@@ -1414,146 +1321,143 @@
         <!-- Skills Section -->
         <section id="skills" class="skills" aria-label="Core competencies and skills">
             <div class="container">
-                <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">System Capabilities</h2>
-                <p style="text-align: center; color: #b0b0b0; margin-bottom: 30px; font-size: 1.1em;">
-                    Proficient in advanced AI technologies and tools, with practical experience in production
-                    environments. Click any skill to filter projects.
+                <h2 style="color: #0092CC; text-align: center; margin-bottom: 20px;">Technical Skills</h2>
+                <p style="text-align: center; color: #b0b0b0; margin-bottom: 40px; font-size: 1.1em;">
+                    Comprehensive technology stack across AI/ML, Cloud, and Development
                 </p>
 
-                <!-- Solar System Skills Visualization -->
-                <div class="solar-system-wrapper">
-                    <div id="solar-system" class="solar-system-container">
-                        <!-- Central Body: Mission Commander -->
-                        <div class="sun-wrapper">
-                            <div class="sun">
-                                <img src="assets/Abdulrahman_with_a_satellite.jpeg" alt="Abdulrahman with Satellite"
-                                    class="sun-image">
-                            </div>
-                            <!-- <div class="sun-label">CMD. CORE</div> -->
-                        </div>
+                <!-- Skills Grid - Clean and Scannable -->
+                <div class="skills-grid-container">
 
-                        <!-- Orbit 1: Core/Programming (Inner) -->
-                        <div class="orbit-ring ring-1">
-                            <div class="planet" data-skill="python" data-skill-filter="python"
-                                style="--angle: 0deg; --distance: var(--distance-1)">
-                                <img src="assets/tools/python_3d.png" alt="Python">
-                                <div class="planet-label">Python</div>
+                    <!-- AI/ML & Data Science -->
+                    <div class="skill-category">
+                        <h3 class="category-title"><i class="fas fa-brain"></i> AI & Machine Learning</h3>
+                        <div class="skills-row">
+                            <div class="skill-card" data-skill="python">
+                                <img src="assets/tools/python.png" alt="Python" class="skill-card-icon">
+                                <span class="skill-card-name">Python</span>
                             </div>
-                            <div class="planet" data-skill="mysql" data-skill-filter="sql"
-                                style="--angle: 72deg; --distance: var(--distance-1)">
-                                <img src="assets/tools/mysql_3d.png" alt="MySQL">
-                                <div class="planet-label">MySQL</div>
+                            <div class="skill-card" data-skill="tensorflow">
+                                <img src="assets/tools/tensorflow-icon.png" alt="TensorFlow" class="skill-card-icon">
+                                <span class="skill-card-name">TensorFlow</span>
                             </div>
-                            <div class="planet" data-skill="matlab" data-skill-filter="matlab"
-                                style="--angle: 144deg; --distance: var(--distance-1)">
-                                <img src="assets/tools/matlab_3d.png" alt="MATLAB">
-                                <div class="planet-label">MATLAB</div>
+                            <div class="skill-card" data-skill="pytorch">
+                                <img src="assets/tools/pytorch-logo.png" alt="PyTorch" class="skill-card-icon">
+                                <span class="skill-card-name">PyTorch</span>
                             </div>
-                            <div class="planet" data-skill="cpp" data-skill-filter="c++"
-                                style="--angle: 216deg; --distance: var(--distance-1)">
-                                <img src="assets/tools/cpp_3d.png" alt="C++">
-                                <div class="planet-label">C++</div>
+                            <div class="skill-card" data-skill="sklearn">
+                                <img src="assets/tools/scikit-learn.png" alt="Scikit-learn" class="skill-card-icon">
+                                <span class="skill-card-name">Scikit-learn</span>
                             </div>
-                            <div class="planet" data-skill="embedded_c" data-skill-filter="embedded_c"
-                                style="--angle: 288deg; --distance: var(--distance-1)">
-                                <img src="assets/tools/embedded_c_3d.png" alt="Embedded C">
-                                <div class="planet-label">Embedded C</div>
+                            <div class="skill-card text-badge" data-skill="langchain">
+                                <span class="skill-card-name">LangChain</span>
                             </div>
-                        </div>
-
-                        <!-- Orbit 2: Cloud (Middle Inner) -->
-                        <div class="orbit-ring ring-2">
-                            <div class="planet" data-skill="azure" data-skill-filter="azure"
-                                style="--angle: 45deg; --distance: var(--distance-2)">
-                                <img src="assets/tools/azure_3d.png" alt="Azure">
-                                <div class="planet-label">Azure</div>
+                            <div class="skill-card text-badge" data-skill="llms">
+                                <span class="skill-card-name">LLMs</span>
                             </div>
-                            <div class="planet" data-skill="aws" data-skill-filter="aws"
-                                style="--angle: 225deg; --distance: var(--distance-2)">
-                                <img src="assets/tools/aws_3d.png" alt="AWS">
-                                <div class="planet-label">AWS</div>
+                            <div class="skill-card text-badge" data-skill="rag">
+                                <span class="skill-card-name">RAG</span>
                             </div>
-                        </div>
-
-                        <!-- Orbit 3: Web Development (Middle Outer) -->
-                        <div class="orbit-ring ring-3">
-                            <div class="planet" data-skill="html" data-skill-filter="html"
-                                style="--angle: 0deg; --distance: var(--distance-3)">
-                                <img src="assets/tools/html_3d.png" alt="HTML">
-                                <div class="planet-label">HTML</div>
+                            <div class="skill-card text-badge" data-skill="nlp">
+                                <span class="skill-card-name">NLP</span>
                             </div>
-                            <div class="planet" data-skill="css" data-skill-filter="css"
-                                style="--angle: 72deg; --distance: var(--distance-3)">
-                                <img src="assets/tools/css_3d.png" alt="CSS">
-                                <div class="planet-label">CSS</div>
+                            <div class="skill-card text-badge" data-skill="cv">
+                                <span class="skill-card-name">Computer Vision</span>
                             </div>
-                            <div class="planet" data-skill="js" data-skill-filter="js"
-                                style="--angle: 144deg; --distance: var(--distance-3)">
-                                <img src="assets/tools/js_3d.png" alt="JavaScript">
-                                <div class="planet-label">JavaScript</div>
-                            </div>
-                            <div class="planet" data-skill="react" data-skill-filter="react"
-                                style="--angle: 216deg; --distance: var(--distance-3)">
-                                <img src="assets/tools/react_3d.png" alt="React">
-                                <div class="planet-label">React</div>
-                            </div>
-                            <div class="planet" data-skill="ts" data-skill-filter="ts"
-                                style="--angle: 288deg; --distance: var(--distance-3)">
-                                <img src="assets/tools/ts_3d.png" alt="TypeScript">
-                                <div class="planet-label">TypeScript</div>
-                            </div>
-                        </div>
-
-                        <!-- Orbit 4: Deployment (Outer) -->
-                        <div class="orbit-ring ring-4">
-                            <div class="planet" data-skill="labview" data-skill-filter="labview"
-                                style="--angle: 30deg; --distance: var(--distance-4)">
-                                <img src="assets/tools/labview_3d.png" alt="LabVIEW">
-                                <div class="planet-label">LabVIEW</div>
-                            </div>
-                            <div class="planet" data-skill="docker" data-skill-filter="docker"
-                                style="--angle: 150deg; --distance: var(--distance-4)">
-                                <img src="assets/tools/docker_3d.png" alt="Docker">
-                                <div class="planet-label">Docker</div>
-                            </div>
-                            <div class="planet" data-skill="streamlit" data-skill-filter="streamlit"
-                                style="--angle: 270deg; --distance: var(--distance-4)">
-                                <img src="assets/tools/streamlit_3d.png" alt="Streamlit">
-                                <div class="planet-label">Streamlit</div>
+                            <div class="skill-card text-badge" data-skill="deep-learning">
+                                <span class="skill-card-name">Deep Learning</span>
                             </div>
                         </div>
                     </div>
-                    <!-- HUD Overlay for Selected Skill -->
-                    <div id="skill-hud" class="skill-hud hidden">
-                        <div class="hud-content">
-                            <h3 id="hud-title">SYSTEM ANALYZING...</h3>
-                            <div class="hud-scan-line"></div>
-                            <p id="hud-desc">Hover over a system node (planet) to view telemetry data.</p>
-                            <div class="hud-stats">
-                                <div class="hud-stat">
-                                    <span class="stat-label">PROFICIENCY</span>
-                                    <div class="stat-bar-container">
-                                        <div id="hud-bar" class="stat-bar" style="width: 0%"></div>
-                                    </div>
-                                </div>
-                                <div class="hud-stat">
-                                    <span class="stat-label">PROJECTS</span>
-                                    <span id="hud-projects" class="stat-value">0</span>
-                                </div>
+
+                    <!-- Cloud & DevOps -->
+                    <div class="skill-category">
+                        <h3 class="category-title"><i class="fas fa-cloud"></i> Cloud & DevOps</h3>
+                        <div class="skills-row">
+                            <div class="skill-card" data-skill="azure">
+                                <img src="assets/tools/Microsoft-Azure.jpg" alt="Azure" class="skill-card-icon">
+                                <span class="skill-card-name">Azure</span>
+                            </div>
+                            <div class="skill-card" data-skill="aws">
+                                <img src="assets/logos/aws-logo.png" alt="AWS" class="skill-card-icon">
+                                <span class="skill-card-name">AWS</span>
+                            </div>
+                            <div class="skill-card" data-skill="gcp">
+                                <img src="assets/tools/gcp_logo.png" alt="GCP" class="skill-card-icon">
+                                <span class="skill-card-name">GCP</span>
+                            </div>
+                            <div class="skill-card text-badge" data-skill="docker">
+                                <span class="skill-card-name">Docker</span>
+                            </div>
+                            <div class="skill-card" data-skill="git">
+                                <img src="assets/tools/icons8-git-144.png" alt="Git" class="skill-card-icon">
+                                <span class="skill-card-name">Git</span>
+                            </div>
+                            <div class="skill-card" data-skill="mlflow">
+                                <img src="assets/tools/mlflow.png" alt="MLflow" class="skill-card-icon">
+                                <span class="skill-card-name">MLflow</span>
+                            </div>
+                            <div class="skill-card text-badge" data-skill="mlops">
+                                <span class="skill-card-name">MLOps</span>
                             </div>
                         </div>
-                        <div class="hud-corner top-left"></div>
-                        <div class="hud-corner top-right"></div>
-                        <div class="hud-corner bottom-left"></div>
-                        <div class="hud-corner bottom-right"></div>
                     </div>
-                    <p style="text-align: center; color: #b0b0b0; margin-top: 20px; font-size: 0.9em;">
-                        <i class="fas fa-mouse"></i> Drag to rotate galaxy â€¢ Hover to scan â€¢ Click to filter
-                    </p>
+
+                    <!-- Data Science & Analytics -->
+                    <div class="skill-category">
+                        <h3 class="category-title"><i class="fas fa-chart-bar"></i> Data Science</h3>
+                        <div class="skills-row">
+                            <div class="skill-card" data-skill="pandas">
+                                <img src="assets/tools/Pandas.png" alt="Pandas" class="skill-card-icon">
+                                <span class="skill-card-name">Pandas</span>
+                            </div>
+                            <div class="skill-card" data-skill="numpy">
+                                <img src="assets/tools/file-type-numpy.svg" alt="NumPy" class="skill-card-icon">
+                                <span class="skill-card-name">NumPy</span>
+                            </div>
+                            <div class="skill-card" data-skill="jupyter">
+                                <img src="assets/tools/icons8-jupyter-144.png" alt="Jupyter" class="skill-card-icon">
+                                <span class="skill-card-name">Jupyter</span>
+                            </div>
+                            <div class="skill-card" data-skill="sql">
+                                <img src="assets/tools/icons8-mysql-96.png" alt="SQL" class="skill-card-icon">
+                                <span class="skill-card-name">SQL</span>
+                            </div>
+                            <div class="skill-card text-badge" data-skill="streamlit">
+                                <span class="skill-card-name">Streamlit</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Programming Languages -->
+                    <div class="skill-category">
+                        <h3 class="category-title"><i class="fas fa-code"></i> Programming</h3>
+                        <div class="skills-row">
+                            <div class="skill-card text-badge" data-skill="cpp">
+                                <span class="skill-card-name">C++</span>
+                            </div>
+                            <div class="skill-card text-badge" data-skill="matlab">
+                                <span class="skill-card-name">MATLAB</span>
+                            </div>
+                            <div class="skill-card" data-skill="javascript">
+                                <img src="assets/tools/javascript-web-development-for-app-mobile-4.png" alt="JavaScript"
+                                    class="skill-card-icon">
+                                <span class="skill-card-name">JavaScript</span>
+                            </div>
+                            <div class="skill-card" data-skill="react">
+                                <img src="assets/tools/React_Logo.png" alt="React" class="skill-card-icon">
+                                <span class="skill-card-name">React</span>
+                            </div>
+                            <div class="skill-card text-badge" data-skill="html-css">
+                                <span class="skill-card-name">HTML/CSS</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-
-
+            </div>
         </section>
+
 
         <!-- Domain Expertise Section -->
 
