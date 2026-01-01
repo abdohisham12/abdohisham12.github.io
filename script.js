@@ -1563,33 +1563,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 const card = container.querySelector('.card');
                 if (card) {
                     card.classList.remove('flipped');
-                }
-            });
-        }
+                    // Add click-to-flip functionality to cards
+                    // Add click-to-flip functionality to cards
+                    function initCardFlipListeners() {
+                        projectContainers.forEach(container => {
+                            const card = container.querySelector('.card');
+                            if (!card) return;
 
-        // Add click-to-flip functionality to cards
-        function initCardFlipListeners() {
-            projectContainers.forEach(container => {
-                const card = container.querySelector('.card');
-                if (!card) return;
+                            // [FIX] Explicit handling for Fullscreen Cards (Mission Archive)
+                            // Use simplified logic: just toggle class, no height calc needed (handled by CSS 100vh)
+                            if (card.classList.contains('fullscreen-card')) {
+                                // Remove any existing listeners to prevent duplicates if re-init
+                                const newCard = card.cloneNode(true);
+                                card.parentNode.replaceChild(newCard, card);
 
-                const front = card.querySelector('.card-front');
-                const back = card.querySelector('.card-back');
+                                newCard.addEventListener('click', function (e) {
+                                    // Prevent flip if clicking links/buttons
+                                    if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.fullscreen-nav')) return;
+                                    this.classList.toggle('flipped');
+                                });
+                                return; // Stop here for fullscreen cards
+                            }
 
-                if (!front || !back) return;
+                            // Legacy Card Logic (Height Calculation)
+                            const front = card.querySelector('.card-front');
+                            const back = card.querySelector('.card-back');
 
-                // Function to measure element height by temporarily cloning it with proper styles
-                const measureElementHeight = (element) => {
-                    // Get computed styles from original element
-                    const computedStyle = window.getComputedStyle(element);
-                    const cardWidth = card.getBoundingClientRect().width;
+                            if (!front || !back) return;
 
-                    // Clone the element
-                    const clone = element.cloneNode(true);
+                            // Function to measure element height by temporarily cloning it with proper styles
+                            const measureElementHeight = (element) => {
+                                // Get computed styles from original element
+                                const computedStyle = window.getComputedStyle(element);
+                                const cardWidth = card.getBoundingClientRect().width;
 
-                    // Create a wrapper to position off-screen while keeping clone in normal flow
-                    const wrapper = document.createElement('div');
-                    wrapper.style.cssText = `
+                                // Clone the element
+                                const clone = element.cloneNode(true);
+
+                                // Create a wrapper to position off-screen while keeping clone in normal flow
+                                const wrapper = document.createElement('div');
+                                wrapper.style.cssText = `
                         position: fixed !important;
                         top: -9999px !important;
                         left: -9999px !important;
@@ -1598,8 +1611,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         pointer-events: none !important;
                     `;
 
-                    // Set up clone for measurement - use static positioning to allow natural height
-                    clone.style.cssText = `
+                                // Set up clone for measurement - use static positioning to allow natural height
+                                clone.style.cssText = `
                         position: static !important;
                         visibility: visible !important;
                         width: 100% !important;
@@ -1617,928 +1630,1039 @@ document.addEventListener('DOMContentLoaded', () => {
                         gap: ${computedStyle.gap} !important;
                     `;
 
-                    // Add clone to wrapper, then wrapper to DOM
-                    wrapper.appendChild(clone);
-                    document.body.appendChild(wrapper);
+                                // Add clone to wrapper, then wrapper to DOM
+                                wrapper.appendChild(clone);
+                                document.body.appendChild(wrapper);
 
-                    // Force reflow to ensure accurate measurement
-                    void clone.offsetHeight;
+                                // Force reflow to ensure accurate measurement
+                                void clone.offsetHeight;
 
-                    // Measure the actual content height
-                    const height = clone.scrollHeight;
+                                // Measure the actual content height
+                                const height = clone.scrollHeight;
 
-                    // Remove wrapper (which contains clone)
-                    document.body.removeChild(wrapper);
+                                // Remove wrapper (which contains clone)
+                                document.body.removeChild(wrapper);
 
-                    return height;
-                };
+                                return height;
+                            };
 
-                // Function to measure and update card height based on visible side
-                const updateCardHeight = () => {
-                    try {
-                        // Ensure card has a valid width before measuring
-                        if (card.offsetWidth === 0) {
-                            return; // Card not visible yet
-                        }
+                            // Function to measure and update card height based on visible side
+                            const updateCardHeight = () => {
+                                try {
+                                    // Ensure card has a valid width before measuring
+                                    if (card.offsetWidth === 0) {
+                                        return; // Card not visible yet
+                                    }
 
-                        // Measure both sides
-                        const frontHeight = measureElementHeight(front);
-                        const backHeight = measureElementHeight(back);
+                                    // Measure both sides
+                                    const frontHeight = measureElementHeight(front);
+                                    const backHeight = measureElementHeight(back);
 
-                        // Ensure we have valid measurements (at least 420px to match CSS min-height, reasonable max of 2000px)
-                        const validFrontHeight = Math.max(420, Math.min(2000, frontHeight));
-                        const validBackHeight = Math.max(420, Math.min(2000, backHeight));
+                                    // Ensure we have valid measurements (at least 420px to match CSS min-height, reasonable max of 2000px)
+                                    // Ensure we have valid measurements (at least 420px to match CSS min-height, reasonable max of 2000px)
+                                    // Add generous buffer to prevent scrollbars - user reports persistent scrolling issues
+                                    const buffer = 100;
+                                    const validFrontHeight = Math.max(420, Math.min(2000, frontHeight + buffer));
+                                    const validBackHeight = Math.max(420, Math.min(2000, backHeight + buffer));
 
-                        // Set card height based on which side is visible
-                        const isFlipped = card.classList.contains('flipped');
-                        const targetHeight = isFlipped ? validBackHeight : validFrontHeight;
+                                    // Set card height based on which side is visible
+                                    const isFlipped = card.classList.contains('flipped');
+                                    const targetHeight = isFlipped ? validBackHeight : validFrontHeight;
 
-                        // Only update if the height is different to avoid unnecessary reflows
-                        const currentHeight = parseInt(card.style.height) || card.offsetHeight;
-                        if (Math.abs(currentHeight - targetHeight) > 5) {
-                            card.style.height = `${targetHeight}px`;
-                            card.style.minHeight = `${targetHeight}px`;
-                        }
-                    } catch (error) {
-                        // Silently handle error - fallback to default height
-                        // Error logged for debugging in development only
-                        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                            console.warn('Error updating card height:', error);
-                        }
-                        // Fallback to default height if measurement fails
-                        if (!card.style.height) {
-                            card.style.height = '520px';
-                            card.style.minHeight = '520px';
-                        }
-                    }
-                };
-
-                // Set initial height after content is loaded
-                // Use requestAnimationFrame to ensure DOM is ready
-                requestAnimationFrame(() => {
-                    setTimeout(updateCardHeight, 200);
-                });
-
-                // Update on window resize with debouncing
-                let resizeTimeout;
-                const handleResize = () => {
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(() => {
-                        requestAnimationFrame(updateCardHeight);
-                    }, 150);
-                };
-                window.addEventListener('resize', handleResize);
-
-                // Track if card is currently transitioning to prevent height updates during flip
-                let isTransitioning = false;
-
-                // Add click listener with height update
-                card.addEventListener('click', (e) => {
-                    // Don't flip if clicking on buttons or links
-                    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.closest('a')) {
-                        return;
-                    }
-
-                    // Prevent multiple rapid clicks during transition
-                    if (isTransitioning) {
-                        return;
-                    }
-
-                    // Toggle flip state - CSS handles the transform
-                    const wasFlipped = card.classList.contains('flipped');
-                    card.classList.toggle('flipped');
-                    const isFlipped = card.classList.contains('flipped');
-
-                    // Mark as transitioning
-                    isTransitioning = true;
-
-                    // Update height immediately when flip starts (not after it completes)
-                    // Use minimal delay (50ms) to allow DOM to settle, then start height adjustment
-                    // This synchronizes the height transition (0.6s) with the flip animation (0.6s)
-                    setTimeout(() => {
-                        // Double-check the flip state hasn't changed
-                        if (card.classList.contains('flipped') === isFlipped) {
-                            requestAnimationFrame(() => {
-                                // Update height immediately - this will animate simultaneously with flip
-                                if (!isTransitioning || card.classList.contains('flipped') === isFlipped) {
-                                    updateCardHeight();
+                                    // Only update if the height is different to avoid unnecessary reflows
+                                    const currentHeight = parseInt(card.style.height) || card.offsetHeight;
+                                    if (Math.abs(currentHeight - targetHeight) > 5) {
+                                        card.style.height = `${targetHeight}px`;
+                                        card.style.minHeight = `${targetHeight}px`;
+                                    }
+                                } catch (error) {
+                                    // Silently handle error - fallback to default height
+                                    // Error logged for debugging in development only
+                                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                                        console.warn('Error updating card height:', error);
+                                    }
+                                    // Fallback to default height if measurement fails
+                                    if (!card.style.height) {
+                                        card.style.height = '520px';
+                                        card.style.minHeight = '520px';
+                                    }
                                 }
-                                // Clear transitioning flag after height update starts
-                                // Height transition will complete at same time as flip (both 0.6s)
+                            };
+
+                            // Set initial height after content is loaded
+                            // Use requestAnimationFrame to ensure DOM is ready
+                            requestAnimationFrame(() => {
+                                setTimeout(updateCardHeight, 200);
+                            });
+
+                            // Update on window resize with debouncing
+                            let resizeTimeout;
+                            const handleResize = () => {
+                                clearTimeout(resizeTimeout);
+                                resizeTimeout = setTimeout(() => {
+                                    requestAnimationFrame(updateCardHeight);
+                                }, 150);
+                            };
+                            window.addEventListener('resize', handleResize);
+
+                            // Track if card is currently transitioning to prevent height updates during flip
+                            let isTransitioning = false;
+
+                            // Add click listener with height update
+                            card.addEventListener('click', (e) => {
+                                // Don't flip if clicking on buttons or links
+                                if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.closest('a')) {
+                                    return;
+                                }
+
+                                // Prevent multiple rapid clicks during transition
+                                if (isTransitioning) {
+                                    return;
+                                }
+
+                                // Toggle flip state - CSS handles the transform
+                                const wasFlipped = card.classList.contains('flipped');
+                                card.classList.toggle('flipped');
+                                const isFlipped = card.classList.contains('flipped');
+
+                                // Mark as transitioning
+                                isTransitioning = true;
+
+                                // Update height immediately when flip starts (not after it completes)
+                                // Use minimal delay (50ms) to allow DOM to settle, then start height adjustment
+                                // This synchronizes the height transition (0.6s) with the flip animation (0.6s)
                                 setTimeout(() => {
-                                    isTransitioning = false;
+                                    // Double-check the flip state hasn't changed
+                                    if (card.classList.contains('flipped') === isFlipped) {
+                                        requestAnimationFrame(() => {
+                                            // Update height immediately - this will animate simultaneously with flip
+                                            if (!isTransitioning || card.classList.contains('flipped') === isFlipped) {
+                                                updateCardHeight();
+                                            }
+                                            // Clear transitioning flag after height update starts
+                                            // Height transition will complete at same time as flip (both 0.6s)
+                                            setTimeout(() => {
+                                                isTransitioning = false;
+                                            }, 50);
+                                        });
+                                    } else {
+                                        // State changed, clear flag
+                                        isTransitioning = false;
+                                    }
                                 }, 50);
                             });
-                        } else {
-                            // State changed, clear flag
-                            isTransitioning = false;
-                        }
-                    }, 50);
-                });
 
-                // Desktop Hover Support: Expand card height on hover
-                // Check if device supports hover to avoid issues on mobile
-                const mediaQuery = window.matchMedia('(hover: hover)');
+                            // Desktop Hover Support: Expand card height on hover
+                            // Check if device supports hover to avoid issues on mobile
+                            const mediaQuery = window.matchMedia('(hover: hover)');
 
-                if (mediaQuery.matches) {
-                    container.addEventListener('mouseenter', () => {
-                        // Only adjust height if not already flipped by click
-                        if (!card.classList.contains('flipped')) {
-                            // Calculate back height
-                            const backHeight = measureElementHeight(back);
-                            const validBackHeight = Math.max(420, Math.min(2000, backHeight));
+                            if (mediaQuery.matches) {
+                                container.addEventListener('mouseenter', () => {
+                                    // Only adjust height if not already flipped by click
+                                    if (!card.classList.contains('flipped')) {
+                                        // Calculate back height
+                                        const backHeight = measureElementHeight(back);
+                                        const buffer = 100;
+                                        const validBackHeight = Math.max(420, Math.min(2000, backHeight + buffer));
 
-                            // Apply new height
-                            card.style.height = `${validBackHeight}px`;
-                            card.style.minHeight = `${validBackHeight}px`;
-                        }
-                    });
+                                        // Apply new height
+                                        card.style.height = `${validBackHeight}px`;
+                                        card.style.minHeight = `${validBackHeight}px`;
+                                    }
+                                });
 
-                    container.addEventListener('mouseleave', () => {
-                        // Only revert height if not turned over by click
-                        if (!card.classList.contains('flipped')) {
-                            // Calculate front height
-                            const frontHeight = measureElementHeight(front);
-                            const validFrontHeight = Math.max(420, Math.min(2000, frontHeight));
+                                container.addEventListener('mouseleave', () => {
+                                    // Only revert height if not turned over by click
+                                    if (!card.classList.contains('flipped')) {
+                                        // Calculate front height
+                                        const frontHeight = measureElementHeight(front);
+                                        const buffer = 100;
+                                        const validFrontHeight = Math.max(420, Math.min(2000, frontHeight + buffer));
 
-                            // Revert height
-                            card.style.height = `${validFrontHeight}px`;
-                            card.style.minHeight = `${validFrontHeight}px`;
-                        }
-                    });
-                }
-            });
-        }
-
-        // Go to specific slide
-        function goToSlide(index) {
-            if (index < 0) index = projectContainers.length - 1;
-            if (index >= projectContainers.length) index = 0;
-
-            // Reset all cards to front state before sliding
-            resetCardFlips();
-
-            currentIndex = index;
-            const translateX = -currentIndex * 100;
-            track.style.transform = `translateX(${translateX}%)`;
-            updateIndicators();
-
-            // Update ARIA live region
-            const ariaLiveRegion = document.getElementById('projects-aria-live');
-            if (ariaLiveRegion) {
-                const projectTitle = projectContainers[currentIndex].querySelector('h3')?.textContent || '';
-                ariaLiveRegion.textContent = `Showing project ${currentIndex + 1} of ${projectContainers.length}: ${projectTitle}`;
-            }
-        }
-
-        // Next slide
-        function nextSlide() {
-            goToSlide(currentIndex + 1);
-        }
-
-        // Previous slide
-        function prevSlide() {
-            goToSlide(currentIndex - 1);
-        }
-
-        // Start auto-rotation
-        function startAutoRotation() {
-            if (isPaused || projectContainers.length <= 1) return;
-            stopAutoRotation();
-            autoRotationInterval = setInterval(nextSlide, ROTATION_DELAY);
-        }
-
-        // Stop auto-rotation
-        function stopAutoRotation() {
-            if (autoRotationInterval) {
-                clearInterval(autoRotationInterval);
-                autoRotationInterval = null;
-            }
-        }
-
-        // Pause on hover
-        carousel.addEventListener('mouseenter', () => {
-            isPaused = true;
-            stopAutoRotation();
-        });
-
-        // Resume on mouse leave
-        carousel.addEventListener('mouseleave', () => {
-            isPaused = false;
-            startAutoRotation();
-        });
-
-        // Navigation buttons
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                prevSlide();
-                if (!isPaused) {
-                    stopAutoRotation();
-                    startAutoRotation();
-                }
-            });
-        }
-
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                nextSlide();
-                if (!isPaused) {
-                    stopAutoRotation();
-                    startAutoRotation();
-                }
-            });
-        }
-
-        // Initialize
-        createIndicators();
-        initCardFlipListeners();
-        goToSlide(0);
-
-        // Start auto-rotation after a short delay
-        setTimeout(() => {
-            startAutoRotation();
-        }, 1000);
-
-        // Handle window resize
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                goToSlide(currentIndex); // Recalculate position
-            }, 100);
-        });
-    }
-
-    // Initialize carousel when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initProjectsCarousel);
-    } else {
-        initProjectsCarousel();
-    }
-
-    // Image error handling - graceful fallback
-    document.addEventListener('error', (e) => {
-        if (e.target.tagName === 'IMG') {
-            e.target.style.opacity = '0.5';
-            e.target.alt = e.target.alt || 'Image failed to load';
-            // Add error class for styling
-            e.target.classList.add('image-error');
-        }
-    }, true);
-
-    // Define filterProjects function for projects search/filtering
-    window.filterProjects = function (filter, searchQuery) {
-        // Projects filtering logic - can be enhanced based on needs
-        const projectContainers = document.querySelectorAll('.project-container');
-        projectContainers.forEach(container => {
-            let shouldShow = true;
-
-            if (searchQuery) {
-                const projectText = container.textContent.toLowerCase();
-                shouldShow = projectText.includes(searchQuery.toLowerCase());
-            }
-
-            container.style.display = shouldShow ? 'block' : 'none';
-        });
-    };
-
-    // Initialize with default filter (all projects)
-    const activeFilter = 'all';
-    filterProjects(activeFilter);
-
-    // Make skills clickable to filter projects
-    const skillContainers = document.querySelectorAll('.skill-container[data-skill-filter]');
-    const projectsSearch = document.getElementById('projects-search') || document.querySelector('#projects input[type="search"]');
-
-    skillContainers.forEach(skill => {
-        skill.addEventListener('click', function () {
-            const skillFilter = (this.getAttribute('data-skill-filter') || '').trim();
-            const fallbackLabel = this.querySelector('.skill-name .h3')?.textContent?.trim().toLowerCase().split(' ')[0] || '';
-            const searchValue = skillFilter || fallbackLabel;
-            // Scroll to projects section
-            const projectsSection = document.getElementById('projects');
-            if (projectsSection) {
-                projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-            // Set search query to filter by skill (if search input exists)
-            if (projectsSearch && searchValue) {
-                projectsSearch.value = searchValue;
-                filterProjects('all', searchValue);
-            } else if (searchValue) {
-                // If no search input, just filter directly
-                filterProjects('all', searchValue);
-            }
-        });
-    });
-});
-
-// Globe Initialization with Intersection Observer for lazy loading
-document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('globe-canvas');
-    const globeWrapper = document.querySelector('.globe-wrapper');
-    if (!canvas || !globeWrapper) {
-        return; // Exit if canvas or wrapper not available
-    }
-
-    let globe = null;
-    let isInitialized = false;
-    const MOVEMENT_DAMPING = 1400;
-
-    function getCobeLibrary() {
-        // Try different ways cobe might be exposed from CDN
-        if (window.cobe && window.cobe.createGlobe) {
-            return window.cobe;
-        }
-        if (window.createGlobe) {
-            return { createGlobe: window.createGlobe };
-        }
-        // Check if loaded as module
-        if (typeof cobe !== 'undefined' && cobe.createGlobe) {
-            return cobe;
-        }
-        return null;
-    }
-
-    function initGlobe() {
-        if (isInitialized) return;
-
-        // Wait for cobe library to be available
-        let retryCount = 0;
-        const maxRetries = 100; // Increased retries
-
-        const tryInit = () => {
-            retryCount++;
-            if (retryCount > maxRetries) {
-                // Cobe library failed to load after maximum retries
-                // Show canvas with fallback styling if library fails to load
-                if (canvas) {
-                    canvas.style.opacity = '0.3';
-                    canvas.style.visibility = 'visible';
-                }
-                return;
-            }
-
-            const cobeLib = getCobeLibrary();
-            if (!cobeLib || !cobeLib.createGlobe) {
-                setTimeout(tryInit, 100);
-                return;
-            }
-
-            // Cobe library loaded successfully, initializing globe
-
-            isInitialized = true;
-
-            const phiRef = { current: 0 };
-            const widthRef = { current: 0 };
-            const pointerInteracting = { current: null };
-            const pointerInteractionMovement = { current: 0 };
-            let r = 0; // Rotation value for smooth interaction
-
-            const updatePointerInteraction = (value) => {
-                pointerInteracting.current = value;
-                if (canvas) {
-                    canvas.style.cursor = value !== null ? 'grabbing' : 'grab';
-                }
-            };
-
-            const updateMovement = (clientX) => {
-                if (pointerInteracting.current !== null) {
-                    const delta = clientX - pointerInteracting.current;
-                    pointerInteractionMovement.current = delta;
-                    r += delta / MOVEMENT_DAMPING;
-                }
-            };
-
-            const onResize = () => {
-                if (canvas) {
-                    const newWidth = canvas.offsetWidth || 400;
-                    if (newWidth > 0 && newWidth !== widthRef.current) {
-                        widthRef.current = newWidth;
-                        const canvasWidth = widthRef.current * 2;
-                        const canvasHeight = widthRef.current * 2;
-                        canvas.width = canvasWidth;
-                        canvas.height = canvasHeight;
-                    }
-                }
-            };
-
-            window.addEventListener('resize', onResize);
-
-            // Get initial width - ensure we have dimensions
-            // Wait a bit for layout to settle
-            const initializeDimensions = () => {
-                // Force a layout calculation by checking multiple times
-                widthRef.current = canvas.offsetWidth || globeWrapper.offsetWidth || 400;
-
-                if (widthRef.current === 0) {
-                    // Force a layout calculation
-                    canvas.style.display = 'block';
-                    canvas.style.width = '100%';
-                    canvas.style.height = 'auto';
-                    // Trigger reflow
-                    void canvas.offsetWidth;
-                    widthRef.current = canvas.offsetWidth || globeWrapper.offsetWidth || 400;
-                }
-
-                // Ensure minimum width
-                if (widthRef.current < 300) {
-                    widthRef.current = 300;
-                }
-
-                // Ensure maximum width for performance
-                if (widthRef.current > 500) {
-                    widthRef.current = 500;
-                }
-
-                // Set canvas internal dimensions (important for rendering)
-                const canvasWidth = widthRef.current * 2;
-                const canvasHeight = widthRef.current * 2;
-                canvas.width = canvasWidth;
-                canvas.height = canvasHeight;
-
-                // Verify dimensions were set
-                if (canvas.width === 0 || canvas.height === 0) {
-                    // Canvas dimensions are zero, retrying
-                    setTimeout(initializeDimensions, 100);
-                    return;
-                }
-
-                // Now create the globe with proper dimensions
-                createGlobeInstance();
-            };
-
-            // Try multiple times to ensure layout is ready
-            setTimeout(initializeDimensions, 50);
-            setTimeout(initializeDimensions, 200);
-            setTimeout(initializeDimensions, 500);
-
-            function createGlobeInstance() {
-                const canvasWidth = widthRef.current * 2;
-                const canvasHeight = widthRef.current * 2;
-
-                // Verify canvas has valid dimensions
-                if (canvasWidth === 0 || canvasHeight === 0) {
-                    // Invalid canvas dimensions
-                    return;
-                }
-
-                // Location markers: [latitude, longitude]
-                const markers = [
-                    { location: [30.0444, 31.2357], size: 0.1 }, // Cairo, Egypt (base location)
-                    { location: [52.5200, 13.4050], size: 0.08 }, // Berlin, Germany
-                    { location: [40.7128, -74.0060], size: 0.1 }, // New York, USA
-                    { location: [35.6762, 139.6503], size: 0.08 }, // Tokyo, Japan
-                    { location: [51.5074, -0.1278], size: 0.07 }, // London, UK
-                    { location: [48.8566, 2.3522], size: 0.07 }, // Paris, France
-                    { location: [25.2048, 55.2708], size: 0.06 }, // Dubai, UAE
-                    { location: [19.4326, -99.1332], size: 0.06 }, // Mexico City
-                    { location: [-23.5505, -46.6333], size: 0.06 }, // São Paulo, Brazil
-                    { location: [34.6937, 135.5022], size: 0.05 }, // Osaka, Japan
-                ];
-
-                try {
-                    globe = cobeLib.createGlobe(canvas, {
-                        devicePixelRatio: 2,
-                        width: canvasWidth,
-                        height: canvasHeight,
-                        phi: 0,
-                        theta: 0.3,
-                        dark: 0,
-                        diffuse: 0.4,
-                        mapSamples: 16000,
-                        mapBrightness: 1.2,
-                        baseColor: [0.05, 0.1, 0.15], // Deep space dark
-                        markerColor: [0, 0.95, 1], // Cyan markers
-                        glowColor: [0, 0.57, 0.8], // Blue glow
-                        markers: markers,
-                        onRender: (state) => {
-                            if (!pointerInteracting.current) {
-                                phiRef.current += 0.005;
+                                        // Revert height
+                                        card.style.height = `${validFrontHeight}px`;
+                                        card.style.minHeight = `${validFrontHeight}px`;
+                                    }
+                                });
                             }
-                            state.phi = phiRef.current + r;
-                            state.width = canvasWidth;
-                            state.height = canvasHeight;
-                        }
-                    });
-
-                    // Globe created successfully
-
-                    // Make canvas visible immediately after globe creation
-                    if (canvas) {
-                        canvas.style.opacity = '1';
-                        canvas.style.visibility = 'visible';
+                        });
                     }
 
-                    // Pointer event handlers
-                    canvas.addEventListener('pointerdown', (e) => {
-                        pointerInteracting.current = e.clientX;
-                        updatePointerInteraction(e.clientX);
-                    });
+                    // Go to specific slide
+                    function goToSlide(index) {
+                        if (index < 0) index = projectContainers.length - 1;
+                        if (index >= projectContainers.length) index = 0;
 
-                    canvas.addEventListener('pointerup', () => {
-                        updatePointerInteraction(null);
-                    });
+                        // Reset all cards to front state before sliding
+                        resetCardFlips();
 
-                    canvas.addEventListener('pointerout', () => {
-                        updatePointerInteraction(null);
-                    });
+                        currentIndex = index;
+                        const translateX = -currentIndex * 100;
+                        track.style.transform = `translateX(${translateX}%)`;
+                        updateIndicators();
 
-                    canvas.addEventListener('mousemove', (e) => {
-                        updateMovement(e.clientX);
-                    });
-
-                    canvas.addEventListener('touchmove', (e) => {
-                        if (e.touches[0]) {
-                            updateMovement(e.touches[0].clientX);
+                        // Update ARIA live region
+                        const ariaLiveRegion = document.getElementById('projects-aria-live');
+                        if (ariaLiveRegion) {
+                            const projectTitle = projectContainers[currentIndex].querySelector('h3')?.textContent || '';
+                            ariaLiveRegion.textContent = `Showing project ${currentIndex + 1} of ${projectContainers.length}: ${projectTitle}`;
                         }
-                    });
+                    }
 
-                    // Cleanup on page unload
-                    window.addEventListener('beforeunload', () => {
-                        if (globe && globe.destroy) {
-                            globe.destroy();
+                    // Next slide
+                    function nextSlide() {
+                        goToSlide(currentIndex + 1);
+                    }
+
+                    // Previous slide
+                    function prevSlide() {
+                        goToSlide(currentIndex - 1);
+                    }
+
+                    // Start auto-rotation
+                    function startAutoRotation() {
+                        if (isPaused || projectContainers.length <= 1) return;
+                        stopAutoRotation();
+                        autoRotationInterval = setInterval(nextSlide, ROTATION_DELAY);
+                    }
+
+                    // Stop auto-rotation
+                    function stopAutoRotation() {
+                        if (autoRotationInterval) {
+                            clearInterval(autoRotationInterval);
+                            autoRotationInterval = null;
                         }
-                        window.removeEventListener('resize', onResize);
+                    }
+
+                    // Pause on hover
+                    carousel.addEventListener('mouseenter', () => {
+                        isPaused = true;
+                        stopAutoRotation();
                     });
-                } catch (error) {
-                    // Error creating globe
-                    // Show canvas with reduced opacity as fallback
-                    if (canvas) {
-                        canvas.style.opacity = '0.2';
-                        canvas.style.visibility = 'visible';
+
+                    // Resume on mouse leave
+                    carousel.addEventListener('mouseleave', () => {
+                        isPaused = false;
+                        startAutoRotation();
+                    });
+
+                    // Navigation buttons
+                    if (prevBtn) {
+                        prevBtn.addEventListener('click', () => {
+                            prevSlide();
+                            if (!isPaused) {
+                                stopAutoRotation();
+                                startAutoRotation();
+                            }
+                        });
                     }
-                    return;
-                }
-            }
-        };
 
-        tryInit();
-    }
-
-    // Use Intersection Observer to lazy-load globe when it enters viewport
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !isInitialized) {
-                    initGlobe();
-                    observer.disconnect(); // Only initialize once
-                }
-            });
-        }, {
-            threshold: 0.1 // Trigger when 10% of the component is visible
-        });
-
-        observer.observe(globeWrapper);
-    } else {
-        // Fallback for browsers without IntersectionObserver
-        initGlobe();
-    }
-
-    // Also try to initialize immediately if already in viewport
-    const checkIfInViewport = () => {
-        const rect = globeWrapper.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-        if (isVisible && !isInitialized) {
-            initGlobe();
-        }
-    };
-
-    // Check immediately and after delays to ensure initialization
-    checkIfInViewport();
-    setTimeout(checkIfInViewport, 100);
-    setTimeout(checkIfInViewport, 500);
-    setTimeout(checkIfInViewport, 1000);
-});
-
-// HR Summary Carousel - Auto-rotating with hover pause
-function initHRSummaryCarousel() {
-    const carousel = document.getElementById('hr-summary-carousel');
-    const track = document.getElementById('hr-summary-carousel-track');
-
-    if (!carousel || !track) return;
-
-    const items = track.querySelectorAll('.hr-summary-item');
-    if (items.length === 0) return;
-
-    let currentIndex = 0;
-    let isPaused = false;
-    let rotationInterval = null;
-    const rotationDuration = 4500; // 4.5 seconds between rotations
-    const transitionDuration = 800; // 0.8s transition time
-
-    // Function to move to next card
-    function moveToNext() {
-        if (isPaused) return;
-
-        currentIndex = (currentIndex + 1) % items.length;
-        const translateX = -currentIndex * 100;
-        track.style.transform = `translateX(${translateX}%)`;
-    }
-
-    // Start auto-rotation
-    function startRotation() {
-        if (rotationInterval) clearInterval(rotationInterval);
-        rotationInterval = setInterval(moveToNext, rotationDuration);
-    }
-
-    // Pause rotation
-    function pauseRotation() {
-        isPaused = true;
-        if (rotationInterval) {
-            clearInterval(rotationInterval);
-            rotationInterval = null;
-        }
-    }
-
-    // Resume rotation
-    function resumeRotation() {
-        isPaused = false;
-        // Wait a moment before resuming to ensure smooth transition
-        setTimeout(() => {
-            if (!isPaused) {
-                startRotation();
-            }
-        }, 100);
-    }
-
-    // Initialize: show first card
-    track.style.transform = 'translateX(0%)';
-
-    // Start rotation after a short delay
-    setTimeout(startRotation, 1000);
-
-    // Add hover event listeners - pause when mouse enters carousel or any item
-    carousel.addEventListener('mouseenter', pauseRotation);
-    carousel.addEventListener('mouseleave', resumeRotation);
-
-    // Pause on individual item hover - this ensures pause when hovering over the current card
-    items.forEach(item => {
-        item.addEventListener('mouseenter', () => {
-            pauseRotation();
-        });
-        item.addEventListener('mouseleave', () => {
-            // Only resume if mouse is not over carousel or any item
-            setTimeout(() => {
-                const isOverCarousel = carousel.matches(':hover');
-                const isOverAnyItem = Array.from(items).some(item => item.matches(':hover'));
-                if (!isOverCarousel && !isOverAnyItem) {
-                    resumeRotation();
-                }
-            }, 50);
-        });
-    });
-}
-
-// Initialize carousel when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHRSummaryCarousel);
-} else {
-    // Solar System Visualization Logic
-    document.addEventListener('DOMContentLoaded', () => {
-        const solarSystem = document.getElementById('solar-system');
-        const container = document.querySelector('.solar-system-wrapper');
-        const planets = document.querySelectorAll('.planet');
-        const hud = document.getElementById('skill-hud');
-
-        if (!solarSystem || !container) return; // Exit if elements don't exist
-
-        // Skill data mapping for HUD
-        const skillData = {
-            'python': { name: 'PYTHON PROTOCOL', desc: 'Primary mission language. High proficiency in data analysis and automation scripts.', level: '95%', projects: '10+' },
-            'sql': { name: 'SQL DATABASE', desc: 'Structured query language for complex data retrieval and management.', level: '85%', projects: '8' },
-            'c++': { name: 'C++ SYSTEMS', desc: 'Low-level systems programming for performance-critical applications.', level: '75%', projects: '4' },
-            'tensorflow': { name: 'TENSORFLOW CORE', desc: 'Deep learning framework for building and training neural networks.', level: '90%', projects: '6' },
-            'pytorch': { name: 'PYTORCH ENGINE', desc: 'Dynamic neural network library for research and production.', level: '85%', projects: '5' },
-            'scikit': { name: 'SCIKIT-LEARN', desc: 'Machine learning library for predictive data analysis.', level: '90%', projects: '7' },
-            'opencv': { name: 'OPENCV VISION', desc: 'Computer vision library for image processing and analysis.', level: '80%', projects: '3' },
-            'pandas': { name: 'PANDAS DATA', desc: 'Data manipulation and analysis library.', level: '95%', projects: '12+' },
-            'numpy': { name: 'NUMPY MATH', desc: 'Numerical computing library for arrays and matrices.', level: '90%', projects: '10+' },
-            'docker': { name: 'DOCKER CONT.', desc: 'Containerization platform for reliable application deployment.', level: '80%', projects: '5' },
-            'git': { name: 'GIT VERSION', desc: 'Distributed version control system for tracking changes.', level: '95%', projects: 'All' },
-            'azure': { name: 'CLOUDOPS', desc: 'Cloud infrastructure services for scaling AI solutions.', level: '75%', projects: '4' }
-        };
-
-        // 3D Tilt Effect on Mouse Move
-        container.addEventListener('mousemove', (e) => {
-            const rect = container.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            // Calculate percentages
-            const xPct = x / rect.width;
-            const yPct = y / rect.height;
-
-            // Calculate rotation (max tilt 20 degrees)
-            const xTilt = (0.5 - yPct) * 40; // Tilt X axis based on Y position
-            const yTilt = (xPct - 0.5) * 40; // Tilt Y axis based on X position
-
-            // Apply transform
-            solarSystem.style.transform = `rotateX(${20 + xTilt}deg) rotateY(${yTilt}deg)`;
-        });
-
-        // Reset Tilt on Mouse Leave
-        container.addEventListener('mouseleave', () => {
-            solarSystem.style.transform = `rotateX(20deg) rotateY(0deg)`;
-            hud.classList.add('hidden');
-            container.classList.remove('paused');
-        });
-
-        // Planet Hover Interaction
-        planets.forEach(planet => {
-            planet.addEventListener('mouseenter', (e) => {
-                // Pause all orbits
-                container.classList.add('paused');
-
-                // Get selected skill data
-                const skillKey = planet.getAttribute('data-skill');
-                const data = skillData[skillKey] || { name: 'UNKNOWN ARTIFACT', desc: 'No telemetry data available.', level: '0%', projects: '0' };
-
-                // Populate HUD
-                document.getElementById('hud-title').textContent = data.name;
-                document.getElementById('hud-desc').textContent = data.desc;
-                document.getElementById('hud-bar').style.width = data.level;
-                document.getElementById('hud-projects').textContent = data.projects;
-
-                // Show HUD
-                hud.classList.remove('hidden');
-            });
-
-            planet.addEventListener('mouseleave', () => {
-                // Unpause orbits handled by container mouseleave, or:
-                // Don't remove 'paused' here, wait until mouse leaves the whole system? 
-                // Actually, if we move between planets, we want it to stay paused.
-                // But if we move to empty space, we want to resume?
-                // Let's keep it simple: Pause IF hovering a planet.
-                container.classList.remove('paused');
-                hud.classList.add('hidden');
-            });
-
-            // Click to Filter
-            planet.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent drag interaction if any
-                const skillFilter = planet.getAttribute('data-skill-filter');
-
-                // Scroll to projects
-                const projectsSection = document.getElementById('projects');
-                if (projectsSection) {
-                    projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-
-                // Trigger Filter
-                if (window.filterProjects) {
-                    window.filterProjects('all', skillFilter);
-
-                    // Update search box if exists
-                    const projectsSearch = document.getElementById('projects-search') || document.querySelector('#projects input[type="search"]');
-                    if (projectsSearch) {
-                        projectsSearch.value = skillFilter;
+                    if (nextBtn) {
+                        nextBtn.addEventListener('click', () => {
+                            nextSlide();
+                            if (!isPaused) {
+                                stopAutoRotation();
+                                startAutoRotation();
+                            }
+                        });
                     }
-                }
-            });
-        });
-    });
-});
 
-// ==========================================================================
-// Interactive Skill Galaxy - New Design  
-// ==========================================================================
+                    // Initialize
+                    createIndicators();
+                    initCardFlipListeners();
+                    goToSlide(0);
 
-function initSkillGalaxy() {
-    const skillNodes = document.querySelectorAll('.skill-node');
-    const skillHud = document.getElementById('skill-hud');
-    const hudTitle = document.getElementById('hud-title');
-    const hudDesc = document.getElementById('hud-desc');
-    const hudBar = document.getElementById('hud-bar');
-
-    if (!skillNodes.length) return; // Exit if no skill nodes found
-
-    // Skill Data - proficiency and descriptions
-    const skillData = {
-        // Languages
-        'python': { name: 'Python', proficiency: 95, desc: 'Expert-level proficiency with 4+ years of experience in ML/AI development' },
-        'sql': { name: 'SQL', proficiency: 85, desc: 'Advanced database design, complex queries, and optimization' },
-        'cpp': { name: 'C++', proficiency: 75, desc: 'Systems programming and embedded systems development' },
-        'matlab': { name: 'MATLAB', proficiency: 80, desc: 'Scientific computing, aerospace simulations, and data analysis' },
-
-        // AI/ML Frameworks
-        'tensorflow': { name: 'TensorFlow', proficiency: 90, desc: 'Deep learning model development and deployment' },
-        'pytorch': { name: 'PyTorch', proficiency: 85, desc: 'Neural network research and prototyping' },
-        'langchain': { name: 'LangChain', proficiency: 90, desc: 'Building production-ready LLM applications and RAG systems' },
-        'sklearn': { name: 'Scikit-learn', proficiency: 90, desc: 'Classical machine learning and data preprocessing' },
-        'transformers': { name: 'Transformers', proficiency: 85, desc: 'Hugging Face library for NLP and LLM fine-tuning' },
-        'mlflow': { name: 'MLflow', proficiency: 80, desc: 'ML experiment tracking, model versioning, and deployment' },
-
-        // Cloud & DevOps
-        'azure': { name: 'Azure', proficiency: 90, desc: 'Azure AI services, ML Studio, and cloud infrastructure' },
-        'aws': { name: 'AWS', proficiency: 85, desc: 'AWS certified - SageMaker, Lambda, and cloud ML services' },
-        'gcp': { name: 'GCP', proficiency: 75, desc: 'Google Cloud AI Platform and Vertex AI' },
-        'docker': { name: 'Docker', proficiency: 85, desc: 'Containerization for ML model deployment' },
-        'git': { name: 'Git', proficiency: 90, desc: 'Version control, CI/CD pipelines, and collaboration' },
-
-        // Data Science & Web
-        'pandas': { name: 'Pandas', proficiency: 95, desc: 'Data manipulation, cleaning, and analysis at scale' },
-        'numpy': { name: 'NumPy', proficiency: 90, desc: 'Numerical computing and array operations' },
-        'jupyter': { name: 'Jupyter', proficiency: 90, desc: 'Interactive development and documentation' },
-        'react': { name: 'React', proficiency: 75, desc: 'Frontend development for AI dashboards' },
-        'html-css': { name: 'HTML/CSS', proficiency: 85, desc: 'Web design and responsive interfaces' },
-        'javascript': { name: 'JavaScript', proficiency: 80, desc: 'Frontend interactivity and web applications' },
-        'streamlit': { name: 'Streamlit', proficiency: 90, desc: 'Rapid ML app prototyping and deployment' },
-
-        // AI Specialties
-        'llms': { name: 'LLMs', proficiency: 95, desc: 'Large Language Models - fine-tuning, prompting, RAG' },
-        'rag': { name: 'RAG', proficiency: 95, desc: 'Retrieval-Augmented Generation systems' },
-        'cv': { name: 'Computer Vision', proficiency: 85, desc: 'Object detection, image classification, OCR' },
-        'nlp': { name: 'NLP', proficiency: 90, desc: 'Text analysis, sentiment, entity recognition' },
-        'deep-learning': { name: 'Deep Learning', proficiency: 90, desc: 'Neural networks, CNNs, RNNs, Transformers' },
-        'mlops': { name: 'MLOps', proficiency: 85, desc: 'Production ML pipelines and monitoring' },
-        'finetuning': { name: 'Fine-tuning', proficiency: 90, desc: 'Model adaptation and transfer learning' },
-        'deployment': { name: 'Deployment', proficiency: 85, desc: 'Production model serving and scaling' }
-    };
-
-    let activeNode = null;
-
-    skillNodes.forEach(node => {
-        const skill = node.getAttribute('data-skill');
-        const data = skillData[skill] || { name: skill, proficiency: 75, desc: 'Technical skill' };
-
-        // Click handler
-        node.addEventListener('click', (e) => {
-            e.stopPropagation();
-
-            // Remove active from previous
-            if (activeNode) {
-                activeNode.classList.remove('active');
-            }
-
-            // Set new active
-            node.classList.add('active');
-            activeNode = node;
-
-            // Update HUD
-            if (skillHud) {
-                skillHud.classList.remove('hidden');
-                if (hudTitle) hudTitle.textContent = data.name.toUpperCase();
-                if (hudDesc) hudDesc.textContent = data.desc;
-                if (hudBar) {
-                    hudBar.style.width = '0%';
-                    // Animate the bar
+                    // Start auto-rotation after a short delay
                     setTimeout(() => {
-                        hudBar.style.width = data.proficiency + '%';
+                        startAutoRotation();
+                    }, 1000);
+
+                    // Handle window resize
+                    let resizeTimeout;
+                    window.addEventListener('resize', () => {
+                        clearTimeout(resizeTimeout);
+                        resizeTimeout = setTimeout(() => {
+                            goToSlide(currentIndex); // Recalculate position
+                        }, 100);
+                    });
+                }
+
+                // Initialize carousel when DOM is ready
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initProjectsCarousel);
+                } else {
+                    initProjectsCarousel();
+                }
+
+                // Image error handling - graceful fallback
+                document.addEventListener('error', (e) => {
+                    if (e.target.tagName === 'IMG') {
+                        e.target.style.opacity = '0.5';
+                        e.target.alt = e.target.alt || 'Image failed to load';
+                        // Add error class for styling
+                        e.target.classList.add('image-error');
+                    }
+                }, true);
+
+                // Define filterProjects function for projects search/filtering
+                window.filterProjects = function (filter, searchQuery) {
+                    // Projects filtering logic - can be enhanced based on needs
+                    const projectContainers = document.querySelectorAll('.project-container');
+                    projectContainers.forEach(container => {
+                        let shouldShow = true;
+
+                        if (searchQuery) {
+                            const projectText = container.textContent.toLowerCase();
+                            shouldShow = projectText.includes(searchQuery.toLowerCase());
+                        }
+
+                        container.style.display = shouldShow ? 'block' : 'none';
+                    });
+                };
+
+                // Initialize with default filter (all projects)
+                const activeFilter = 'all';
+                filterProjects(activeFilter);
+
+                // Make skills clickable to filter projects
+                const skillContainers = document.querySelectorAll('.skill-container[data-skill-filter]');
+                const projectsSearch = document.getElementById('projects-search') || document.querySelector('#projects input[type="search"]');
+
+                skillContainers.forEach(skill => {
+                    skill.addEventListener('click', function () {
+                        const skillFilter = (this.getAttribute('data-skill-filter') || '').trim();
+                        const fallbackLabel = this.querySelector('.skill-name .h3')?.textContent?.trim().toLowerCase().split(' ')[0] || '';
+                        const searchValue = skillFilter || fallbackLabel;
+                        // Scroll to projects section
+                        const projectsSection = document.getElementById('projects');
+                        if (projectsSection) {
+                            projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                        // Set search query to filter by skill (if search input exists)
+                        if (projectsSearch && searchValue) {
+                            projectsSearch.value = searchValue;
+                            filterProjects('all', searchValue);
+                        } else if (searchValue) {
+                            // If no search input, just filter directly
+                            filterProjects('all', searchValue);
+                        }
+                    });
+                });
+            });
+
+            // Globe Initialization with Intersection Observer for lazy loading
+            document.addEventListener('DOMContentLoaded', () => {
+                const canvas = document.getElementById('globe-canvas');
+                const globeWrapper = document.querySelector('.globe-wrapper');
+                if (!canvas || !globeWrapper) {
+                    return; // Exit if canvas or wrapper not available
+                }
+
+                let globe = null;
+                let isInitialized = false;
+                const MOVEMENT_DAMPING = 1400;
+
+                function getCobeLibrary() {
+                    // Try different ways cobe might be exposed from CDN
+                    if (window.cobe && window.cobe.createGlobe) {
+                        return window.cobe;
+                    }
+                    if (window.createGlobe) {
+                        return { createGlobe: window.createGlobe };
+                    }
+                    // Check if loaded as module
+                    if (typeof cobe !== 'undefined' && cobe.createGlobe) {
+                        return cobe;
+                    }
+                    return null;
+                }
+
+                function initGlobe() {
+                    if (isInitialized) return;
+
+                    // Wait for cobe library to be available
+                    let retryCount = 0;
+                    const maxRetries = 100; // Increased retries
+
+                    const tryInit = () => {
+                        retryCount++;
+                        if (retryCount > maxRetries) {
+                            // Cobe library failed to load after maximum retries
+                            // Show canvas with fallback styling if library fails to load
+                            if (canvas) {
+                                canvas.style.opacity = '0.3';
+                                canvas.style.visibility = 'visible';
+                            }
+                            return;
+                        }
+
+                        const cobeLib = getCobeLibrary();
+                        if (!cobeLib || !cobeLib.createGlobe) {
+                            setTimeout(tryInit, 100);
+                            return;
+                        }
+
+                        // Cobe library loaded successfully, initializing globe
+
+                        isInitialized = true;
+
+                        const phiRef = { current: 0 };
+                        const widthRef = { current: 0 };
+                        const pointerInteracting = { current: null };
+                        const pointerInteractionMovement = { current: 0 };
+                        let r = 0; // Rotation value for smooth interaction
+
+                        const updatePointerInteraction = (value) => {
+                            pointerInteracting.current = value;
+                            if (canvas) {
+                                canvas.style.cursor = value !== null ? 'grabbing' : 'grab';
+                            }
+                        };
+
+                        const updateMovement = (clientX) => {
+                            if (pointerInteracting.current !== null) {
+                                const delta = clientX - pointerInteracting.current;
+                                pointerInteractionMovement.current = delta;
+                                r += delta / MOVEMENT_DAMPING;
+                            }
+                        };
+
+                        const onResize = () => {
+                            if (canvas) {
+                                const newWidth = canvas.offsetWidth || 400;
+                                if (newWidth > 0 && newWidth !== widthRef.current) {
+                                    widthRef.current = newWidth;
+                                    const canvasWidth = widthRef.current * 2;
+                                    const canvasHeight = widthRef.current * 2;
+                                    canvas.width = canvasWidth;
+                                    canvas.height = canvasHeight;
+                                }
+                            }
+                        };
+
+                        window.addEventListener('resize', onResize);
+
+                        // Get initial width - ensure we have dimensions
+                        // Wait a bit for layout to settle
+                        const initializeDimensions = () => {
+                            // Force a layout calculation by checking multiple times
+                            widthRef.current = canvas.offsetWidth || globeWrapper.offsetWidth || 400;
+
+                            if (widthRef.current === 0) {
+                                // Force a layout calculation
+                                canvas.style.display = 'block';
+                                canvas.style.width = '100%';
+                                canvas.style.height = 'auto';
+                                // Trigger reflow
+                                void canvas.offsetWidth;
+                                widthRef.current = canvas.offsetWidth || globeWrapper.offsetWidth || 400;
+                            }
+
+                            // Ensure minimum width
+                            if (widthRef.current < 300) {
+                                widthRef.current = 300;
+                            }
+
+                            // Ensure maximum width for performance
+                            if (widthRef.current > 500) {
+                                widthRef.current = 500;
+                            }
+
+                            // Set canvas internal dimensions (important for rendering)
+                            const canvasWidth = widthRef.current * 2;
+                            const canvasHeight = widthRef.current * 2;
+                            canvas.width = canvasWidth;
+                            canvas.height = canvasHeight;
+
+                            // Verify dimensions were set
+                            if (canvas.width === 0 || canvas.height === 0) {
+                                // Canvas dimensions are zero, retrying
+                                setTimeout(initializeDimensions, 100);
+                                return;
+                            }
+
+                            // Now create the globe with proper dimensions
+                            createGlobeInstance();
+                        };
+
+                        // Try multiple times to ensure layout is ready
+                        setTimeout(initializeDimensions, 50);
+                        setTimeout(initializeDimensions, 200);
+                        setTimeout(initializeDimensions, 500);
+
+                        function createGlobeInstance() {
+                            const canvasWidth = widthRef.current * 2;
+                            const canvasHeight = widthRef.current * 2;
+
+                            // Verify canvas has valid dimensions
+                            if (canvasWidth === 0 || canvasHeight === 0) {
+                                // Invalid canvas dimensions
+                                return;
+                            }
+
+                            // Location markers: [latitude, longitude]
+                            const markers = [
+                                { location: [30.0444, 31.2357], size: 0.1 }, // Cairo, Egypt (base location)
+                                { location: [52.5200, 13.4050], size: 0.08 }, // Berlin, Germany
+                                { location: [40.7128, -74.0060], size: 0.1 }, // New York, USA
+                                { location: [35.6762, 139.6503], size: 0.08 }, // Tokyo, Japan
+                                { location: [51.5074, -0.1278], size: 0.07 }, // London, UK
+                                { location: [48.8566, 2.3522], size: 0.07 }, // Paris, France
+                                { location: [25.2048, 55.2708], size: 0.06 }, // Dubai, UAE
+                                { location: [19.4326, -99.1332], size: 0.06 }, // Mexico City
+                                { location: [-23.5505, -46.6333], size: 0.06 }, // São Paulo, Brazil
+                                { location: [34.6937, 135.5022], size: 0.05 }, // Osaka, Japan
+                            ];
+
+                            try {
+                                globe = cobeLib.createGlobe(canvas, {
+                                    devicePixelRatio: 2,
+                                    width: canvasWidth,
+                                    height: canvasHeight,
+                                    phi: 0,
+                                    theta: 0.3,
+                                    dark: 0,
+                                    diffuse: 0.4,
+                                    mapSamples: 16000,
+                                    mapBrightness: 1.2,
+                                    baseColor: [0.05, 0.1, 0.15], // Deep space dark
+                                    markerColor: [0, 0.95, 1], // Cyan markers
+                                    glowColor: [0, 0.57, 0.8], // Blue glow
+                                    markers: markers,
+                                    onRender: (state) => {
+                                        if (!pointerInteracting.current) {
+                                            phiRef.current += 0.005;
+                                        }
+                                        state.phi = phiRef.current + r;
+                                        state.width = canvasWidth;
+                                        state.height = canvasHeight;
+                                    }
+                                });
+
+                                // Globe created successfully
+
+                                // Make canvas visible immediately after globe creation
+                                if (canvas) {
+                                    canvas.style.opacity = '1';
+                                    canvas.style.visibility = 'visible';
+                                }
+
+                                // Pointer event handlers
+                                canvas.addEventListener('pointerdown', (e) => {
+                                    pointerInteracting.current = e.clientX;
+                                    updatePointerInteraction(e.clientX);
+                                });
+
+                                canvas.addEventListener('pointerup', () => {
+                                    updatePointerInteraction(null);
+                                });
+
+                                canvas.addEventListener('pointerout', () => {
+                                    updatePointerInteraction(null);
+                                });
+
+                                canvas.addEventListener('mousemove', (e) => {
+                                    updateMovement(e.clientX);
+                                });
+
+                                canvas.addEventListener('touchmove', (e) => {
+                                    if (e.touches[0]) {
+                                        updateMovement(e.touches[0].clientX);
+                                    }
+                                });
+
+                                // Cleanup on page unload
+                                window.addEventListener('beforeunload', () => {
+                                    if (globe && globe.destroy) {
+                                        globe.destroy();
+                                    }
+                                    window.removeEventListener('resize', onResize);
+                                });
+                            } catch (error) {
+                                // Error creating globe
+                                // Show canvas with reduced opacity as fallback
+                                if (canvas) {
+                                    canvas.style.opacity = '0.2';
+                                    canvas.style.visibility = 'visible';
+                                }
+                                return;
+                            }
+                        }
+                    };
+
+                    tryInit();
+                }
+
+                // Use Intersection Observer to lazy-load globe when it enters viewport
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting && !isInitialized) {
+                                initGlobe();
+                                observer.disconnect(); // Only initialize once
+                            }
+                        });
+                    }, {
+                        threshold: 0.1 // Trigger when 10% of the component is visible
+                    });
+
+                    observer.observe(globeWrapper);
+                } else {
+                    // Fallback for browsers without IntersectionObserver
+                    initGlobe();
+                }
+
+                // Also try to initialize immediately if already in viewport
+                const checkIfInViewport = () => {
+                    const rect = globeWrapper.getBoundingClientRect();
+                    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                    if (isVisible && !isInitialized) {
+                        initGlobe();
+                    }
+                };
+
+                // Check immediately and after delays to ensure initialization
+                checkIfInViewport();
+                setTimeout(checkIfInViewport, 100);
+                setTimeout(checkIfInViewport, 500);
+                setTimeout(checkIfInViewport, 1000);
+            });
+
+            // HR Summary Carousel - Auto-rotating with hover pause
+            function initHRSummaryCarousel() {
+                const carousel = document.getElementById('hr-summary-carousel');
+                const track = document.getElementById('hr-summary-carousel-track');
+
+                if (!carousel || !track) return;
+
+                const items = track.querySelectorAll('.hr-summary-item');
+                if (items.length === 0) return;
+
+                let currentIndex = 0;
+                let isPaused = false;
+                let rotationInterval = null;
+                const rotationDuration = 4500; // 4.5 seconds between rotations
+                const transitionDuration = 800; // 0.8s transition time
+
+                // Function to move to next card
+                function moveToNext() {
+                    if (isPaused) return;
+
+                    currentIndex = (currentIndex + 1) % items.length;
+                    const translateX = -currentIndex * 100;
+                    track.style.transform = `translateX(${translateX}%)`;
+                }
+
+                // Start auto-rotation
+                function startRotation() {
+                    if (rotationInterval) clearInterval(rotationInterval);
+                    rotationInterval = setInterval(moveToNext, rotationDuration);
+                }
+
+                // Pause rotation
+                function pauseRotation() {
+                    isPaused = true;
+                    if (rotationInterval) {
+                        clearInterval(rotationInterval);
+                        rotationInterval = null;
+                    }
+                }
+
+                // Resume rotation
+                function resumeRotation() {
+                    isPaused = false;
+                    // Wait a moment before resuming to ensure smooth transition
+                    setTimeout(() => {
+                        if (!isPaused) {
+                            startRotation();
+                        }
                     }, 100);
                 }
-            }
-        });
 
-        // Hover effects for desktop
-        node.addEventListener('mouseenter', () => {
-            if (skillHud && !activeNode) {
-                skillHud.classList.remove('hidden');
-                if (hudTitle) hudTitle.textContent = data.name.toUpperCase();
-                if (hudDesc) hudDesc.textContent = data.desc;
-                if (hudBar) {
-                    hudBar.style.width = data.proficiency + '%';
+                // Initialize: show first card
+                track.style.transform = 'translateX(0%)';
+
+                // Start rotation after a short delay
+                setTimeout(startRotation, 1000);
+
+                // Add hover event listeners - pause when mouse enters carousel or any item
+                carousel.addEventListener('mouseenter', pauseRotation);
+                carousel.addEventListener('mouseleave', resumeRotation);
+
+                // Pause on individual item hover - this ensures pause when hovering over the current card
+                items.forEach(item => {
+                    item.addEventListener('mouseenter', () => {
+                        pauseRotation();
+                    });
+                    item.addEventListener('mouseleave', () => {
+                        // Only resume if mouse is not over carousel or any item
+                        setTimeout(() => {
+                            const isOverCarousel = carousel.matches(':hover');
+                            const isOverAnyItem = Array.from(items).some(item => item.matches(':hover'));
+                            if (!isOverCarousel && !isOverAnyItem) {
+                                resumeRotation();
+                            }
+                        }, 50);
+                    });
+                });
+            }
+
+            // Initialize carousel when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initHRSummaryCarousel);
+            } else {
+                // Solar System Visualization Logic
+                document.addEventListener('DOMContentLoaded', () => {
+                    const solarSystem = document.getElementById('solar-system');
+                    const container = document.querySelector('.solar-system-wrapper');
+                    const planets = document.querySelectorAll('.planet');
+                    const hud = document.getElementById('skill-hud');
+
+                    if (!solarSystem || !container) return; // Exit if elements don't exist
+
+                    // Skill data mapping for HUD
+                    const skillData = {
+                        'python': { name: 'PYTHON PROTOCOL', desc: 'Primary mission language. High proficiency in data analysis and automation scripts.', level: '95%', projects: '10+' },
+                        'sql': { name: 'SQL DATABASE', desc: 'Structured query language for complex data retrieval and management.', level: '85%', projects: '8' },
+                        'c++': { name: 'C++ SYSTEMS', desc: 'Low-level systems programming for performance-critical applications.', level: '75%', projects: '4' },
+                        'tensorflow': { name: 'TENSORFLOW CORE', desc: 'Deep learning framework for building and training neural networks.', level: '90%', projects: '6' },
+                        'pytorch': { name: 'PYTORCH ENGINE', desc: 'Dynamic neural network library for research and production.', level: '85%', projects: '5' },
+                        'scikit': { name: 'SCIKIT-LEARN', desc: 'Machine learning library for predictive data analysis.', level: '90%', projects: '7' },
+                        'opencv': { name: 'OPENCV VISION', desc: 'Computer vision library for image processing and analysis.', level: '80%', projects: '3' },
+                        'pandas': { name: 'PANDAS DATA', desc: 'Data manipulation and analysis library.', level: '95%', projects: '12+' },
+                        'numpy': { name: 'NUMPY MATH', desc: 'Numerical computing library for arrays and matrices.', level: '90%', projects: '10+' },
+                        'docker': { name: 'DOCKER CONT.', desc: 'Containerization platform for reliable application deployment.', level: '80%', projects: '5' },
+                        'git': { name: 'GIT VERSION', desc: 'Distributed version control system for tracking changes.', level: '95%', projects: 'All' },
+                        'azure': { name: 'CLOUDOPS', desc: 'Cloud infrastructure services for scaling AI solutions.', level: '75%', projects: '4' }
+                    };
+
+                    // 3D Tilt Effect on Mouse Move
+                    container.addEventListener('mousemove', (e) => {
+                        const rect = container.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+
+                        // Calculate percentages
+                        const xPct = x / rect.width;
+                        const yPct = y / rect.height;
+
+                        // Calculate rotation (max tilt 20 degrees)
+                        const xTilt = (0.5 - yPct) * 40; // Tilt X axis based on Y position
+                        const yTilt = (xPct - 0.5) * 40; // Tilt Y axis based on X position
+
+                        // Apply transform
+                        solarSystem.style.transform = `rotateX(${20 + xTilt}deg) rotateY(${yTilt}deg)`;
+                    });
+
+                    // Reset Tilt on Mouse Leave
+                    container.addEventListener('mouseleave', () => {
+                        solarSystem.style.transform = `rotateX(20deg) rotateY(0deg)`;
+                        hud.classList.add('hidden');
+                        container.classList.remove('paused');
+                    });
+
+                    // Planet Hover Interaction
+                    planets.forEach(planet => {
+                        planet.addEventListener('mouseenter', (e) => {
+                            // Pause all orbits
+                            container.classList.add('paused');
+
+                            // Get selected skill data
+                            const skillKey = planet.getAttribute('data-skill');
+                            const data = skillData[skillKey] || { name: 'UNKNOWN ARTIFACT', desc: 'No telemetry data available.', level: '0%', projects: '0' };
+
+                            // Populate HUD
+                            document.getElementById('hud-title').textContent = data.name;
+                            document.getElementById('hud-desc').textContent = data.desc;
+                            document.getElementById('hud-bar').style.width = data.level;
+                            document.getElementById('hud-projects').textContent = data.projects;
+
+                            // Show HUD
+                            hud.classList.remove('hidden');
+                        });
+
+                        planet.addEventListener('mouseleave', () => {
+                            // Unpause orbits handled by container mouseleave, or:
+                            // Don't remove 'paused' here, wait until mouse leaves the whole system? 
+                            // Actually, if we move between planets, we want it to stay paused.
+                            // But if we move to empty space, we want to resume?
+                            // Let's keep it simple: Pause IF hovering a planet.
+                            container.classList.remove('paused');
+                            hud.classList.add('hidden');
+                        });
+
+                        // Click to Filter
+                        planet.addEventListener('click', (e) => {
+                            e.stopPropagation(); // Prevent drag interaction if any
+                            const skillFilter = planet.getAttribute('data-skill-filter');
+
+                            // Scroll to projects
+                            const projectsSection = document.getElementById('projects');
+                            if (projectsSection) {
+                                projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+
+                            // Trigger Filter
+                            if (window.filterProjects) {
+                                window.filterProjects('all', skillFilter);
+
+                                // Update search box if exists
+                                const projectsSearch = document.getElementById('projects-search') || document.querySelector('#projects input[type="search"]');
+                                if (projectsSearch) {
+                                    projectsSearch.value = skillFilter;
+                                }
+                            }
+                        });
+                    });
+                });
+            }
+
+            // ==========================================================================
+            // Interactive Skill Galaxy - New Design  
+            // ==========================================================================
+
+            function initSkillGalaxy() {
+                const skillNodes = document.querySelectorAll('.skill-node');
+                const skillHud = document.getElementById('skill-hud');
+                const hudTitle = document.getElementById('hud-title');
+                const hudDesc = document.getElementById('hud-desc');
+                const hudBar = document.getElementById('hud-bar');
+
+                if (!skillNodes.length) return; // Exit if no skill nodes found
+
+                // Skill Data - proficiency and descriptions
+                const skillData = {
+                    // Languages
+                    'python': { name: 'Python', proficiency: 95, desc: 'Expert-level proficiency with 4+ years of experience in ML/AI development' },
+                    'sql': { name: 'SQL', proficiency: 85, desc: 'Advanced database design, complex queries, and optimization' },
+                    'cpp': { name: 'C++', proficiency: 75, desc: 'Systems programming and embedded systems development' },
+                    'matlab': { name: 'MATLAB', proficiency: 80, desc: 'Scientific computing, aerospace simulations, and data analysis' },
+
+                    // AI/ML Frameworks
+                    'tensorflow': { name: 'TensorFlow', proficiency: 90, desc: 'Deep learning model development and deployment' },
+                    'pytorch': { name: 'PyTorch', proficiency: 85, desc: 'Neural network research and prototyping' },
+                    'langchain': { name: 'LangChain', proficiency: 90, desc: 'Building production-ready LLM applications and RAG systems' },
+                    'sklearn': { name: 'Scikit-learn', proficiency: 90, desc: 'Classical machine learning and data preprocessing' },
+                    'transformers': { name: 'Transformers', proficiency: 85, desc: 'Hugging Face library for NLP and LLM fine-tuning' },
+                    'mlflow': { name: 'MLflow', proficiency: 80, desc: 'ML experiment tracking, model versioning, and deployment' },
+
+                    // Cloud & DevOps
+                    'azure': { name: 'Azure', proficiency: 90, desc: 'Azure AI services, ML Studio, and cloud infrastructure' },
+                    'aws': { name: 'AWS', proficiency: 85, desc: 'AWS certified - SageMaker, Lambda, and cloud ML services' },
+                    'gcp': { name: 'GCP', proficiency: 75, desc: 'Google Cloud AI Platform and Vertex AI' },
+                    'docker': { name: 'Docker', proficiency: 85, desc: 'Containerization for ML model deployment' },
+                    'git': { name: 'Git', proficiency: 90, desc: 'Version control, CI/CD pipelines, and collaboration' },
+
+                    // Data Science & Web
+                    'pandas': { name: 'Pandas', proficiency: 95, desc: 'Data manipulation, cleaning, and analysis at scale' },
+                    'numpy': { name: 'NumPy', proficiency: 90, desc: 'Numerical computing and array operations' },
+                    'jupyter': { name: 'Jupyter', proficiency: 90, desc: 'Interactive development and documentation' },
+                    'react': { name: 'React', proficiency: 75, desc: 'Frontend development for AI dashboards' },
+                    'html-css': { name: 'HTML/CSS', proficiency: 85, desc: 'Web design and responsive interfaces' },
+                    'javascript': { name: 'JavaScript', proficiency: 80, desc: 'Frontend interactivity and web applications' },
+                    'streamlit': { name: 'Streamlit', proficiency: 90, desc: 'Rapid ML app prototyping and deployment' },
+
+                    // AI Specialties
+                    'llms': { name: 'LLMs', proficiency: 95, desc: 'Large Language Models - fine-tuning, prompting, RAG' },
+                    'rag': { name: 'RAG', proficiency: 95, desc: 'Retrieval-Augmented Generation systems' },
+                    'cv': { name: 'Computer Vision', proficiency: 85, desc: 'Object detection, image classification, OCR' },
+                    'nlp': { name: 'NLP', proficiency: 90, desc: 'Text analysis, sentiment, entity recognition' },
+                    'deep-learning': { name: 'Deep Learning', proficiency: 90, desc: 'Neural networks, CNNs, RNNs, Transformers' },
+                    'mlops': { name: 'MLOps', proficiency: 85, desc: 'Production ML pipelines and monitoring' },
+                    'finetuning': { name: 'Fine-tuning', proficiency: 90, desc: 'Model adaptation and transfer learning' },
+                    'deployment': { name: 'Deployment', proficiency: 85, desc: 'Production model serving and scaling' }
+                };
+
+                let activeNode = null;
+
+                skillNodes.forEach(node => {
+                    const skill = node.getAttribute('data-skill');
+                    const data = skillData[skill] || { name: skill, proficiency: 75, desc: 'Technical skill' };
+
+                    // Click handler
+                    node.addEventListener('click', (e) => {
+                        e.stopPropagation();
+
+                        // Remove active from previous
+                        if (activeNode) {
+                            activeNode.classList.remove('active');
+                        }
+
+                        // Set new active
+                        node.classList.add('active');
+                        activeNode = node;
+
+                        // Update HUD
+                        if (skillHud) {
+                            skillHud.classList.remove('hidden');
+                            if (hudTitle) hudTitle.textContent = data.name.toUpperCase();
+                            if (hudDesc) hudDesc.textContent = data.desc;
+                            if (hudBar) {
+                                hudBar.style.width = '0%';
+                                // Animate the bar
+                                setTimeout(() => {
+                                    hudBar.style.width = data.proficiency + '%';
+                                }, 100);
+                            }
+                        }
+                    });
+
+                    // Hover effects for desktop
+                    node.addEventListener('mouseenter', () => {
+                        if (skillHud && !activeNode) {
+                            skillHud.classList.remove('hidden');
+                            if (hudTitle) hudTitle.textContent = data.name.toUpperCase();
+                            if (hudDesc) hudDesc.textContent = data.desc;
+                            if (hudBar) {
+                                hudBar.style.width = data.proficiency + '%';
+                            }
+                        }
+                    });
+
+                    node.addEventListener('mouseleave', () => {
+                        if (!activeNode && skillHud) {
+                            skillHud.classList.add('hidden');
+                        }
+                    });
+                });
+
+                // Click outside to deselect
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.skill-node') && !e.target.closest('.skill-hud')) {
+                        if (activeNode) {
+                            activeNode.classList.remove('active');
+                            activeNode = null;
+                        }
+                        if (skillHud) {
+                            skillHud.classList.add('hidden');
+                        }
+                    }
+                });
+
+                // Touch support for mobile - pause animations
+                const galaxy = document.querySelector('.skill-galaxy-wrapper');
+                if (galaxy) {
+                    galaxy.addEventListener('touchstart', () => {
+                        galaxy.classList.add('touch-active');
+                    }, { passive: true });
+
+                    galaxy.addEventListener('touchend', () => {
+                        setTimeout(() => {
+                            galaxy.classList.remove('touch-active');
+                        }, 300);
+                    }, { passive: true });
                 }
             }
-        });
 
-        node.addEventListener('mouseleave', () => {
-            if (!activeNode && skillHud) {
-                skillHud.classList.add('hidden');
+            // Initialize skill galaxy
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initSkillGalaxy);
+            } else {
+                initSkillGalaxy();
             }
-        });
-    });
 
-    // Click outside to deselect
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.skill-node') && !e.target.closest('.skill-hud')) {
-            if (activeNode) {
-                activeNode.classList.remove('active');
-                activeNode = null;
+            /* -------------------------------------------------------------------------- */
+            /* Fullscreen Mission Archive Slider Logic (New Redesign)                      */
+            /* -------------------------------------------------------------------------- */
+
+            function initFullscreenSlider() {
+                const track = document.querySelector('.fullscreen-track');
+                if (!track) return;
+
+                const slides = Array.from(track.children);
+                const nextBtn = document.getElementById('projects-carousel-next');
+                const prevBtn = document.getElementById('projects-carousel-prev');
+
+                // If no buttons found by ID, try class query (fallback)
+                const nextBtnFallback = nextBtn || document.querySelector('.fullscreen-nav.next');
+                const prevBtnFallback = prevBtn || document.querySelector('.fullscreen-nav.prev');
+
+                let currentIndex = 0;
+                const totalSlides = slides.length;
+
+                function updateSliderPosition() {
+                    // Calculate the translation based on current index
+                    // Since each slide is 100vw, we just move by -100vw * index
+                    const translateX = -(currentIndex * 100);
+                    track.style.transform = `translateX(${translateX}vw)`;
+
+                    // Update styling for active slide if needed (e.g. for animations)
+                    slides.forEach((slide, index) => {
+                        if (index === currentIndex) {
+                            slide.classList.add('active');
+                        } else {
+                            slide.classList.remove('active');
+                        }
+                    });
+                }
+
+                if (nextBtnFallback) {
+                    nextBtnFallback.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentIndex = (currentIndex + 1) % totalSlides; // Loop back
+                        updateSliderPosition();
+                        resetFlips();
+                    });
+                }
+
+                if (prevBtnFallback) {
+                    prevBtnFallback.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; // Loop back
+                        updateSliderPosition();
+                        resetFlips();
+                    });
+                }
+
+                // Card Flip Logic
+                const cards = document.querySelectorAll('.fullscreen-track .card');
+                cards.forEach(card => {
+                    card.addEventListener('click', function (e) {
+                        // Prevent flip if clicking on a link or button
+                        if (e.target.tagName === 'A' || e.target.closest('a') ||
+                            e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+                            return;
+                        }
+                        this.classList.toggle('flipped');
+                    });
+                });
+
+                function resetFlips() {
+                    // Flip cards back to front when sliding away
+                    setTimeout(() => {
+                        cards.forEach(c => c.classList.remove('flipped'));
+                    }, 300); // Wait for slide transition to start
+                }
+
+                // Keyboard Navigation
+                document.addEventListener('keydown', (e) => {
+                    const section = document.querySelector('.mission-archive-fullscreen');
+                    if (!section) return;
+
+                    const rect = section.getBoundingClientRect();
+                    const isInView = (rect.top >= -rect.height / 2 && rect.bottom <= window.innerHeight * 1.5);
+
+                    if (isInView) {
+                        if (e.key === 'ArrowRight') {
+                            currentIndex = (currentIndex + 1) % totalSlides;
+                            updateSliderPosition();
+                            resetFlips();
+                        } else if (e.key === 'ArrowLeft') {
+                            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                            updateSliderPosition();
+                            resetFlips();
+                        }
+                    }
+                });
+
+                // Initial update
+                updateSliderPosition();
+                console.log('Fullscreen Slider Initialized');
             }
-            if (skillHud) {
-                skillHud.classList.add('hidden');
+
+            // Initialize on load
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initFullscreenSlider);
+            } else {
+                initFullscreenSlider();
             }
-        }
-    });
-
-    // Touch support for mobile - pause animations
-    const galaxy = document.querySelector('.skill-galaxy-wrapper');
-    if (galaxy) {
-        galaxy.addEventListener('touchstart', () => {
-            galaxy.classList.add('touch-active');
-        }, { passive: true });
-
-        galaxy.addEventListener('touchend', () => {
-            setTimeout(() => {
-                galaxy.classList.remove('touch-active');
-            }, 300);
-        }, { passive: true });
-    }
-}
-
-// Initialize skill galaxy
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSkillGalaxy);
-} else {
-    initSkillGalaxy();
-}

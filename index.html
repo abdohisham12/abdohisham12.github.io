@@ -92,7 +92,7 @@
     <!-- Cobe library loaded asynchronously for better performance -->
     <script src="https://unpkg.com/cobe@0.6.0/dist/cobe.umd.js" async defer></script>
     <script src="script.js" defer></script>
-    <script src="chatbot.js" defer></script>
+
 
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
@@ -723,511 +723,320 @@
 
 
         <!-- Projects Section ------------------------------------------------>
-        <section id="projects" class="projects" aria-label="Featured projects">
-            <div class="container">
-                <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Mission Archive</h2>
-                <p style="text-align: center; color: #b0b0b0; margin-bottom: 40px; font-size: 1.1em;">
+        <!-- Projects Section ------------------------------------------------>
+        <section id="projects" class="mission-archive-fullscreen" aria-label="Featured projects">
+
+            <div class="mission-header-overlay">
+                <h2
+                    style="color: #0092CC; text-align: center; margin-bottom: 10px; text-shadow: 0 0 10px rgba(0, 146, 204, 0.5);">
+                    Mission Archive</h2>
+                <p style="text-align: center; color: #b0b0b0; margin-bottom: 20px; font-size: 1.1em;">
                     Showcasing innovative AI solutions that solve real-world problems in aerospace and beyond
                 </p>
+            </div>
 
-                <!-- ARIA Live Region for Dynamic Content Updates -->
-                <div id="projects-aria-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+            <!-- Fullscreen Slider Container -->
+            <div class="fullscreen-slider-container">
 
-                <!-- Projects Carousel -->
-                <div class="projects-carousel-wrapper">
-                    <div class="projects-carousel" aria-live="polite">
-                        <button class="projects-carousel-nav-btn projects-carousel-prev" id="projects-carousel-prev"
-                            aria-label="Previous project">
-                            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M15 18l-6-6 6-6" />
-                            </svg>
-                        </button>
+                <button class="fullscreen-nav prev" id="projects-carousel-prev" aria-label="Previous project">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </button>
 
-                        <div class="projects-carousel-track" id="projects-carousel-track">
+                <button class="fullscreen-nav next" id="projects-carousel-next" aria-label="Next project">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6" />
+                    </svg>
+                </button>
 
-                            <!----------------   SIRB --------------------------------------------------------------------------->
-                            <div class="project-container" data-project-type="client"
-                                data-project-category="production">
-                                <div class="card">
-                                    <div class="card-front">
-                                        <div class="project-media">
-                                            <video class="project-image" src="assets/logos/sirb_demo.mp4" autoplay muted
-                                                loop playsinline preload="metadata"
-                                                aria-label="SIRB mobile application interface preview"></video>
-                                        </div>
-                                        <div class="project-content">
-                                            <h3>SIRB</h3>
-                                            <div class="tech-grid">
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/computer_vision.png"
-                                                        alt="Computer vision capability icon" loading="lazy">
-                                                    <span>Computer Vision</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/system_arch.png"
-                                                        alt="Systems architecture icon" loading="lazy">
-                                                    <span>Systems Architecture</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/react-native-logo.png"
-                                                        alt="React Native framework logo" loading="lazy">
-                                                    <span>React Native</span>
-                                                </div>
-                                            </div>
-                                            <div class="project-footer-row">
-                                                <button class="show-repo-button">
-                                                    <a href="https://sirb.space/" target="_blank"
-                                                        rel="noopener noreferrer">Check it out</a>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-back">
-                                        <div class="card-items">
-                                            <div class="project-framework">
-                                                <div class="framework-item">
-                                                    <strong>Challenge:</strong> Manual laser pattern detection for space
-                                                    payload operations had 70% accuracy, leading to human error and
-                                                    operational risks in critical space missions.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Solution:</strong> Developed production-ready computer
-                                                    vision system using TensorFlow for real-time laser pattern
-                                                    detection. Built control panel interface and led mission testing
-                                                    team of 3 engineers. Mobile MVP in development.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Impact:</strong> <strong>95%+ accuracy</strong> (baseline:
-                                                    70% &rarr; 95%+, improvement: +25%). <strong>Timeframe:</strong> 6
-                                                    months
-                                                    development. <strong>Business Value:</strong> Reduced human error,
-                                                    operational cost savings, improved mission safety for critical space
-                                                    operations.
-                                                </div>
-                                            </div>
-                                            <div class="card-back-footer">
-                                                <button class="show-repo-button">
-                                                    <a href="https://sirb.space/" target="_blank"
-                                                        rel="noopener noreferrer">Visit Website</a>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                <div class="fullscreen-track" id="projects-carousel-track">
+
+                    <!-- Project 1: SIRB -->
+                    <div class="project-container" data-project-type="client" data-project-category="production">
+                        <div class="card fullscreen-card">
+                            <div class="content-front">
+                                <video class="project-image-bg" src="assets/logos/sirb_demo.mp4" autoplay muted loop
+                                    playsinline></video>
+                                <div class="front-overlay">
+                                    <h3 class="cine-title">SIRB</h3>
+                                    <p class="cine-subtitle">Computer Vision for Space Payloads</p>
                                 </div>
                             </div>
-
-                            <!----------------  Google EDU --------------------------------------------------------------------------->
-
-                            <div class="project-container" data-project-type="client">
-                                <div class="card">
-                                    <div class="card-front">
-                                        <div class="project-media">
-                                            <img src="assets/logos/Google_EDU.png"
-                                                alt="Google EDU guided learning feature preview" class="project-image"
-                                                loading="lazy">
-                                        </div>
-                                        <div class="project-content">
-                                            <h3>Google EDU</h3>
-                                            <div class="tech-grid">
-                                                <div class="tech-item">
-                                                    <img src="assets/logos/gemini-google-icon.jpg"
-                                                        alt="Google Gemini logo" loading="lazy">
-                                                    <span>Gemini LLM</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/logos/RLHF.png" alt="RLHF icon" loading="lazy">
-                                                    <span>RLHF</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/logos/stem.jpg" alt="STEM education icon"
-                                                        loading="lazy">
-                                                    <span>STEM Data</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/logos/supervised-learning-icon-fine-tune.jpg"
-                                                        alt="Supervised fine tuning icon" loading="lazy">
-                                                    <span>Supervised Fine Tuning</span>
-                                                </div>
-                                            </div>
-                                            <div class="project-footer-row">
-                                                <button class="show-repo-button" disabled>
-                                                    <span>Enterprise Project</span>
-                                                </button>
-                                            </div>
+                            <div class="content-back">
+                                <div class="back-content-wrapper">
+                                    <div class="project-header">
+                                        <h3>SIRB</h3>
+                                        <div class="tech-badges">
+                                            <div class="tech-badge"><img src="assets/tools/computer_vision.png"
+                                                    alt="CV"></div>
+                                            <div class="tech-badge"><img src="assets/tools/tensorflow-icon.png"
+                                                    alt="TensorFlow"></div>
+                                            <div class="tech-badge"><img src="assets/tools/react-native-logo.png"
+                                                    alt="React Native"></div>
                                         </div>
                                     </div>
-                                    <div class="card-back">
-                                        <div class="card-items">
-                                            <div class="project-framework">
-                                                <div class="framework-item">
-                                                    <strong>Background</strong>
-                                                    Training Google LLM (Gemini) to power the newly deployed "Guided
-                                                    Learning" feature, partnered with Invisible Technologies.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Challenge</strong>
-                                                    Education data is scattered globally across different curricula (KG
-                                                    through college) and human trainers lacked AI expertise to supply
-                                                    consistent STEM datasets.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Tech</strong>
-                                                    Reinforcement Learning with Human Feedback, supervised learning,
-                                                    STEM knowledge modeling, LLM training & validation pipelines.
-                                                </div>
-                                            </div>
-                                            <div class="card-back-footer">
-                                                <button class="show-repo-button" disabled>
-                                                    <span>Confidential Engagement</span>
-                                                </button>
-                                            </div>
+                                    <div class="project-details-grid">
+                                        <div class="detail-item">
+                                            <strong>Challenge</strong>
+                                            <p>Manual laser pattern detection had 70% accuracy, causing mission risks.
+                                            </p>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Solution</strong>
+                                            <p>Real-time computer vision system using TensorFlow with 95%+ accuracy.</p>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Impact</strong>
+                                            <p>Reduced human error and operational costs for critical space missions.
+                                            </p>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <!----------------  Filmoria --------------------------------------------------------------------------->
-
-                            <div class="project-container" data-project-type="personal">
-                                <div class="card">
-                                    <div class="card-front">
-                                        <div class="project-media">
-                                            <img src="assets/images/filmoria.png"
-                                                alt="Filmoria mobile app interface showing AI-powered movie recommendations"
-                                                class="project-image" loading="lazy">
-                                        </div>
-                                        <div class="project-content">
-                                            <h3>Filmoria</h3>
-                                            <div class="tech-grid">
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/flutter.png" alt="Flutter framework logo"
-                                                        loading="lazy">
-                                                    <span>Flutter</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/icons8-dart-144.png"
-                                                        alt="Dart programming language logo" loading="lazy">
-                                                    <span>Dart</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/pytorch-logo.png"
-                                                        alt="PyTorch deep learning framework logo" loading="lazy">
-                                                    <span>PyTorch</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/gcp_logo.png"
-                                                        alt="Google Cloud Services logo" loading="lazy">
-                                                    <span>Google Cloud</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/icons8-database-100.png"
-                                                        alt="Backend Architecture logo" loading="lazy">
-                                                    <span>Backend Architecture</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/rs_logo.jpeg"
-                                                        alt="Recommendation System logo" loading="lazy">
-                                                    <span>Recommendation System</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/cinebot.png" alt="Chatbot AI logo"
-                                                        loading="lazy">
-                                                    <span>Chatbot</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/logos/cv_logo.jpg"
-                                                        alt="Computer Vision face recognition logo" loading="lazy">
-                                                    <span>Computer Vision</span>
-                                                </div>
-                                            </div>
-                                            <div class="project-footer-row">
-                                                <button class="show-repo-button">
-                                                    <a href="https://github.com/DEPI-team/DEPI-Project " target="_blank"
-                                                        rel="noopener noreferrer">Check it out</a>
-                                                </button>
-                                            </div>
-                                        </div>
+                                    <div class="project-links">
+                                        <a href="https://sirb.space/" target="_blank" class="cyber-btn">Visit
+                                            Website</a>
                                     </div>
-                                    <div class="card-back">
-                                        <div class="card-items">
-                                            <div class="project-framework">
-                                                <div class="framework-item">
-                                                    <strong>Impact</strong>
-                                                    Production-ready mobile app with AI recommendation engine. Analyzes
-                                                    preferences, detects movies from reels, provides personalized
-                                                    suggestions via NLP.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Features</strong>
-                                                    Movie recommendation customized chatbot, real-time video detection,
-                                                    computer vision for face recognition and actor detection,
-                                                    intelligent recommendations.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Tech</strong>
-                                                    Flutter (iOS/Android), Python backend.
-                                                </div>
-                                            </div>
-                                            <div class="card-back-footer">
-                                                <button class="show-repo-button">
-                                                    <a href="https://github.com/DEPI-team/DEPI-Project " target="_blank"
-                                                        rel="noopener noreferrer">Check it out</a>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <!----------------   Robotic arm manipulator --------------------------------------------------------------------------->
-
-                            <div class="project-container" data-project-type="personal">
-                                <div class="card">
-                                    <div class="card-front">
-                                        <div class="project-media">
-                                            <img src="assets/tools/robot.jpg"
-                                                alt="2-DOF robotic arm manipulator system with precision gripper"
-                                                class="project-image" loading="lazy">
-                                        </div>
-                                        <div class="project-content">
-                                            <h3>Robotic arm manipulator</h3>
-                                            <div class="tech-grid">
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/arduino-logo.png"
-                                                        alt="Arduino microcontroller platform logo" loading="lazy">
-                                                    <span>Arduino</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/solidworks.png"
-                                                        alt="SolidWorks CAD software logo" loading="lazy">
-                                                    <span>SolidWorks</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/icons8-git-144.png"
-                                                        alt="Git version control system logo" loading="lazy">
-                                                    <span>Git</span>
-                                                </div>
-                                            </div>
-                                            <div class="project-footer-row">
-                                                <button class="show-repo-button">
-                                                    <a href="https://github.com/robotic-arm-project-nsst/2-DOF-robotic-arm-manipulator"
-                                                        target="_blank" rel="noopener noreferrer">Check it out</a>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-back">
-                                        <div class="card-items">
-                                            <div class="project-framework">
-                                                <div class="framework-item">
-                                                    <strong>Impact</strong>
-                                                    2-DOF robotic arm with precision gripper control. High-accuracy
-                                                    pick-and-place operations.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Expertise</strong>
-                                                    Mechatronics, control systems, embedded programming. Combines
-                                                    hardware design, software, and system integration.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Tech</strong>
-                                                    Arduino, SolidWorks, custom control algorithms.
-                                                </div>
-                                            </div>
-                                            <div class="card-back-footer">
-                                                <button class="show-repo-button">
-                                                    <a href="https://github.com/robotic-arm-project-nsst/2-DOF-robotic-arm-manipulator"
-                                                        target="_blank" rel="noopener noreferrer">Check it out</a>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <!----------------   Autonomous Mission Design --------------------------------------------------------------------------->
-                            <div class="project-container" data-project-type="personal"
-                                data-project-category="research">
-                                <div class="card">
-                                    <div class="card-front">
-                                        <div class="project-media">
-                                            <img src="assets/images/orbit.gif"
-                                                alt="Autonomous mission design system showing AI-powered space mission planning"
-                                                class="project-image" loading="lazy">
-                                        </div>
-                                        <div class="project-content">
-                                            <h3>Autonomous Mission Design</h3>
-                                            <div class="tech-grid">
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/pytorch-logo.png"
-                                                        alt="PyTorch deep learning framework logo" loading="lazy">
-                                                    <span>PyTorch</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/tensorflow-icon.png"
-                                                        alt="TensorFlow deep learning framework logo" loading="lazy">
-                                                    <span>TensorFlow</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/finetuning.png" alt="Fine-tuning icon"
-                                                        loading="lazy">
-                                                    <span>LLM Fine-tuning</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/rag.png" alt="RAG pipeline icon"
-                                                        loading="lazy">
-                                                    <span>RAG Pipeline</span>
-                                                </div>
-                                            </div>
-                                            <button class="show-repo-button" disabled>
-                                                <span>Check it out</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-back">
-                                        <div class="card-items">
-                                            <div class="project-framework">
-                                                <div class="framework-item">
-                                                    <strong>Challenge</strong>
-                                                    Space mission planning required extensive manual analysis and
-                                                    reference checking, leading to time-consuming design workflows and
-                                                    slower mission iterations.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Solution</strong>
-                                                    Developed AI automation platform using advanced RAG
-                                                    (Retrieval-Augmented Generation) architecture with fine-tuned LLMs.
-                                                    Created intelligent, context-aware recommendation system with
-                                                    reference-based feedback loops.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Impact</strong>
-                                                    Automated mission analysis workflows, significantly reduced design
-                                                    time, enabled faster mission iterations.
-                                                    <strong>Innovation:</strong> RAG application for space
-                                                    mission planning optimization. <strong>Tech:</strong> PyTorch,
-                                                    LangChain, Transformers, custom RAG pipelines.
-                                                </div>
-                                            </div>
-                                            <div class="card-back-footer">
-                                                <button class="show-repo-button"
-                                                    style="opacity: 0.6; cursor: not-allowed;" disabled>
-                                                    <span style="color: #b0b0b0;">Repository Coming Soon</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!----------------   Ionospheric-Forecasting-Using-GNSS-Observation --------------------------------------------------------------------------->
-                            <div class="project-container" data-project-type="personal"
-                                data-project-category="research">
-                                <div class="card">
-                                    <div class="card-front">
-                                        <div class="project-media">
-                                            <img src="assets/images/inosphere.png"
-                                                alt="Ionospheric forecasting visualization showing space weather prediction data"
-                                                class="project-image" loading="lazy">
-                                        </div>
-                                        <div class="project-content">
-                                            <h3>Ionospheric Forecasting</h3>
-                                            <div class="tech-grid">
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/NASA.png" alt="NASA OMNIWEB data source logo"
-                                                        loading="lazy">
-                                                    <span>OMNIWEB</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/tensorflow-icon.png"
-                                                        alt="TensorFlow deep learning framework logo" loading="lazy">
-                                                    <span>TensorFlow</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/Pandas.png"
-                                                        alt="Pandas data analysis library logo" loading="lazy">
-                                                    <span>Pandas</span>
-                                                </div>
-                                                <div class="tech-item">
-                                                    <img src="assets/tools/scikit-learn.png"
-                                                        alt="Scikit-learn machine learning library logo" loading="lazy">
-                                                    <span>SK-Learn</span>
-                                                </div>
-                                            </div>
-                                            <div class="project-footer-row">
-                                                <button class="show-repo-button">
-                                                    <a href="https://github.com/EGSA-AI-TEAM/Ionospheric-Forecasting-Using-GNSS-Observation"
-                                                        target="_blank" rel="noopener noreferrer">Check it out</a>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-back">
-                                        <div class="card-items">
-                                            <div class="project-framework">
-                                                <div class="framework-item">
-                                                    <strong>Challenge</strong>
-                                                    Space weather (ionospheric disturbances) affects satellite
-                                                    operations but was difficult to predict accurately, leading to
-                                                    mission risks and communication disruptions.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Solution</strong>
-                                                    Developed deep learning model using LSTM/GRU with attention
-                                                    mechanisms to predict VTEC anomalies from GNSS data. Analyzed
-                                                    50,000+ data points for training.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Impact</strong>
-                                                    <strong>92% accuracy</strong> in forecasting ionospheric
-                                                    disturbances (solar storms, winds, flares). Enables proactive
-                                                    mission planning, reduces satellite operation risks, improves
-                                                    communication reliability.
-                                                </div>
-                                                <div class="framework-item">
-                                                    <strong>Tech</strong>
-                                                    TensorFlow, Time-series analysis. <strong>Context:</strong>
-                                                    Developed at EgSA training.
-                                                </div>
-                                            </div>
-
-                                            <div class="card-back-footer">
-                                                <button class="show-repo-button">
-                                                    <a href="https://github.com/EGSA-AI-TEAM/Ionospheric-Forecasting-Using-GNSS-Observation"
-                                                        target="_blank" rel="noopener noreferrer">Check it out</a>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
-
-                        <button class="projects-carousel-nav-btn projects-carousel-next" id="projects-carousel-next"
-                            aria-label="Next project">
-                            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M9 18l6-6-6-6" />
-                            </svg>
-                        </button>
                     </div>
 
-                    <div class="projects-carousel-indicators" id="projects-carousel-indicators" role="tablist"
-                        aria-label="Project carousel indicators">
-                        <!-- Indicators will be generated by JavaScript -->
+                    <!-- Project 2: Google EDU -->
+                    <div class="project-container" data-project-type="client">
+                        <div class="card fullscreen-card">
+                            <div class="content-front">
+                                <img src="assets/logos/Google_EDU.png" alt="Google EDU" class="project-image-bg"
+                                    loading="lazy">
+                                <div class="front-overlay">
+                                    <h3 class="cine-title">Google EDU</h3>
+                                    <p class="cine-subtitle">Gemini LLM Training & RLHF</p>
+                                </div>
+                            </div>
+                            <div class="content-back">
+                                <div class="back-content-wrapper">
+                                    <div class="project-header">
+                                        <h3>Google EDU</h3>
+                                        <div class="tech-badges">
+                                            <div class="tech-badge"><img src="assets/logos/gemini-google-icon.jpg"
+                                                    alt="Gemini"></div>
+                                            <div class="tech-badge"><img src="assets/logos/RLHF.png" alt="RLHF"></div>
+                                        </div>
+                                    </div>
+                                    <div class="project-details-grid">
+                                        <div class="detail-item">
+                                            <strong>Background</strong>
+                                            <p>Training Google Gemini to power "Guided Learning" features.</p>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Challenge</strong>
+                                            <p>Lack of consistent, expert-verified STEM datasets for training.</p>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Tech</strong>
+                                            <p>RLHF, Supervised Learning, STEM Knowledge Modeling.</p>
+                                        </div>
+                                    </div>
+                                    <div class="project-links">
+                                        <button class="cyber-btn disabled" disabled>Confidential</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
+                    <!----------------  Filmoria --------------------------------------------------------------------------->
 
+                    <!-- Project 1: Ionospheric Forecasting -->
+                    <div class="project-container" data-project-type="personal">
+                        <div class="card fullscreen-card">
+                            <div class="content-front">
+                                <img src="assets/images/inosphere.png" alt="Ionospheric Forecasting"
+                                    class="project-image-bg" loading="lazy">
+                                <div class="front-overlay">
+                                    <h3 class="cine-title">Ionospheric Forecasting</h3>
+                                    <p class="cine-subtitle">AI-Powered Space Weather Prediction</p>
+                                </div>
+                            </div>
+                            <div class="content-back">
+                                <div class="back-content-wrapper">
+                                    <div class="project-header">
+                                        <h3>Ionospheric Forecasting</h3>
+                                        <div class="tech-badges">
+                                            <div class="tech-badge"><img src="assets/tools/python.png" alt="Python">
+                                            </div>
+                                            <div class="tech-badge"><img src="assets/tools/tensorflow-icon.png"
+                                                    alt="TensorFlow"></div>
+                                            <div class="tech-badge"><img src="assets/tools/NASA.png" alt="NASA Data">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="project-details-grid">
+                                        <div class="detail-item">
+                                            <strong>Challenge</strong>
+                                            <p>Predicting ionospheric disturbances affecting satellite operations.</p>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Solution</strong>
+                                            <p>Deep learning model (LSTM/GRU) predicting VTEC anomalies with 92%
+                                                accuracy.</p>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Impact</strong>
+                                            <p>Enables proactive mission planning and reduces comms risks.</p>
+                                        </div>
+                                    </div>
+                                    <div class="project-links">
+                                        <a href="https://github.com/EGSA-AI-TEAM/Ionospheric-Forecasting-Using-GNSS-Observation"
+                                            target="_blank" class="cyber-btn">View Repository</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- Project 2: Autonomous Mission Design -->
+                    <div class="project-container" data-project-type="personal">
+                        <div class="card fullscreen-card">
+                            <div class="content-front">
+                                <img src="assets/images/orbit.gif" alt="Autonomous Mission Design"
+                                    class="project-image-bg" loading="lazy">
+                                <div class="front-overlay">
+                                    <h3 class="cine-title">Autonomous Mission Design</h3>
+                                    <p class="cine-subtitle">RAG-Powered Mission Planning</p>
+                                </div>
+                            </div>
+                            <div class="content-back">
+                                <div class="back-content-wrapper">
+                                    <div class="project-header">
+                                        <h3>Autonomous Mission Design</h3>
+                                        <div class="tech-badges">
+                                            <div class="tech-badge"><img src="assets/tools/pytorch-logo.png"
+                                                    alt="PyTorch"></div>
+                                            <div class="tech-badge"><img src="assets/tools/finetuning.png" alt="LLM">
+                                            </div>
+                                            <div class="tech-badge"><img src="assets/tools/rag.png" alt="RAG"></div>
+                                        </div>
+                                    </div>
+                                    <div class="project-details-grid">
+                                        <div class="detail-item">
+                                            <strong>Challenge</strong>
+                                            <p>Manual mission analysis is slow and error-prone.</p>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Solution</strong>
+                                            <p>AI automation platform using RAG and fine-tuned LLMs for context-aware
+                                                planning.</p>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Impact</strong>
+                                            <p>Automated analysis workflows, reducing design time significantly.</p>
+                                        </div>
+                                    </div>
+                                    <div class="project-links">
+                                        <button class="cyber-btn disabled" disabled>Repository Coming Soon</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- Project 3: Filmoria -->
+                    <div class="project-container" data-project-type="personal">
+                        <div class="card fullscreen-card">
+                            <div class="content-front">
+                                <img src="assets/images/filmoria.png" alt="Filmoria" class="project-image-bg"
+                                    loading="lazy">
+                                <div class="front-overlay">
+                                    <h3 class="cine-title">Filmoria</h3>
+                                    <p class="cine-subtitle">AI-Driven Movie Recommendations</p>
+                                </div>
+                            </div>
+                            <div class="content-back">
+                                <div class="back-content-wrapper">
+                                    <div class="project-header">
+                                        <h3>Filmoria</h3>
+                                        <div class="tech-badges">
+                                            <div class="tech-badge"><img src="assets/tools/flutter.png" alt="Flutter">
+                                            </div>
+                                            <div class="tech-badge"><img src="assets/tools/pytorch-logo.png"
+                                                    alt="PyTorch"></div>
+                                            <div class="tech-badge"><img src="assets/tools/gcp_logo.png" alt="GCP">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="project-details-grid">
+                                        <div class="detail-item">
+                                            <strong>Features</strong>
+                                            <p>AI reco engine, chatbot, and real-time face recognition/actor detection.
+                                            </p>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Tech Stack</strong>
+                                            <p>Flutter (Mobile), Python (Backend), Computer Vision.</p>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Impact</strong>
+                                            <p>Production-ready app analyzing user preferences for personalized
+                                                suggestions.</p>
+                                        </div>
+                                    </div>
+                                    <div class="project-links">
+                                        <a href="https://github.com/DEPI-team/DEPI-Project" target="_blank"
+                                            class="cyber-btn">Check it out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- Project 4: Robotic Arm -->
+                    <div class="project-container" data-project-type="personal">
+                        <div class="card fullscreen-card">
+                            <div class="content-front">
+                                <img src="assets/tools/robot.jpg" alt="Robotic Arm" class="project-image-bg"
+                                    loading="lazy">
+                                <div class="front-overlay">
+                                    <h3 class="cine-title">Robotic Arm Manipulator</h3>
+                                    <p class="cine-subtitle">2-DOF Precision Control System</p>
+                                </div>
+                            </div>
+                            <div class="content-back">
+                                <div class="back-content-wrapper">
+                                    <div class="project-header">
+                                        <h3>Robotic Arm Manipulator</h3>
+                                        <div class="tech-badges">
+                                            <div class="tech-badge"><img src="assets/tools/arduino-logo.png"
+                                                    alt="Arduino"></div>
+                                            <div class="tech-badge"><img src="assets/tools/solidworks.png"
+                                                    alt="SolidWorks"></div>
+                                        </div>
+                                    </div>
+                                    <div class="project-details-grid">
+                                        <div class="detail-item">
+                                            <strong>System</strong>
+                                            <p>2-DOF robotic arm with precision gripper and custom control algorithms.
+                                            </p>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Expertise</strong>
+                                            <p>Mechatronics, embedded systems, and hardware-software integration.</p>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>Impact</strong>
+                                            <p>High-accuracy pick-and-place operations.</p>
+                                        </div>
+                                    </div>
+                                    <div class="project-links">
+                                        <a href="https://github.com/robotic-arm-project-nsst/2-DOF-robotic-arm-manipulator"
+                                            target="_blank" class="cyber-btn">View Repository</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- Closing fullscreen-track -->
+            </div> <!-- Closing fullscreen-slider-container -->
+        </section> <!-- Closing projects section -->
 
 
         <!--Experience Section ---------------------------------------------->
@@ -1321,7 +1130,8 @@
         <!-- Skills Section -->
         <section id="skills" class="skills" aria-label="Core competencies and skills">
             <div class="container">
-                <h2 style="color: #0092CC; text-align: center; margin-bottom: 20px;">Technical Skills</h2>
+                <h2 style="color: #0092CC; text-align: center; margin-bottom: 20px;">Technical Skills
+                </h2>
                 <p style="text-align: center; color: #b0b0b0; margin-bottom: 40px; font-size: 1.1em;">
                     Comprehensive technology stack across AI/ML, Cloud, and Development
                 </p>
@@ -1331,7 +1141,8 @@
 
                     <!-- AI/ML & Data Science -->
                     <div class="skill-category">
-                        <h3 class="category-title"><i class="fas fa-brain"></i> AI & Machine Learning</h3>
+                        <h3 class="category-title"><i class="fas fa-brain"></i> AI & Machine Learning
+                        </h3>
                         <div class="skills-row">
                             <div class="skill-card" data-skill="python">
                                 <img src="assets/tools/python.png" alt="Python" class="skill-card-icon">
@@ -1465,9 +1276,11 @@
         <!-- Certifications Section -->
         <section id="certifications" class="certifications-showcase" aria-label="Professional certifications">
             <div class="container">
-                <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Crew Credentials</h2>
+                <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Crew Credentials
+                </h2>
                 <p style="text-align: center; color: #b0b0b0; margin-bottom: 40px; font-size: 1.1em;">
-                    Industry-recognized certifications validating expertise in AI, Machine Learning, and Cloud
+                    Industry-recognized certifications validating expertise in AI, Machine Learning, and
+                    Cloud
                     Technologies
                 </p>
 
@@ -1484,8 +1297,11 @@
                         <div class="certificate-card-back">
                             <div class="cert-details">
                                 <h4>Azure AI Fundamentals (AI-900)</h4>
-                                <p>Microsoft certification demonstrating foundational knowledge of AI and machine
-                                    learning concepts, Azure AI services, and responsible AI practices.</p>
+                                <p>Microsoft certification demonstrating foundational knowledge of AI
+                                    and
+                                    machine
+                                    learning concepts, Azure AI services, and responsible AI practices.
+                                </p>
                                 <a href="assets/certificates/AI900.pdf" target="_blank" rel="noopener noreferrer"
                                     class="cert-view-btn">View Certificate</a>
                             </div>
@@ -1504,10 +1320,12 @@
                         <div class="certificate-card-back">
                             <div class="cert-details">
                                 <h4>Introduction to Generative AI</h4>
-                                <p>AWS certification covering generative AI concepts, use cases, and AWS services for
+                                <p>AWS certification covering generative AI concepts, use cases, and AWS
+                                    services for
                                     building generative AI applications.</p>
                                 <a href="assets/certificates/Introduction to Generative AI from AWS certificate.pdf"
-                                    target="_blank" rel="noopener noreferrer" class="cert-view-btn">View Certificate</a>
+                                    target="_blank" rel="noopener noreferrer" class="cert-view-btn">View
+                                    Certificate</a>
                             </div>
                         </div>
                     </div>
@@ -1524,7 +1342,9 @@
                         <div class="certificate-card-back">
                             <div class="cert-details">
                                 <h4>Microsoft AI & Data Science Nano Degree</h4>
-                                <p>Comprehensive training program covering machine learning algorithms, deep learning,
+                                <p>Comprehensive training program covering machine learning algorithms,
+                                    deep
+                                    learning,
                                     NLP, MLOps with MLflow, and Azure AI services.</p>
                                 <span class="cert-period">April 2024 - Nov 2024</span>
                             </div>
@@ -1543,8 +1363,11 @@
                 <div class="academic-excellence-banner">
                     <div
                         style="text-align: center; margin-bottom: 20px; padding: 15px; background: rgba(0,146,204,0.1); border-radius: 10px; border: 2px solid rgba(0,146,204,0.3);">
-                        <h3 style="color: #0092CC; margin: 0; font-size: 1.5em;">Recent Graduate - July 2025</h3>
-                        <p style="color: #b0b0b0; margin: 5px 0 0 0;">Bachelor's in Navigation Science and Space
+                        <h3 style="color: #0092CC; margin: 0; font-size: 1.5em;">Recent Graduate - July
+                            2025
+                        </h3>
+                        <p style="color: #b0b0b0; margin: 5px 0 0 0;">Bachelor's in Navigation Science
+                            and Space
                             Technology</p>
                     </div>
                     <div class="gpa-display">
@@ -1580,7 +1403,8 @@
                                     <div class="education-card-title">
                                         <h3>Bachelor's Degree</h3>
                                         <p class="education-institution">Beni Suef University</p>
-                                        <p class="education-field">Navigation Science and Space Technology</p>
+                                        <p class="education-field">Navigation Science and Space
+                                            Technology</p>
                                     </div>
                                 </div>
                                 <div class="education-card-meta">
@@ -1588,9 +1412,14 @@
                                 </div>
 
                                 <div class="education-summary">
-                                    <p>A comprehensive 5-year program combining space technology fundamentals with
-                                        advanced mathematics, programming, and control systems. This interdisciplinary
-                                        degree provides the mathematical and technical foundation essential for AI
+                                    <p>A comprehensive 5-year program combining space technology
+                                        fundamentals
+                                        with
+                                        advanced mathematics, programming, and control systems. This
+                                        interdisciplinary
+                                        degree provides the mathematical and technical foundation
+                                        essential for
+                                        AI
                                         engineering in aerospace applications.</p>
                                 </div>
 
@@ -1602,7 +1431,9 @@
                                             <i class="fas fa-calculator category-icon"></i>
                                             <strong>Mathematics & Statistics</strong>
                                         </div>
-                                        <p>Mathematics 1-4: Advanced calculus, linear algebra, differential equations,
+                                        <p>Mathematics 1-4: Advanced calculus, linear algebra,
+                                            differential
+                                            equations,
                                             probability theory, statistics, statistical analysis</p>
                                     </div>
 
@@ -1611,7 +1442,8 @@
                                             <i class="fas fa-code category-icon"></i>
                                             <strong>Programming & Systems</strong>
                                         </div>
-                                        <p>Python, C++, Perl, MATLAB, embedded C, embedded systems, robotics</p>
+                                        <p>Python, C++, Perl, MATLAB, embedded C, embedded systems,
+                                            robotics</p>
                                     </div>
 
                                     <div class="education-category">
@@ -1619,7 +1451,8 @@
                                             <i class="fas fa-cogs category-icon"></i>
                                             <strong>Control & Signal Processing</strong>
                                         </div>
-                                        <p>Control theory, wave propagation, antennas, signal processing</p>
+                                        <p>Control theory, wave propagation, antennas, signal processing
+                                        </p>
                                     </div>
 
                                     <div class="education-category">
@@ -1627,77 +1460,121 @@
                                             <i class="fas fa-rocket category-icon"></i>
                                             <strong>Space Technology & Research</strong>
                                         </div>
-                                        <p>Mission planning, orbital mechanics, orbital maneuvers, structural analysis
+                                        <p>Mission planning, orbital mechanics, orbital maneuvers,
+                                            structural
+                                            analysis
                                         </p>
                                     </div>
                                 </div>
                             </div>
                             <div class="education-card-back">
                                 <div class="education-card-details">
-                                    <h3 style="font-size: 1.8em; margin-bottom: 25px; color: #0092CC;">Why This Degree
+                                    <h3 style="font-size: 1.8em; margin-bottom: 25px; color: #0092CC;">
+                                        Why This
+                                        Degree
                                         Matters</h3>
 
                                     <div class="degree-columns">
                                         <div class="degree-section">
                                             <div class="section-header">
                                                 <i class="fas fa-brain section-icon"></i>
-                                                <h4 style="font-size: 1.3em; margin-bottom: 12px;">AI Foundation</h4>
+                                                <h4 style="font-size: 1.3em; margin-bottom: 12px;">AI
+                                                    Foundation
+                                                </h4>
                                             </div>
-                                            <p style="font-size: 1.1em; line-height: 1.6;">Strong mathematics and
-                                                statistics background for ML algorithms and neural networks. Deep
-                                                understanding of linear algebra, calculus, and probability theory
+                                            <p style="font-size: 1.1em; line-height: 1.6;">Strong
+                                                mathematics
+                                                and
+                                                statistics background for ML algorithms and neural
+                                                networks.
+                                                Deep
+                                                understanding of linear algebra, calculus, and
+                                                probability
+                                                theory
                                                 essential for building robust AI systems.</p>
                                         </div>
 
                                         <div class="degree-section">
                                             <div class="section-header">
                                                 <i class="fas fa-flask section-icon"></i>
-                                                <h4 style="font-size: 1.3em; margin-bottom: 12px;">R&D Experience</h4>
+                                                <h4 style="font-size: 1.3em; margin-bottom: 12px;">R&D
+                                                    Experience</h4>
                                             </div>
-                                            <p style="font-size: 1.1em; line-height: 1.6;">Built RAG-powered AI for
-                                                space mission planning. Hands-on research experience at Egypt Space
-                                                Agency solving real aerospace challenges. Applied AI research in space
+                                            <p style="font-size: 1.1em; line-height: 1.6;">Built
+                                                RAG-powered AI
+                                                for
+                                                space mission planning. Hands-on research experience at
+                                                Egypt
+                                                Space
+                                                Agency solving real aerospace challenges. Applied AI
+                                                research in
+                                                space
                                                 technology domain.</p>
                                         </div>
 
                                         <div class="degree-section">
                                             <div class="section-header">
                                                 <i class="fas fa-cog section-icon"></i>
-                                                <h4 style="font-size: 1.3em; margin-bottom: 12px;">Production Ready</h4>
+                                                <h4 style="font-size: 1.3em; margin-bottom: 12px;">
+                                                    Production
+                                                    Ready</h4>
                                             </div>
-                                            <p style="font-size: 1.1em; line-height: 1.6;">Embedded systems and signal
-                                                processing training for AI systems that work in real-world production
-                                                environments. Understanding of system integration and deployment.</p>
+                                            <p style="font-size: 1.1em; line-height: 1.6;">Embedded
+                                                systems and
+                                                signal
+                                                processing training for AI systems that work in
+                                                real-world
+                                                production
+                                                environments. Understanding of system integration and
+                                                deployment.</p>
                                         </div>
 
                                         <div class="degree-section">
                                             <div class="section-header">
                                                 <i class="fas fa-satellite section-icon"></i>
-                                                <h4 style="font-size: 1.3em; margin-bottom: 12px;">Domain Expertise</h4>
+                                                <h4 style="font-size: 1.3em; margin-bottom: 12px;">
+                                                    Domain
+                                                    Expertise</h4>
                                             </div>
-                                            <p style="font-size: 1.1em; line-height: 1.6;">Specialized knowledge in
-                                                space technology, orbital mechanics, and mission planning. Unique
-                                                ability to bridge aerospace engineering with AI innovation for practical
+                                            <p style="font-size: 1.1em; line-height: 1.6;">Specialized
+                                                knowledge
+                                                in
+                                                space technology, orbital mechanics, and mission
+                                                planning.
+                                                Unique
+                                                ability to bridge aerospace engineering with AI
+                                                innovation for
+                                                practical
                                                 solutions.</p>
                                         </div>
 
                                         <div class="degree-section">
                                             <div class="section-header">
                                                 <i class="fas fa-chart-line section-icon"></i>
-                                                <h4 style="font-size: 1.3em; margin-bottom: 12px;">Problem Solving</h4>
+                                                <h4 style="font-size: 1.3em; margin-bottom: 12px;">
+                                                    Problem
+                                                    Solving</h4>
                                             </div>
-                                            <p style="font-size: 1.1em; line-height: 1.6;">Trained in complex systems
-                                                thinking and multi-disciplinary problem solving. Experience working with
+                                            <p style="font-size: 1.1em; line-height: 1.6;">Trained in
+                                                complex
+                                                systems
+                                                thinking and multi-disciplinary problem solving.
+                                                Experience
+                                                working with
                                                 real-world constraints and engineering challenges.</p>
                                         </div>
 
                                         <div class="degree-section">
                                             <div class="section-header">
                                                 <i class="fas fa-users section-icon"></i>
-                                                <h4 style="font-size: 1.3em; margin-bottom: 12px;">Collaboration</h4>
+                                                <h4 style="font-size: 1.3em; margin-bottom: 12px;">
+                                                    Collaboration
+                                                </h4>
                                             </div>
-                                            <p style="font-size: 1.1em; line-height: 1.6;">Experience collaborating with
-                                                researchers, engineers, and scientists across multiple institutions
+                                            <p style="font-size: 1.1em; line-height: 1.6;">Experience
+                                                collaborating with
+                                                researchers, engineers, and scientists across multiple
+                                                institutions
                                                 including EgSA, NRIAG, and Cairo Airport Labs.</p>
                                         </div>
                                     </div>
@@ -1743,22 +1620,27 @@
                                 <span class="btn-loading" style="display: none;" aria-hidden="true">Sending...</span>
                             </button>
 
-                            <div class="form-message" id="form-message" role="alert" aria-live="polite"></div>
+                            <div class="form-message" id="form-message" role="alert" aria-live="polite">
+                            </div>
                         </form>
                         <p style="text-align: center; color: #b0b0b0; margin-top: 20px; font-size: 0.9em;">
-                            <i class="fas fa-clock" style="margin-right: 5px;"></i>Response time: Within 24 hours
+                            <i class="fas fa-clock" style="margin-right: 5px;"></i>Response time: Within
+                            24
+                            hours
                         </p>
                     </div>
 
                     <!-- Right Column: Availability Info with Globe -->
                     <div class="availability-container">
                         <div class="availability-content">
-                            <h2 class="availability-title">Based in Cairo, Egypt<br>Available Worldwide</h2>
+                            <h2 class="availability-title">Based in Cairo, Egypt<br>Available Worldwide
+                            </h2>
                             <p class="availability-text">
                                 Whether you're in <span class="highlight">Berlin</span>, <span class="highlight">New
-                                    York</span>, or <span class="highlight">Tokyo</span>, I'm ready to <span
-                                    class="highlight">collaborate remotely</span> and bring your ideas to life. <span
-                                    class="highlight">Let's build something great together.</span>
+                                    York</span>, or <span class="highlight">Tokyo</span>, I'm ready to
+                                <span class="highlight">collaborate remotely</span> and bring your ideas
+                                to life.
+                                <span class="highlight">Let's build something great together.</span>
                             </p>
 
                             <!-- Social Links -->
@@ -2066,6 +1948,9 @@
             }
         })();
     </script>
+
+    <!-- Mission Assistant (Chatbot) HTML Structure -->
+
 </body>
 
 </html>
