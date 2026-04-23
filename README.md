@@ -1,6 +1,7 @@
-# Portfolio Website - Abdulrahman Hisham Kamel
+# Portfolio Website - Abdelrahman Hesham Kamel
 
-A modern, responsive portfolio website showcasing AI engineering expertise, projects, and professional experience.
+A modern, responsive portfolio website showcasing AI engineering expertise,
+projects, and professional experience.
 
 ## 🚀 Features
 
@@ -67,9 +68,11 @@ A modern, responsive portfolio website showcasing AI engineering expertise, proj
 
 ### Production Deployment
 
-This site is designed to be deployed on GitHub Pages. Simply push to the `main` branch and GitHub Pages will automatically deploy.
+This site is designed to be deployed on GitHub Pages. Simply push to the `main`
+branch and GitHub Pages will automatically deploy.
 
 **For custom domain deployment:**
+
 1. Add a `CNAME` file with your domain name
 2. Configure DNS settings as per GitHub Pages documentation
 
@@ -99,7 +102,8 @@ This site is designed to be deployed on GitHub Pages. Simply push to the `main` 
 
 ### Updating Content
 
-1. **Personal Information**: Edit the structured data in `index.html` (lines 34-56)
+1. **Personal Information**: Edit the structured data in `index.html` (lines
+   34-56)
 2. **Projects**: Update project sections in `index.html`
 3. **Experience**: Modify experience cards in `index.html` and `script.js`
 4. **Skills**: Update skill containers in `index.html`
@@ -116,7 +120,8 @@ This site is designed to be deployed on GitHub Pages. Simply push to the `main` 
 
 ## 📝 Contact Form
 
-The contact form uses [Formspree](https://formspree.io/) for form submissions. To configure:
+The contact form uses [Formspree](https://formspree.io/) for form submissions.
+To configure:
 
 1. Sign up for a Formspree account
 2. Create a new form endpoint
@@ -154,15 +159,18 @@ For production builds with minification:
 ## 🐛 Troubleshooting
 
 ### Images not loading
+
 - Check file paths in `assets/` directory
 - Ensure images are committed to repository
 
 ### Contact form not working
+
 - Verify Formspree endpoint is correct
 - Check browser console for errors
 - Ensure rate limiting hasn't blocked submissions
 
 ### Globe not rendering
+
 - Check internet connection (cobe library loads from CDN)
 - Verify browser supports WebGL
 - Check browser console for errors
@@ -173,9 +181,11 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 👤 Author
 
-**Abdulrahman Hisham Kamel**
+**Abdelrahman Hesham Kamel**
+
 - Portfolio: [https://abdohisham12.github.io](https://abdohisham12.github.io)
-- LinkedIn: [https://www.linkedin.com/in/abdulrahman-hisham](https://www.linkedin.com/in/abdulrahman-hisham)
+- LinkedIn:
+  [https://www.linkedin.com/in/abdulrahman-hisham](https://www.linkedin.com/in/abdulrahman-hisham)
 - GitHub: [https://github.com/abdohisham12](https://github.com/abdohisham12)
 - Email: abdulrahmanhishamk@gmail.com
 
@@ -189,4 +199,3 @@ This project is open source and available under the [MIT License](LICENSE).
 ---
 
 **Last Updated**: December 2024
-

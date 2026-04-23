@@ -1,7 +1,7 @@
 {
   "name": "portfolio-website",
   "version": "1.0.0",
-  "description": "Portfolio website for Abdulrahman Hisham Kamel - AI Engineer",
+  "description": "Portfolio website for  Abdelrahman Hesham Kamel - AI Engineer",
   "scripts": {
     "dev": "python server.py",
     "start": "python server.py",
@@ -15,7 +15,7 @@
     "machine-learning",
     "website"
   ],
-  "author": "Abdulrahman Hisham Kamel",
+  "author": "Abdelrahman Hesham Kamel",
   "license": "MIT",
   "repository": {
     "type": "git",

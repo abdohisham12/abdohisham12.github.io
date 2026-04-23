@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description"
-        content="Abdulrahman Hisham Kamel - R&D AI Software Engineer specializing in LLMs, computer vision, MLOps, and production AI systems. 1+ years building scalable AI solutions for aerospace and tech companies.">
+        content="Abdelrahman Hesham Kamel - R&D AI Software Engineer specializing in LLMs, computer vision, MLOps, and production AI systems. 1+ years building scalable AI solutions for aerospace and tech companies.">
     <meta name="keywords"
         content="AI Engineer, Machine Learning Engineer, MLOps Engineer, AI Software Engineer, Data Scientist, Space Mission Concept Engineer, Deep Learning Specialist, LLM, Computer Vision, Space Technology, Satellite Systems, Aerospace AI, Orbital Mechanics, Python, TensorFlow, PyTorch, RAG, MLOps, Production AI Systems">
-    <meta name="author" content="Abdulrahman Hisham Kamel">
+    <meta name="author" content="Abdelrahman Hesham Kamel">
 
     <!-- Mobile & PWA Optimization -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Abdulrahman Kamel">
+    <meta name="apple-mobile-web-app-title" content="Abdelrahman Kamel">
     <meta name="theme-color" content="#09151a">
     <meta name="format-detection" content="telephone=no">
 
@@ -37,18 +37,16 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://abdohisham12.github.io/">
-    <meta property="og:title" content="Abdulrahman Hisham Kamel | AI Engineer | Space Technology Specialist">
+    <meta property="og:title" content="Abdelrahman Hesham Kamel | AI Engineer | Space Technology Specialist">
     <meta property="og:description"
         content="Artificial Intelligence Engineer specializing in LLM technologies, computer vision, and AI-powered space mission planning. Building innovative AI solutions for aerospace.">
-    <meta property="og:image" content="https://abdohisham12.github.io/assets/profile photo.jpg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://abdohisham12.github.io/">
-    <meta property="twitter:title" content="Abdulrahman Hisham Kamel | AI Engineer | Space Technology Specialist">
+    <meta property="twitter:title" content="Abdelrahman Hesham Kamel | AI Engineer | Space Technology Specialist">
     <meta property="twitter:description"
         content="Artificial Intelligence Engineer specializing in LLM technologies, computer vision, and AI-powered space mission planning.">
-    <meta property="twitter:image" content="https://abdohisham12.github.io/assets/profile photo.jpg">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -75,24 +73,14 @@
     }
     </script>
 
-    <title>Abdulrahman Hisham Kamel | Aerospace Engineer | AI Specialist</title>
-
-    <!-- Analytics (Optional - Uncomment and add your tracking ID) -->
-    <!-- Google Analytics 4 Example:
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
-    </script>
-    -->
+    <title>Abdelrahman Hesham Kamel | Aerospace Engineer | AI Specialist</title>
 
     <link rel="stylesheet" href="styles.css?v=1.1">
     <!-- Cobe library loaded asynchronously for better performance -->
     <script src="https://unpkg.com/cobe@0.6.0/dist/cobe.umd.js" async defer></script>
-    <!-- Three.js for interactive profile picture -->
+    <!-- Three.js for interactive 3D avatars -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js" defer></script>
     <script src="script.js" defer></script>
 
 
@@ -229,7 +217,7 @@
 
             <div class="hero-content">
                 <div class="hero-text-section">
-                    <h1 class="hero-name animate-fade-in-up" data-delay="0.1s">Abdulrahman Hisham Kamel</h1>
+                    <h1 class="hero-name animate-fade-in-up" data-delay="0.1s">Abdelrahman Hesham Kamel</h1>
                     <h2 class="hero-title animate-fade-in-up" data-delay="0.2s">
                         <span class="title-highlight">R&D AI Software Engineer</span>
                     </h2>
@@ -270,15 +258,13 @@
 
                 <div class="hero-visual-section">
                     <div class="hero-image-container animate-scale-in" data-delay="0.2s">
-                        <!-- Orbiting Stats removed for cleaner, authentic look -->
-
-                        <div class="profile-picture-wrapper" id="profile-wrapper">
-                            <div class="profile-glow"></div>
-                            <!-- Three.js Canvas for interactive eyes -->
-                            <canvas id="profile-canvas" class="profile-canvas"></canvas>
-                            <!-- Fallback image for no-JS or WebGL failure -->
-                            <img src="assets/profile photo.jpg" alt="Abdulrahman Hisham Kamel - AI Engineer"
-                                class="profile-picture profile-fallback" loading="eager" fetchpriority="high">
+                        <!-- 3D Avatar Viewport -->
+                        <div class="avatar-viewport" id="avatar-viewport">
+                            <div class="avatar-loading" id="avatar-loading">
+                                <div class="avatar-loading-spinner"></div>
+                                <span>Loading avatar...</span>
+                            </div>
+                            <canvas id="avatar-canvas"></canvas>
                         </div>
                     </div>
                 </div>
@@ -1556,7 +1542,7 @@
                             <h2 class="availability-title">Based in Cairo, Egypt<br>Open to remote work.
                             </h2>
                             <p class="availability-text">
-                                I'm available for full-time roles, freelance projects, and consulting.
+                                I'm ready for full-time roles, freelance projects, and consulting.
                                 Fastest way to reach me is the form or <span class="highlight">Calendly</span> below.
                             </p>
 
@@ -1635,7 +1621,7 @@
                 <!-- Copyright Section -->
                 <div class="copyright">
                     <p class="copyright-year">
-                        &copy; 2025 Abdulrahman Hisham Kamel
+                        &copy; 2023 Abdelrahman Hesham Kamel
                     </p>
                 </div>
             </div>
@@ -1864,6 +1850,11 @@
     </script>
 
     <!-- Mission Assistant (Chatbot) HTML Structure -->
+
+    <!-- 3D Avatar Widget (non-intrusive corner popup for dance & superman) -->
+    <div id="avatar-widget" class="avatar-widget" style="display:none;">
+        <canvas id="avatar-widget-canvas"></canvas>
+    </div>
 
 </body>
 

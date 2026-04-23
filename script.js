@@ -99,7 +99,9 @@ function initQuickNav() {
             const targetId = link.getAttribute('data-section');
             const targetSection = document.getElementById(targetId);
             if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const navbarHeight = 80;
+                const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
             }
         });
     });
@@ -550,8 +552,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Close menu when clicking on a nav link
         const navLinkElements = navLinks.querySelectorAll('.nav-link');
         navLinkElements.forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
                 closeMenu();
+                
+                // Custom smooth scroll to handle fixed header offset accurately
+                const targetId = link.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    const navbarHeight = 80;
+                    const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                }
             });
         });
 
@@ -2663,7 +2675,6 @@ function initFullscreenSlider() {
 
     // Initial update
     updateSliderPosition();
-    console.log('Fullscreen Slider Initialized');
 }
 
 // Initialize on load
@@ -2674,139 +2685,619 @@ if (document.readyState === 'loading') {
 }
 
 // ==========================================================================
-// Interactive Profile Picture with Three.js
-// Uses WebGL shaders to displace eye region of actual photo
+// 3D Avatar System
+// Manages three animated GLB avatars:
+//   1. Welcome avatar (hero section) — head tracks mouse cursor
+//   2. Dance avatar (overlay) — triggered by contact/schedule clicks
+//   3. Superman avatar (overlay) — triggered by 10s section dwell, 5min cooldown
 // ==========================================================================
 
-function initInteractiveProfile() {
-    const canvas = document.getElementById('profile-canvas');
-    const wrapper = document.getElementById('profile-wrapper');
-    const heroSection = document.getElementById('home');
+(function AvatarSystem() {
+    'use strict';
 
-    if (!canvas || !wrapper) return;
+    // Wait for THREE + GLTFLoader to be available
+    let attempts = 0;
+    const maxAttempts = 40; // 20 seconds max wait
 
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    if (!gl || typeof THREE === 'undefined') return;
-
-    wrapper.classList.add('canvas-active');
-
-    const EYE_CONFIG = {
-        leftEye: { x: 0.43, y: 0.38 }, // Moved up and slightly left
-        rightEye: { x: 0.57, y: 0.38 }, // Moved up and slightly right
-        eyeRadius: 0.035, // Reduced radius to avoid nose
-        maxDisplacement: 0.025,
-        smoothing: 0.08
-    };
-
-    let targetX = 0, targetY = 0, currentX = 0, currentY = 0, blinkIntensity = 0, isPageVisible = true;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5, 0.1, 10);
-    camera.position.z = 1;
-
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, preserveDrawingBuffer: true });
-
-    function updateSize() {
-        const rect = wrapper.getBoundingClientRect();
-        const size = Math.min(rect.width, rect.height);
-        renderer.setSize(size, size);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    function tryInit() {
+        if (typeof THREE !== 'undefined' && typeof THREE.GLTFLoader !== 'undefined') {
+            init();
+            return;
+        }
+        attempts++;
+        if (attempts < maxAttempts) {
+            setTimeout(tryInit, 500);
+        }
     }
-    updateSize();
 
-    const vertexShader = `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
-    const fragmentShader = `
-        uniform sampler2D uTexture; uniform vec2 uDisplacement; uniform vec2 uLeftEye; uniform vec2 uRightEye;
-        uniform float uEyeRadius; uniform float uBlinkIntensity; varying vec2 vUv;
-        void main() {
-            vec2 uv = vUv;
-            float influenceLeft = smoothstep(uEyeRadius, 0.0, distance(uv, uLeftEye));
-            float influenceRight = smoothstep(uEyeRadius, 0.0, distance(uv, uRightEye));
-            float influence = max(influenceLeft, influenceRight);
-            vec2 displacedUv = clamp(uv - uDisplacement * influence, 0.0, 1.0);
-            vec4 color = texture2D(uTexture, displacedUv);
-            color.rgb *= 1.0 - (uBlinkIntensity * 0.3 * influence);
-            float alpha = 1.0 - smoothstep(0.48, 0.5, distance(vUv, vec2(0.5)));
-            color.a *= alpha;
-            gl_FragColor = color;
-        }`;
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', tryInit);
+    } else {
+        tryInit();
+    }
 
-    const geometry = new THREE.PlaneGeometry(1, 1);
-    const textureLoader = new THREE.TextureLoader();
+    // ======================================================================
+    // Main initialization
+    // ======================================================================
+    function init() {
+        initWelcomeAvatar();
+        initDanceAvatar();
+        initSupermanAvatar();
+    }
 
-    textureLoader.load('assets/profile photo.jpg', (texture) => {
-        texture.minFilter = THREE.LinearFilter;
-        texture.magFilter = THREE.LinearFilter;
-        const material = new THREE.ShaderMaterial({
-            uniforms: {
-                uTexture: { value: texture },
-                uDisplacement: { value: new THREE.Vector2(0, 0) },
-                uLeftEye: { value: new THREE.Vector2(EYE_CONFIG.leftEye.x, 1.0 - EYE_CONFIG.leftEye.y) },
-                uRightEye: { value: new THREE.Vector2(EYE_CONFIG.rightEye.x, 1.0 - EYE_CONFIG.rightEye.y) },
-                uEyeRadius: { value: EYE_CONFIG.eyeRadius },
-                uBlinkIntensity: { value: 0.0 }
+    // ======================================================================
+    // 1. WELCOME AVATAR — Hero section with head tracking
+    // ======================================================================
+    function initWelcomeAvatar() {
+        const viewport = document.getElementById('avatar-viewport');
+        const canvas = document.getElementById('avatar-canvas');
+        const loading = document.getElementById('avatar-loading');
+
+        if (!viewport || !canvas) return;
+
+        // Show loading spinner
+        if (loading) {
+            loading.classList.add('visible');
+            viewport.classList.add('is-loading');
+        }
+
+        // Setup Three.js scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(25, canvas.clientWidth / canvas.clientHeight || 0.8, 0.1, 100);
+        camera.position.set(0, 1.5, 3.2);
+        camera.lookAt(0, 1.2, 0);
+
+        let renderer;
+        try {
+            renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+        } catch (e) {
+            if (loading) loading.classList.remove('visible');
+            return;
+        }
+
+        function updateSize() {
+            const w = viewport.clientWidth;
+            const h = viewport.clientHeight;
+            if (w > 0 && h > 0) {
+                renderer.setSize(w, h);
+                camera.aspect = w / h;
+                
+                // Adjust framing based on screen width, not just canvas aspect
+                if (window.innerWidth <= 768) {
+                    camera.position.set(0, 1.6, 3.0); // Higher camera on mobile to keep head in frame
+                    camera.lookAt(0, 1.35, 0);
+                } else {
+                    camera.position.set(0, 1.5, 3.2); // Default desktop framing
+                    camera.lookAt(0, 1.2, 0);
+                }
+                
+                camera.updateProjectionMatrix();
+            }
+        }
+        updateSize();
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const keyLight = new THREE.DirectionalLight(0xffffff, 0.9);
+        keyLight.position.set(2, 3, 4);
+        scene.add(keyLight);
+
+        const fillLight = new THREE.DirectionalLight(0x88ccff, 0.3);
+        fillLight.position.set(-2, 1, 2);
+        scene.add(fillLight);
+
+        // Subtle cyan rim light for the space theme
+        const rimLight = new THREE.DirectionalLight(0x00f3ff, 0.25);
+        rimLight.position.set(0, 2, -3);
+        scene.add(rimLight);
+
+        // State
+        let mixer = null;
+        let headBone = null;
+        let neckBone = null;
+        let isPageVisible = true;
+        let targetRotX = 0, targetRotY = 0;
+        let currentRotX = 0, currentRotY = 0;
+        const clock = new THREE.Clock();
+
+        // Rest pose rotations (saved after wave animation ends)
+        let headRestRot = { x: 0, y: 0, z: 0 };
+        let neckRestRot = { x: 0, y: 0, z: 0 };
+        let animationFinished = false;
+        let blendFactor = 0; // 0 = animation mode, 1 = fully idle/mouse-tracking
+
+        // Load the welcome avatar
+        const loader = new THREE.GLTFLoader();
+        loader.load(
+            'assets/avatars/welcome.glb',
+            function (gltf) {
+                const model = gltf.scene;
+                model.position.set(0, 0, 0);
+                scene.add(model);
+
+                // Find head and neck bones
+                model.traverse(function (child) {
+                    if (child.isBone) {
+                        const name = child.name.toLowerCase();
+                        if (name === 'head') headBone = child;
+                        else if (name === 'neck') neckBone = child;
+                    }
+                });
+
+                // Setup animations
+                if (gltf.animations.length > 0) {
+                    mixer = new THREE.AnimationMixer(model);
+                    const waveClip = gltf.animations[0];
+                    const waveAction = mixer.clipAction(waveClip);
+                    waveAction.clampWhenFinished = true;
+                    waveAction.setLoop(THREE.LoopOnce);
+                    waveAction.play();
+
+                    // When wave animation finishes, save the rest pose
+                    mixer.addEventListener('finished', function () {
+                        animationFinished = true;
+                        if (headBone) {
+                            headRestRot.x = headBone.rotation.x;
+                            headRestRot.y = headBone.rotation.y;
+                            headRestRot.z = headBone.rotation.z;
+                        }
+                        if (neckBone) {
+                            neckRestRot.x = neckBone.rotation.x;
+                            neckRestRot.y = neckBone.rotation.y;
+                            neckRestRot.z = neckBone.rotation.z;
+                        }
+                    });
+                } else {
+                    // No animation — save rest pose immediately
+                    animationFinished = true;
+                    if (headBone) {
+                        headRestRot.x = headBone.rotation.x;
+                        headRestRot.y = headBone.rotation.y;
+                        headRestRot.z = headBone.rotation.z;
+                    }
+                    if (neckBone) {
+                        neckRestRot.x = neckBone.rotation.x;
+                        neckRestRot.y = neckBone.rotation.y;
+                        neckRestRot.z = neckBone.rotation.z;
+                    }
+                }
+
+                // Hide loading, show canvas, and hide fallback glow
+                if (loading) {
+                    loading.classList.remove('visible');
+                    viewport.classList.remove('is-loading');
+                }
+                viewport.classList.add('avatar-ready');
+                const profileGlow = viewport.querySelector('.profile-glow');
+                if (profileGlow) profileGlow.style.display = 'none';
+
+                // Start render loop
+                animate();
             },
-            vertexShader, fragmentShader, transparent: true
-        });
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
+            undefined,
+            function (error) {
+                // Load failed — keep fallback image
+                if (loading) {
+                    loading.classList.remove('visible');
+                    viewport.classList.remove('is-loading');
+                }
+            }
+        );
 
-        function render() {
-            currentX += (targetX - currentX) * EYE_CONFIG.smoothing;
-            currentY += (targetY - currentY) * EYE_CONFIG.smoothing;
-            material.uniforms.uDisplacement.value.set(currentX, currentY);
-            material.uniforms.uBlinkIntensity.value = blinkIntensity;
-            if (blinkIntensity > 0) blinkIntensity = Math.max(0, blinkIntensity - 0.15);
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+
+            // Update animation mixer
+            if (mixer) mixer.update(delta);
+
+            // Smooth head tracking toward mouse
+            const smoothing = 0.06;
+            currentRotX += (targetRotX - currentRotX) * smoothing;
+            currentRotY += (targetRotY - currentRotY) * smoothing;
+
+            // Clamp rotation for a subtle, natural head turn
+            var clampedRotX = Math.max(-0.12, Math.min(0.12, currentRotX));
+            var clampedRotY = Math.max(-0.2, Math.min(0.2, currentRotY));
+
+            if (animationFinished) {
+                // Smoothly blend from animation to idle (over ~1.5 seconds)
+                blendFactor = Math.min(1, blendFactor + delta * 0.7);
+
+                if (headBone) {
+                    // Lerp between current (animation-residual) and target (rest + mouse)
+                    var targetHeadX = headRestRot.x + clampedRotX * 0.4;
+                    var targetHeadY = headRestRot.y + clampedRotY * 0.6;
+                    headBone.rotation.x += (targetHeadX - headBone.rotation.x) * blendFactor;
+                    headBone.rotation.y += (targetHeadY - headBone.rotation.y) * blendFactor;
+                }
+                if (neckBone) {
+                    var targetNeckX = neckRestRot.x + clampedRotX * 0.15;
+                    var targetNeckY = neckRestRot.y + clampedRotY * 0.25;
+                    neckBone.rotation.x += (targetNeckX - neckBone.rotation.x) * blendFactor;
+                    neckBone.rotation.y += (targetNeckY - neckBone.rotation.y) * blendFactor;
+                }
+            } else {
+                // Animation is still playing — ADD small offset on top
+                // (mixer resets bones each frame during animation)
+                if (headBone) {
+                    headBone.rotation.y += clampedRotY * 0.3;
+                    headBone.rotation.x += clampedRotX * 0.2;
+                }
+                if (neckBone) {
+                    neckBone.rotation.y += clampedRotY * 0.1;
+                }
+            }
+
             renderer.render(scene, camera);
-            requestAnimationFrame(render);
         }
-        render();
-    }, undefined, () => wrapper.classList.remove('canvas-active'));
 
-    function updateDisplacement(clientX, clientY) {
-        if (!isPageVisible) return;
-        const rect = wrapper.getBoundingClientRect();
-        const deltaX = clientX - (rect.left + rect.width / 2);
-        const deltaY = clientY - (rect.top + rect.height / 2);
-        const dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-        // Use a smaller max distance (approx 1/3 of screen) for more responsive tracking
-        const maxDist = Math.min(window.innerWidth, window.innerHeight) / 1.5;
-        const angle = Math.atan2(deltaY, deltaX);
-        const displacement = EYE_CONFIG.maxDisplacement * Math.min(dist / maxDist, 1);
-        targetX = Math.cos(angle) * displacement;
-        targetY = -Math.sin(angle) * displacement;
+        // Mouse tracking
+        function onMouseMove(e) {
+            if (!isPageVisible) return;
+            // Map mouse position to rotation (-maxAngle to +maxAngle)
+            const maxAngle = 0.35; // ~20 degrees
+            const nx = (e.clientX / window.innerWidth) * 2 - 1;  // -1 to 1
+            const ny = (e.clientY / window.innerHeight) * 2 - 1; // -1 to 1
+            targetRotY = nx * maxAngle;
+            targetRotX = ny * maxAngle * 0.6; // Positive ny (mouse down) → head tilts down
+        }
+
+        function throttle(fn, ms) {
+            let last = 0;
+            return function (...args) {
+                const now = Date.now();
+                if (now - last >= ms) { last = now; fn.apply(this, args); }
+            };
+        }
+
+        document.addEventListener('mousemove', throttle(onMouseMove, 16), { passive: true });
+        document.documentElement.addEventListener('mouseleave', function () {
+            isPageVisible = false;
+            targetRotX = 0;
+            targetRotY = 0;
+        });
+        document.documentElement.addEventListener('mouseenter', function () {
+            isPageVisible = true;
+        });
+        document.addEventListener('visibilitychange', function () {
+            isPageVisible = !document.hidden;
+            if (!isPageVisible) { targetRotX = 0; targetRotY = 0; }
+        });
+
+        // Mobile scroll tracking
+        var isMobileDevice = window.innerWidth <= 768;
+        
+        // Touch tracking
+        document.addEventListener('touchmove', throttle(function (e) {
+            if (e.touches[0]) {
+                const maxAngle = 0.35;
+                const nx = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+                const ny = (e.touches[0].clientY / window.innerHeight) * 2 - 1;
+                targetRotY = nx * maxAngle;
+                targetRotX = ny * maxAngle * 0.6;
+            }
+        }, 16), { passive: true });
+
+        // Scroll tracking (makes the avatar look up/down as you scroll)
+        window.addEventListener('scroll', throttle(function () {
+            if (isPageVisible) {
+                const scrollY = window.scrollY;
+                const maxScroll = 500; // How far down before max tilt
+                const scrollFactor = Math.min(scrollY / maxScroll, 1.0);
+                
+                // If on mobile and no recent touch, use scroll for vertical look
+                if (isMobileDevice) {
+                    const maxAngle = 0.35;
+                    // Tilt down as we scroll down
+                    targetRotX = scrollFactor * maxAngle * 0.8;
+                    // Slowly drift back to center horizontally if just scrolling
+                    targetRotY *= 0.95; 
+                }
+            }
+        }, 32), { passive: true });
+
+        window.addEventListener('resize', throttle(updateSize, 100));
     }
 
-    function throttle(fn, limit) {
-        let t; return (...args) => { if (!t) { fn(...args); t = true; setTimeout(() => t = false, limit); } };
+    // ======================================================================
+    // 2. DANCE AVATAR — Flyover triggered by contact/schedule buttons
+    // ======================================================================
+    function initDanceAvatar() {
+        var hasShownThisSession = false;
+
+        var triggerSelectors = [
+            '.nav-contact-button',
+            '.mobile-cta-fab',
+            '.schedule-meeting-cta'
+        ];
+
+        triggerSelectors.forEach(function (selector) {
+            var elements = document.querySelectorAll(selector);
+            elements.forEach(function (el) {
+                el.addEventListener('click', function () {
+                    setTimeout(function () { triggerDance(); }, 800);
+                });
+            });
+        });
+
+        var contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function () {
+                setTimeout(function () { triggerDance(); }, 1500);
+            });
+        }
+
+        function triggerDance() {
+            if (hasShownThisSession) return;
+            hasShownThisSession = true;
+            showAvatarFlyover('assets/avatars/contact%20me%20dance.glb', {
+                durationMs: 7000,
+                flyType: 'dance'
+            });
+        }
     }
 
-    const onMove = throttle((e) => updateDisplacement(e.clientX, e.clientY), 16);
-    const onClick = (e) => { const r = heroSection?.getBoundingClientRect(); if (r && e.clientY < r.bottom) blinkIntensity = 1; };
-    const onTouchMove = throttle((e) => { if (e.touches[0]) updateDisplacement(e.touches[0].clientX, e.touches[0].clientY); }, 16);
-    let ts = 0, tp = {};
-    const onTouchStart = (e) => { if (e.touches[0]) { ts = Date.now(); tp = { x: e.touches[0].clientX, y: e.touches[0].clientY }; } };
-    const onTouchEnd = (e) => {
-        const t = e.changedTouches[0];
-        if (t && Date.now() - ts < 200 && Math.abs(t.clientX - tp.x) < 10 && Math.abs(t.clientY - tp.y) < 10) {
-            const r = heroSection?.getBoundingClientRect();
-            if (r && t.clientY < r.bottom) blinkIntensity = 1;
+    // ======================================================================
+    // 3. SUPERMAN AVATAR — Flyover triggered by 10s section dwell
+    // ======================================================================
+    function initSupermanAvatar() {
+        var lastTriggerTime = 0;
+        var DWELL_THRESHOLD = 10000;  // 10 seconds
+        var COOLDOWN = 300000;        // 5 minutes
+        var currentSection = null;
+        var dwellTimer = null;
+        var triggeredThisDwell = false; // Prevent re-trigger in same dwell
+
+        var sectionIds = ['experience', 'projects', 'skills', 'education', 'featured-work'];
+
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+                        var sectionId = entry.target.id;
+                        if (sectionId !== currentSection) {
+                            currentSection = sectionId;
+                            triggeredThisDwell = false;
+                            resetDwellTimer();
+                            startDwellTimer();
+                        }
+                    }
+                });
+            }, { threshold: [0.3] });
+
+            sectionIds.forEach(function (id) {
+                var section = document.getElementById(id);
+                if (section) observer.observe(section);
+            });
         }
-    };
 
-    document.addEventListener('mousemove', onMove, { passive: true });
-    document.addEventListener('click', onClick);
-    document.documentElement.addEventListener('mouseleave', () => { isPageVisible = false; targetX = targetY = 0; });
-    document.documentElement.addEventListener('mouseenter', () => { isPageVisible = true; });
-    document.addEventListener('visibilitychange', () => { isPageVisible = !document.hidden; if (!isPageVisible) targetX = targetY = 0; });
-    document.addEventListener('touchstart', onTouchStart, { passive: true });
-    document.addEventListener('touchmove', onTouchMove, { passive: true });
-    document.addEventListener('touchend', onTouchEnd, { passive: true });
-    window.addEventListener('resize', throttle(updateSize, 100));
-}
+        function resetDwellTimer() {
+            if (dwellTimer) { clearTimeout(dwellTimer); dwellTimer = null; }
+        }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initInteractiveProfile);
-} else {
-    initInteractiveProfile();
-}
+        function startDwellTimer() {
+            if (triggeredThisDwell) return; // Already triggered for this section visit
+            dwellTimer = setTimeout(function () {
+                var now = Date.now();
+                if (now - lastTriggerTime < COOLDOWN) return;
+                if (triggeredThisDwell) return;
+                triggeredThisDwell = true;
+                lastTriggerTime = now;
+                dwellTimer = null;
+                showAvatarFlyover('assets/avatars/superman.glb', {
+                    durationMs: 5000,
+                    flyType: 'superman'
+                });
+            }, DWELL_THRESHOLD);
+        }
+    }
+
+    // ======================================================================
+    // Shared: Full-screen Transparent Flyover Renderer
+    // - No background, fully transparent canvas
+    // - Model animates across the viewport
+    // - Page remains fully interactive (pointer-events: none)
+    // ======================================================================
+    var widgetActive = false;
+
+    function showAvatarFlyover(glbUrl, options) {
+        if (widgetActive) return;
+        widgetActive = true;
+
+        var widget = document.getElementById('avatar-widget');
+        var canvas = document.getElementById('avatar-widget-canvas');
+
+        if (!widget || !canvas) { widgetActive = false; return; }
+
+        var opts = options || {};
+        var flyType = opts.flyType || 'superman';
+        var durationMs = opts.durationMs || 5000;
+
+        // Setup scene — fully transparent
+        var scene = new THREE.Scene();
+
+        // Camera setup — wider FOV for flyover
+        var vw = window.innerWidth;
+        var vh = window.innerHeight;
+        var camera = new THREE.PerspectiveCamera(35, vw / vh, 0.1, 100);
+        var isMobile = window.innerWidth <= 768;
+
+        // Position camera based on fly type
+        if (flyType === 'superman') {
+            camera.position.set(0, 1.0, 4.0);
+            camera.lookAt(0, 1.0, 0);
+        } else {
+            camera.position.set(0, 0.9, 3.5);
+            camera.lookAt(0, 0.85, 0);
+        }
+
+        var renderer;
+        try {
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(vw, vh);
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.4;
+            renderer.setClearColor(0x000000, 0); // Fully transparent background
+        } catch (e) {
+            widgetActive = false;
+            return;
+        }
+
+        // Lighting
+        scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+        var keyL = new THREE.DirectionalLight(0xffffff, 1.0);
+        keyL.position.set(2, 3, 4);
+        scene.add(keyL);
+        var fillL = new THREE.DirectionalLight(0x88ccff, 0.3);
+        fillL.position.set(-2, 1, 2);
+        scene.add(fillL);
+        var rimL = new THREE.DirectionalLight(0x00f3ff, 0.35);
+        rimL.position.set(0, 2, -3);
+        scene.add(rimL);
+
+        // Show widget
+        widget.style.display = 'block';
+        widget.classList.remove('dismissing');
+        widget.classList.add('active');
+
+        // Load GLB
+        var loader = new THREE.GLTFLoader();
+        loader.load(
+            glbUrl,
+            function (gltf) {
+                var model = gltf.scene;
+                scene.add(model);
+
+                // Setup animation
+                var mixer = null;
+                if (gltf.animations.length > 0) {
+                    mixer = new THREE.AnimationMixer(model);
+                    gltf.animations.forEach(function (clip) {
+                        var action = mixer.clipAction(clip);
+                        action.setLoop(THREE.LoopRepeat);
+                        action.play();
+                    });
+                }
+
+                // Flyover animation config
+                var elapsed = 0;
+                var totalDuration = durationMs / 1000; // in seconds
+                var clock = new THREE.Clock();
+                var animFrameId;
+
+                // Starting and ending positions for the model
+                var startPos, endPos;
+                if (flyType === 'superman') {
+                    // Fly from top-right to bottom-left across the screen
+                    startPos = { x: 3.0, y: 3.5, z: 0 };
+                    endPos = { x: -3.0, y: -2.0, z: 0 };
+                    // Rotate model to face the direction of flight
+                    model.rotation.y = -0.4;
+                } else {
+                    // Dance: slide in from right, stay, slide out left
+                    startPos = { x: 4.0, y: 0, z: 0 };
+                    endPos = { x: -4.0, y: 0, z: 0 };
+                }
+
+                model.position.set(startPos.x, startPos.y, startPos.z);
+
+                function renderFlyover() {
+                    animFrameId = requestAnimationFrame(renderFlyover);
+                    var delta = clock.getDelta();
+                    elapsed += delta;
+
+                    if (mixer) mixer.update(delta);
+
+                    // Calculate progress (0 to 1)
+                    var progress = Math.min(elapsed / totalDuration, 1);
+
+                    // Use easing for natural motion
+                    var eased;
+                    if (flyType === 'superman') {
+                        // Smooth ease-in-out
+                        eased = progress < 0.5
+                            ? 2 * progress * progress
+                            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+                    } else {
+                        // Dance: ease in for first 20%, hold center 60%, ease out last 20%
+                        if (progress < 0.15) {
+                            eased = 0.15 * (progress / 0.15); // slide in
+                            eased = eased * eased * (3 - 2 * eased); // smoothstep
+                            eased *= 0.5; // map to 0 -> 0.5 of path
+                        } else if (progress < 0.8) {
+                            eased = 0.5; // stay center
+                        } else {
+                            var outP = (progress - 0.8) / 0.2;
+                            eased = 0.5 + 0.5 * outP * outP; // ease out
+                        }
+                    }
+
+                    // Lerp model position
+                    model.position.x = startPos.x + (endPos.x - startPos.x) * eased;
+                    model.position.y = startPos.y + (endPos.y - startPos.y) * eased;
+
+                    // Fade in at start, fade out at end
+                    var opacity = 1;
+                    if (progress < 0.1) {
+                        opacity = progress / 0.1;
+                    } else if (progress > 0.85) {
+                        opacity = (1 - progress) / 0.15;
+                    }
+
+                    // Apply opacity to all meshes
+                    model.traverse(function (child) {
+                        if (child.isMesh && child.material) {
+                            if (Array.isArray(child.material)) {
+                                child.material.forEach(function (m) {
+                                    m.transparent = true;
+                                    m.opacity = opacity;
+                                });
+                            } else {
+                                child.material.transparent = true;
+                                child.material.opacity = opacity;
+                            }
+                        }
+                    });
+
+                    renderer.render(scene, camera);
+
+                    // Auto-dismiss when done
+                    if (progress >= 1) {
+                        dismiss();
+                    }
+                }
+
+                renderFlyover();
+
+                // Dismiss function
+                function dismiss() {
+                    if (animFrameId) cancelAnimationFrame(animFrameId);
+                    widget.classList.add('dismissing');
+                    setTimeout(function () {
+                        widget.style.display = 'none';
+                        widget.classList.remove('dismissing', 'active');
+                        renderer.dispose();
+                        scene.clear();
+                        widgetActive = false;
+                    }, 500);
+                }
+            },
+            undefined,
+            function () {
+                widget.style.display = 'none';
+                widget.classList.remove('active');
+                widgetActive = false;
+            }
+        );
+    }
+
+})();

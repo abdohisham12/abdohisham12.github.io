@@ -1035,7 +1035,7 @@ a:hover {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(4px);
-    z-index: 1001;
+    z-index: 999; /* Below nav-bar (1000) so nav elements remain clickable */
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
@@ -1367,34 +1367,177 @@ a:hover {
 }
 
 /* ========================================
-   Interactive Profile Canvas (Three.js)
-   - Shader-based eye displacement effect
-   - Eyes follow mouse cursor realistically
+   3D Avatar Viewport (Hero Section)
+   - Houses the welcome avatar with head tracking
    ======================================== */
-.profile-canvas {
+.avatar-viewport {
+    width: 400px;
+    height: 500px;
+    min-width: 350px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.avatar-viewport #avatar-canvas {
+    width: 100%;
+    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
     z-index: 5;
+    border-radius: 12px;
     pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease;
 }
 
-/* Hide fallback image when canvas is active */
-.profile-picture-wrapper.canvas-active .profile-fallback {
+.avatar-viewport.avatar-ready #avatar-canvas {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Completely hide fallback when avatar is loaded */
+.avatar-viewport.avatar-ready .profile-picture-wrapper,
+.avatar-viewport.avatar-ready .profile-picture-wrapper * {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    box-shadow: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+}
+
+.avatar-viewport:not(.avatar-ready) .profile-picture-wrapper {
+    opacity: 1;
+}
+
+/* Hide fallback image while loading */
+.avatar-viewport.is-loading .profile-picture-wrapper {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* Loading indicator */
+.avatar-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-primary);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
     opacity: 0;
     pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
-/* Show fallback when canvas fails */
-.profile-picture-wrapper:not(.canvas-active) .profile-canvas {
-    display: none;
-}
-
-.profile-picture-wrapper:not(.canvas-active) .profile-fallback {
+.avatar-loading.visible {
     opacity: 1;
+}
+
+.avatar-loading-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(0, 243, 255, 0.15);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: avatar-spin 0.8s linear infinite;
+}
+
+@keyframes avatar-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   Avatar Flyover Widget
+   - Transparent overlay — no background, no box
+   - Avatar flies/dances across the page
+   - Doesn't block page interaction (pointer-events: none)
+   ======================================== */
+.avatar-widget {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    pointer-events: none; /* Page remains fully interactive */
+    overflow: hidden;
+}
+
+.avatar-widget canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+}
+
+.avatar-widget-close {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(0, 243, 255, 0.5);
+    background: rgba(5, 10, 16, 0.7);
+    color: rgba(0, 243, 255, 0.9);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    pointer-events: auto; /* Close button IS clickable */
+    opacity: 0;
+    transition: opacity 0.4s ease 1s, background 0.2s ease;
+}
+
+.avatar-widget.active .avatar-widget-close {
+    opacity: 1;
+}
+
+.avatar-widget-close:hover {
+    background: var(--color-primary);
+    color: var(--color-bg-deep);
+}
+
+/* Dismissing — fade out */
+.avatar-widget.dismissing {
+    animation: avatar-flyover-fade-out 0.5s ease forwards;
+}
+
+@keyframes avatar-flyover-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Responsive avatar viewport */
+@media (max-width: 768px) {
+    .avatar-viewport {
+        width: 280px;
+        height: 360px;
+        min-width: 250px;
+    }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+    .avatar-viewport {
+        width: 350px;
+        height: 440px;
+        min-width: 300px;
+    }
 }
 
 /* Hero Name Section - Adjusted */
@@ -5691,20 +5834,6 @@ p {
     position: relative;
 }
 
-.nav-links {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: auto;
-    margin: 0;
-    padding: 0;
-}
-
 .social-link {
     display: flex;
     align-items: center;
@@ -6416,6 +6545,7 @@ p {
     background: transparent;
     z-index: 10;
     pointer-events: auto;
+    display: grid;
 }
 
 .experience-card:hover:not(.flipped) {
@@ -6430,7 +6560,7 @@ p {
 
 .experience-card-front,
 .experience-card-back {
-    position: absolute;
+    grid-area: 1 / 1;
     width: 100%;
     min-height: 400px;
     height: auto;
