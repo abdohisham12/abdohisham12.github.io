@@ -10318,15 +10318,25 @@ section:empty {
     position: relative;
     width: 100vw;
     height: 100vh;
-    background: #000;
+    background: #0b0d17;
     overflow: hidden;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.mission-header-overlay {
+    width: 100%;
+    z-index: 10;
+    padding: 80px 20px 20px;
+    flex-shrink: 0;
+    pointer-events: none; /* Let clicks pass through to slider if needed */
 }
 
 .fullscreen-slider-container {
     width: 100%;
-    height: 100%;
+    flex: 1;
     position: relative;
     overflow: hidden;
 }
@@ -10585,6 +10595,12 @@ section:empty {
 
     .fullscreen-nav.next {
         right: 10px;
+    }
+    
+    /* Ensure images aren't cropped excessively on portrait screens */
+    .project-image-bg {
+        object-fit: contain !important;
+        background-color: #0b0d17;
     }
 }
 
@@ -11389,14 +11405,22 @@ section:empty {
     background: var(--color-bg-deep);
     overflow: hidden;
     padding: 0;
+    scroll-margin-top: 70px; /* Offset for fixed navbar */
+    height: calc(100vh - 70px);
+    display: flex;
+    flex-direction: column;
 }
 
 /* ── Section header ── */
 .gallery-header {
     text-align: center;
     padding: 80px 20px 40px;
-    position: relative;
-    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    pointer-events: none;
 }
 
 .gallery-eyebrow {
@@ -11430,8 +11454,8 @@ section:empty {
 .gallery-slider-shell {
     position: relative;
     width: 100%;
-    height: 92vh;
-    min-height: 520px;
+    flex: 1; /* Take up all available space above filmstrip */
+    min-height: 300px;
     overflow: hidden;
 }
 
@@ -11651,11 +11675,14 @@ section:empty {
 .gallery-filmstrip {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 6px;
-    padding: 32px 20px 60px;
+    padding: 15px 20px;
+    height: 100px; /* Fixed height for the filmstrip area */
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    flex-shrink: 0;
 }
 
 .gallery-filmstrip::-webkit-scrollbar { display: none; }
