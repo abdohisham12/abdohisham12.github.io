@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -91,6 +91,8 @@
     <link rel="stylesheet" href="styles.css?v=1.1">
     <!-- Cobe library loaded asynchronously for better performance -->
     <script src="https://unpkg.com/cobe@0.6.0/dist/cobe.umd.js" async defer></script>
+    <!-- Three.js for interactive profile picture -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
     <script src="script.js" defer></script>
 
 
@@ -174,47 +176,7 @@
             <path d="M18 15l-6-6-6 6" />
         </svg>
     </button>
-    <!-- Quick Navigation Sidebar -->
-    <nav class="quick-nav-sidebar" id="quick-nav-sidebar" aria-label="Quick navigation">
-        <div class="quick-nav-content">
-            <a href="#home" class="quick-nav-link" data-section="home" title="Home">
-                <span class="quick-nav-icon"><i class="fas fa-home"></i></span>
-                <span class="quick-nav-label">Home</span>
-            </a>
-            <a href="#quick-hr-scan" class="quick-nav-link" data-section="quick-hr-scan" title="Quick Overview">
-                <span class="quick-nav-icon"><i class="fas fa-info-circle"></i></span>
-                <span class="quick-nav-label">Overview</span>
-            </a>
-            <a href="#key-highlights" class="quick-nav-link" data-section="key-highlights" title="Highlights">
-                <span class="quick-nav-icon"><i class="fas fa-star"></i></span>
-                <span class="quick-nav-label">Highlights</span>
-            </a>
-            <a href="#certifications" class="quick-nav-link" data-section="certifications" title="Certifications">
-                <span class="quick-nav-icon"><i class="fas fa-graduation-cap"></i></span>
-                <span class="quick-nav-label">Certifications</span>
-            </a>
-            <a href="#technology-stack" class="quick-nav-link" data-section="technology-stack" title="Tech Stack">
-                <span class="quick-nav-icon"><i class="fas fa-tools"></i></span>
-                <span class="quick-nav-label">Tech Stack</span>
-            </a>
-            <a href="#experience" class="quick-nav-link" data-section="experience" title="Flight Logs">
-                <span class="quick-nav-icon"><i class="fas fa-briefcase"></i></span>
-                <span class="quick-nav-label">Flight Logs</span>
-            </a>
-            <a href="#projects" class="quick-nav-link" data-section="projects" title="Missions">
-                <span class="quick-nav-icon"><i class="fas fa-rocket"></i></span>
-                <span class="quick-nav-label">Missions</span>
-            </a>
-            <a href="#skills" class="quick-nav-link" data-section="skills" title="Systems">
-                <span class="quick-nav-icon"><i class="fas fa-bolt"></i></span>
-                <span class="quick-nav-label">Systems</span>
-            </a>
-            <a href="#footer" class="quick-nav-link" data-section="footer" title="Comms">
-                <span class="quick-nav-icon"><i class="fas fa-envelope"></i></span>
-                <span class="quick-nav-label">Comms</span>
-            </a>
-        </div>
-    </nav>
+
 
     <!-- Header Section ------------------------------------------------>
     <header role="banner">
@@ -235,15 +197,15 @@
             </button>
             <div class="nav-links">
                 <a href="#home" class="nav-link" aria-label="Navigate to home section">Home</a>
-                <a href="#experience" class="nav-link" aria-label="Navigate to flight logs">Experience</a>
-                <a href="#projects" class="nav-link" aria-label="Navigate to missions">Projects</a>
-                <a href="#skills" class="nav-link" aria-label="Navigate to system capabilities">Skills</a>
+                <a href="#experience" class="nav-link" aria-label="Navigate to experience">Experience</a>
+                <a href="#projects" class="nav-link" aria-label="Navigate to projects">Projects</a>
+                <a href="#skills" class="nav-link" aria-label="Navigate to skills">Skills</a>
                 <a href="#education" class="nav-link" aria-label="Navigate to education">Education</a>
             </div>
 
             <!-- Right side: Get In Touch Button -->
             <a href="#footer" aria-label="Navigate to contact section" class="nav-contact-button">
-                <i class="fas fa-satellite-dish"></i> <span class="btn-text">Establish Comms</span>
+                <i class="fas fa-envelope"></i> <span class="btn-text">Get in Touch</span>
             </a>
         </nav>
     </header>
@@ -272,7 +234,7 @@
                         <span class="title-highlight">R&D AI Software Engineer</span>
                     </h2>
                     <h3 class="hero-tagline animate-fade-in-up" data-delay="0.3s">
-                        Building Production&nbsp;AI&nbsp;Systems for Aerospace & Enterprise
+                        I work at the intersection of AI and aerospace&nbsp;&mdash;&nbsp;building systems that ship.
                     </h3>
 
                     <div class="hero-skill-badges animate-fade-in-up" data-delay="0.4s">
@@ -283,21 +245,21 @@
                     </div>
 
                     <p class="hero-description animate-fade-in-up" data-delay="0.5s">
-                        I build production-grade AI systems, specializing in LLMs and Computer Vision for the aerospace
-                        industry. From R&D to deployment, I create scalable solutions on enterprise cloud
-                        infrastructure.
+                        At AQMAAR.space, I build computer vision and LLM systems for space missions.
+                        Previously trained Google Gemini's education features through RLHF at Invisible Technologies.
+                        BSc in Navigation Science &amp; Space Technology from Beni Suef University.
                     </p>
 
                     <div class="hero-cta-container animate-fade-in-up" data-delay="0.6s">
                         <a href="#projects" class="btn-tech-frame btn-primary">
                             <span class="btn-content">
-                                <i class="fas fa-rocket"></i> See my works
+                                <i class="fas fa-rocket"></i> View Projects
                             </span>
                             <span class="btn-corner-tl"></span>
                             <span class="btn-corner-br"></span>
                         </a>
                         <a href="#skills" class="btn-tech-frame btn-secondary">
-                            <span class="btn-content">Why Hire Me</span>
+                            <span class="btn-content">My Stack</span>
                             <span class="btn-corner-tl"></span>
                             <span class="btn-corner-br"></span>
                         </a>
@@ -308,38 +270,15 @@
 
                 <div class="hero-visual-section">
                     <div class="hero-image-container animate-scale-in" data-delay="0.2s">
-                        <!-- Orbiting Stats Container -->
-                        <div class="orbit-container">
-                            <div class="orbit-item item-1">
-                                <div class="orbit-content">
-                                    <div class="stat-number">95%</div>
-                                    <div class="stat-label">AI Accuracy</div>
-                                </div>
-                            </div>
-                            <div class="orbit-item item-2">
-                                <div class="orbit-content">
-                                    <div class="stat-number">40%</div>
-                                    <div class="stat-label">Cost Reduction</div>
-                                </div>
-                            </div>
-                            <div class="orbit-item item-3">
-                                <div class="orbit-content">
-                                    <div class="stat-number">10K+</div>
-                                    <div class="stat-label">Users Served</div>
-                                </div>
-                            </div>
-                            <div class="orbit-item item-4">
-                                <div class="orbit-content">
-                                    <div class="stat-number">10+</div>
-                                    <div class="stat-label">Clients Served</div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Orbiting Stats removed for cleaner, authentic look -->
 
-                        <div class="profile-picture-wrapper">
+                        <div class="profile-picture-wrapper" id="profile-wrapper">
                             <div class="profile-glow"></div>
+                            <!-- Three.js Canvas for interactive eyes -->
+                            <canvas id="profile-canvas" class="profile-canvas"></canvas>
+                            <!-- Fallback image for no-JS or WebGL failure -->
                             <img src="assets/profile photo.jpg" alt="Abdulrahman Hisham Kamel - AI Engineer"
-                                class="profile-picture" loading="eager" fetchpriority="high">
+                                class="profile-picture profile-fallback" loading="eager" fetchpriority="high">
                         </div>
                     </div>
                 </div>
@@ -551,21 +490,19 @@
                         <div class="highlight-icon"><i class="fas fa-graduation-cap"></i></div>
                         <h3>Graduation Project</h3>
                         <p><strong>RAG for Space Mission Planning</strong></p>
-                        <p>AI application demonstrating LLM technologies in the aerospace domain.</p>
+                        <p>Built a RAG pipeline over NASA and ESA mission databases — automates feasibility checks that used to take analysts days.</p>
                     </div>
                     <div class="highlight-card">
                         <div class="highlight-icon"><i class="fas fa-rocket"></i></div>
                         <h3>SIRB Project</h3>
                         <p><strong>Production Computer Vision System</strong></p>
-                        <p>High-accuracy computer vision solution for critical space mission operations.</p>
+                        <p>Took laser pattern detection from 70% manual accuracy to 95%+ automated. Currently in production for payload testing.</p>
                     </div>
                     <div class="highlight-card">
                         <div class="highlight-icon"><i class="fas fa-chart-line"></i></div>
                         <h3>Invisible Technologies</h3>
                         <p><strong>AI Model Enhancement</strong></p>
-                        <p>Improved AI accuracy for Gemini's new "Guided Learning" feature through Reinforcement
-                            Learning
-                            with human feedback.</p>
+                        <p>Wrote and reviewed thousands of STEM solutions used to train Google Gemini's study features via RLHF.</p>
                     </div>
                 </div>
             </div>
@@ -578,8 +515,8 @@
 
                 <!-- Current Positions: AQMAAR & Invisible -->
                 <div class="experience-section">
-                    <h3 style="color: #0092CC; text-align: center; margin-bottom: 30px; font-size: 1.8em;">Active
-                        Missions</h3>
+                    <h3 style="color: #0092CC; text-align: center; margin-bottom: 30px; font-size: 1.8em;">Current
+                        Roles</h3>
                     <div class="experience-cards-grid current-positions-grid">
                         <!-- AQMAAR Card -->
                         <div class="experience-card-container">
@@ -600,12 +537,12 @@
                                         <p class="experience-date">July 2025 - Present</p>
                                     </div>
                                     <div class="experience-responsibilities">
-                                        <h4>Key Responsibilities:</h4>
+                                        <h4>What I Do:</h4>
                                         <ul>
-                                            <li>Develop AI systems for space mission planning</li>
-                                            <li>Integrate multiple disciplines into AI platforms</li>
-                                            <li>Build production AI systems on Azure</li>
-                                            <li>Create real-time analysis dashboards</li>
+                                            <li>Build tracking algorithms for LEO objects</li>
+                                            <li>Own the computer vision pipeline — data collection to deployment</li>
+                                            <li>Deploy models on Azure with CI/CD</li>
+                                            <li>Built internal dashboards for mission telemetry</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -645,13 +582,13 @@
                                         <p class="experience-date">May 2025 - Present</p>
                                     </div>
                                     <div class="experience-responsibilities">
-                                        <h4>Key Responsibilities:</h4>
+                                        <h4>What I Do:</h4>
                                         <ul>
-                                            <li>Generate high-quality code solutions (Python, SQL, C++)</li>
-                                            <li>Ensure scientific accuracy of AI STEM content</li>
-                                            <li>Improve code quality for multiple clients</li>
-                                            <li>Enhance AI model performance</li>
-                                            <li>Train multiple LLMs for AI study features</li>
+                                            <li>Write code solutions in Python, SQL, C++ for model training datasets</li>
+                                            <li>Verify physics, math, and CS answers before they reach users</li>
+                                            <li>Review and fix code outputs from Gemini</li>
+                                            <li>Run RLHF loops to improve response quality</li>
+                                            <li>Contribute to Gemini's Guided Learning feature</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -675,8 +612,8 @@
 
                 <!-- Section 3: Professional History (Previous Positions, Training, Internships) -->
                 <div class="experience-section" style="margin-top: 60px;">
-                    <h3 style="color: #0092CC; text-align: center; margin-bottom: 30px; font-size: 1.8em;">Professional
-                        History</h3>
+                    <h3 style="color: #0092CC; text-align: center; margin-bottom: 30px; font-size: 1.8em;">Previous
+                        Experience</h3>
 
                     <div class="work-history-carousel" aria-live="polite">
                         <div class="work-history-controls">
@@ -729,9 +666,9 @@
             <div class="mission-header-overlay">
                 <h2
                     style="color: #0092CC; text-align: center; margin-bottom: 10px; text-shadow: 0 0 10px rgba(0, 146, 204, 0.5);">
-                    Mission Archive</h2>
+                    Projects</h2>
                 <p style="text-align: center; color: #b0b0b0; margin-bottom: 20px; font-size: 1.1em;">
-                    Showcasing innovative AI solutions that solve real-world problems in aerospace and beyond
+                    A mix of client work and personal projects across AI, aerospace, and computer vision
                 </p>
             </div>
 
@@ -1130,11 +1067,8 @@
         <!-- Skills Section -->
         <section id="skills" class="skills" aria-label="Core competencies and skills">
             <div class="container">
-                <h2 style="color: #0092CC; text-align: center; margin-bottom: 20px;">Technical Skills
+                <h2 style="color: #0092CC; text-align: center; margin-bottom: 20px;">Tools I Use
                 </h2>
-                <p style="text-align: center; color: #b0b0b0; margin-bottom: 40px; font-size: 1.1em;">
-                    Comprehensive technology stack across AI/ML, Cloud, and Development
-                </p>
 
                 <!-- Skills Grid - Clean and Scannable -->
                 <div class="skills-grid-container">
@@ -1276,13 +1210,8 @@
         <!-- Certifications Section -->
         <section id="certifications" class="certifications-showcase" aria-label="Professional certifications">
             <div class="container">
-                <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Crew Credentials
+                <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Certifications
                 </h2>
-                <p style="text-align: center; color: #b0b0b0; margin-bottom: 40px; font-size: 1.1em;">
-                    Industry-recognized certifications validating expertise in AI, Machine Learning, and
-                    Cloud
-                    Technologies
-                </p>
 
                 <div class="certificates-grid">
                     <div class="certificate-card" data-cert="ai900">
@@ -1359,17 +1288,8 @@
             <div class="container">
                 <h2 style="color: #0092CC; text-align: center; margin-bottom: 30px;">Education</h2>
 
-                <!-- Academic Excellence Banner -->
+
                 <div class="academic-excellence-banner">
-                    <div
-                        style="text-align: center; margin-bottom: 20px; padding: 15px; background: rgba(0,146,204,0.1); border-radius: 10px; border: 2px solid rgba(0,146,204,0.3);">
-                        <h3 style="color: #0092CC; margin: 0; font-size: 1.5em;">Recent Graduate - July
-                            2025
-                        </h3>
-                        <p style="color: #b0b0b0; margin: 5px 0 0 0;">Bachelor's in Navigation Science
-                            and Space
-                            Technology</p>
-                    </div>
                     <div class="gpa-display">
                         <div class="gpa-label">Cumulative GPA</div>
                         <div class="gpa-value">3.69<span class="gpa-denominator">/4.0</span></div>
@@ -1386,7 +1306,7 @@
                         </div>
                         <div class="achievement-item">
                             <span class="achievement-icon"><i class="fas fa-flask"></i></span>
-                            <span>Inside EgSA , NRIAG , & Cairo Airport Labs</span>
+                            <span>Trained at EgSA, NRIAG, & Cairo Airport</span>
                         </div>
                     </div>
                 </div>
@@ -1424,7 +1344,7 @@
                                 </div>
 
                                 <div class="education-responsibilities">
-                                    <h4>Core Foundation for AI Engineering</h4>
+                                    <h4>What I Studied</h4>
 
                                     <div class="education-category">
                                         <div class="category-header">
@@ -1470,9 +1390,9 @@
                             <div class="education-card-back">
                                 <div class="education-card-details">
                                     <h3 style="font-size: 1.8em; margin-bottom: 25px; color: #0092CC;">
-                                        Why This
-                                        Degree
-                                        Matters</h3>
+                                        How This
+                                        Connects
+                                        to AI</h3>
 
                                     <div class="degree-columns">
                                         <div class="degree-section">
@@ -1633,14 +1553,11 @@
                     <!-- Right Column: Availability Info with Globe -->
                     <div class="availability-container">
                         <div class="availability-content">
-                            <h2 class="availability-title">Based in Cairo, Egypt<br>Available Worldwide
+                            <h2 class="availability-title">Based in Cairo, Egypt<br>Open to remote work.
                             </h2>
                             <p class="availability-text">
-                                Whether you're in <span class="highlight">Berlin</span>, <span class="highlight">New
-                                    York</span>, or <span class="highlight">Tokyo</span>, I'm ready to
-                                <span class="highlight">collaborate remotely</span> and bring your ideas
-                                to life.
-                                <span class="highlight">Let's build something great together.</span>
+                                I'm available for full-time roles, freelance projects, and consulting.
+                                Fastest way to reach me is the form or <span class="highlight">Calendly</span> below.
                             </p>
 
                             <!-- Social Links -->
@@ -1717,11 +1634,8 @@
 
                 <!-- Copyright Section -->
                 <div class="copyright">
-                    <p class="copyright-text">
-                        AI Engineering | Space Technology | Remote & On-site
-                    </p>
                     <p class="copyright-year">
-                        &copy; 2025 Abdulrahman Hisham Kamel | All Rights Reserved
+                        &copy; 2025 Abdulrahman Hisham Kamel
                     </p>
                 </div>
             </div>

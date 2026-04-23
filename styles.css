@@ -1366,6 +1366,37 @@ a:hover {
     opacity: 1 !important;
 }
 
+/* ========================================
+   Interactive Profile Canvas (Three.js)
+   - Shader-based eye displacement effect
+   - Eyes follow mouse cursor realistically
+   ======================================== */
+.profile-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Hide fallback image when canvas is active */
+.profile-picture-wrapper.canvas-active .profile-fallback {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Show fallback when canvas fails */
+.profile-picture-wrapper:not(.canvas-active) .profile-canvas {
+    display: none;
+}
+
+.profile-picture-wrapper:not(.canvas-active) .profile-fallback {
+    opacity: 1;
+}
+
 /* Hero Name Section - Adjusted */
 .hero-name {
     text-align: left;
@@ -4132,9 +4163,7 @@ p {
 }
 
 
-margin: 0 auto;
-padding: 0;
-}
+
 
 /* =========================================
    CINEMATIC SPLIT-LAYOUT CARD
@@ -4247,6 +4276,7 @@ padding: 0;
     font-size: 2rem;
     margin-bottom: 24px;
     background: linear-gradient(90deg, #fff, #b0bec5);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -7398,15 +7428,7 @@ select:focus-visible {
 }
 
 /* Image Loading Optimization */
-img {
-    loading: lazy;
-    decoding: async;
-}
 
-img[loading="eager"] {
-    loading: eager;
-    fetchpriority: high;
-}
 
 /* Skeleton Loader for Heavy Content */
 .skeleton-loader {
@@ -10160,7 +10182,7 @@ section:empty {
     }
 }
 
-/
+
 /* --- MISSION ARCHIVE FULLSCREEN REDESIGN --- */
 .mission-archive-fullscreen {
     position: relative;
@@ -11005,6 +11027,7 @@ section:empty {
         grid-template-columns: 1fr !important;
     }
 }
+
 /* APPENDING MISSION ARCHIVE IMPROVED UI */
 /* =========================================================================
    HOTFIX: Mission Archive Back Content Visibility & Polish
