@@ -11377,3 +11377,355 @@ section:empty {
         width: 95% !important;
     }
 }
+
+/* ============================================================
+   GALLERY SECTION — "You May Have Seen Me In"
+   Cinematic fullscreen slider with Ken Burns + parallax overlay
+   ============================================================ */
+
+#gallery {
+    position: relative;
+    width: 100%;
+    background: var(--color-bg-deep);
+    overflow: hidden;
+    padding: 0;
+}
+
+/* ── Section header ── */
+.gallery-header {
+    text-align: center;
+    padding: 80px 20px 40px;
+    position: relative;
+    z-index: 2;
+}
+
+.gallery-eyebrow {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    opacity: 0.8;
+    margin-bottom: 14px;
+}
+
+.gallery-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    color: var(--color-text-main);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.1;
+    text-shadow: 0 0 40px rgba(0, 243, 255, 0.25);
+    margin: 0;
+}
+
+.gallery-title span {
+    color: var(--color-primary);
+}
+
+/* ── Slider shell ── */
+.gallery-slider-shell {
+    position: relative;
+    width: 100%;
+    height: 92vh;
+    min-height: 520px;
+    overflow: hidden;
+}
+
+/* ── Track ── */
+.gallery-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* ── Individual slide ── */
+.gallery-slide {
+    position: relative;
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #030810; /* dark letterbox bars for portrait images */
+}
+
+/* ── Media (image / video) ── */
+.gallery-slide__media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    will-change: transform;
+    /* Subtle Ken Burns on the whole frame */
+    transform: scale(1);
+    transition: transform 8s ease-in-out;
+}
+
+.gallery-slide.is-active .gallery-slide__media {
+    transform: scale(1.04);
+}
+
+/* ── Cinematic gradient overlay ── */
+.gallery-slide__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to top,  rgba(3, 8, 16, 0.92) 0%,  rgba(3, 8, 16, 0.3) 50%, transparent 100%),
+        linear-gradient(to right, rgba(3, 8, 16, 0.4) 0%, transparent 40%);
+    z-index: 1;
+}
+
+/* ── Caption block ── */
+.gallery-slide__caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding: 60px 8% 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: transform 0.9s ease 0.35s, opacity 0.9s ease 0.35s;
+}
+
+.gallery-slide.is-active .gallery-slide__caption {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.gallery-slide__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    font-family: var(--font-body);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    background: rgba(0, 243, 255, 0.08);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    padding: 5px 14px;
+    border-radius: 2px;
+    width: fit-content;
+    backdrop-filter: blur(6px);
+}
+
+.gallery-slide__tag::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: 0 0 8px var(--color-primary);
+    flex-shrink: 0;
+}
+
+.gallery-slide__title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 4vw, 3.4rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.6);
+    text-transform: uppercase;
+    max-width: 700px;
+    margin: 0;
+}
+
+.gallery-slide__desc {
+    font-family: var(--font-body);
+    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+    color: rgba(224, 250, 255, 0.82);
+    line-height: 1.7;
+    max-width: 580px;
+    margin: 0;
+}
+
+/* ── Side navigation arrows ── */
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 52px;
+    height: 52px;
+    background: rgba(0, 243, 255, 0.08);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-primary);
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.gallery-nav:hover {
+    background: rgba(0, 243, 255, 0.18);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+    transform: translateY(-50%) scale(1.08);
+}
+
+.gallery-nav--prev { left: 24px; }
+.gallery-nav--next { right: 24px; }
+
+.gallery-nav svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+/* ── Progress dots ── */
+.gallery-dots {
+    position: absolute;
+    bottom: 28px;
+    right: 8%;
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.gallery-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.3s ease, transform 0.3s ease, width 0.4s ease;
+}
+
+.gallery-dot.is-active {
+    background: var(--color-primary);
+    width: 22px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.6);
+}
+
+/* ── Thin progress bar across the top of slider ── */
+.gallery-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-primary) 0%, #0092CC 100%);
+    z-index: 10;
+    width: 0%;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 8px rgba(0, 243, 255, 0.5);
+}
+
+/* ── Slide counter ── */
+.gallery-counter {
+    position: absolute;
+    top: 24px;
+    right: 8%;
+    z-index: 10;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.45);
+}
+
+.gallery-counter strong {
+    color: var(--color-primary);
+    font-size: 1.1em;
+}
+
+/* ── Film-strip reel decoration ── */
+.gallery-filmstrip {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 32px 20px 60px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.gallery-filmstrip::-webkit-scrollbar { display: none; }
+
+.gallery-thumb {
+    flex-shrink: 0;
+    width: 90px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid rgba(0, 243, 255, 0.15);
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.45;
+    transition: opacity 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    filter: grayscale(0.4);
+}
+
+.gallery-thumb.is-active,
+.gallery-thumb:hover {
+    opacity: 1;
+    border-color: var(--color-primary);
+    transform: scaleY(1.08);
+    filter: none;
+    box-shadow: 0 0 14px rgba(0, 243, 255, 0.35);
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+    .gallery-slider-shell {
+        height: 80vh;
+        min-height: 420px;
+    }
+
+    .gallery-slide__caption {
+        padding: 40px 5% 80px;
+    }
+
+    .gallery-nav {
+        width: 40px;
+        height: 40px;
+    }
+
+    .gallery-nav--prev { left: 12px; }
+    .gallery-nav--next { right: 12px; }
+
+    .gallery-nav svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .gallery-filmstrip {
+        padding: 20px 10px 40px;
+    }
+
+    .gallery-thumb {
+        width: 68px;
+        height: 46px;
+    }
+
+    .gallery-header {
+        padding: 50px 20px 28px;
+    }
+
+    .gallery-counter {
+        top: 16px;
+        right: 5%;
+    }
+
+    .gallery-dots {
+        right: 50%;
+        transform: translateX(50%);
+    }
+}
