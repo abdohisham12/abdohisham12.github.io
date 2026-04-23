@@ -7620,7 +7620,7 @@ img.image-error::after {
 
 /* Improved Section Transitions */
 section {
-    scroll-margin-top: 100px;
+    scroll-margin-top: 70px;
     /* Account for fixed header */
 }
 
@@ -10318,25 +10318,26 @@ section:empty {
     position: relative;
     width: 100vw;
     height: 100vh;
+    scroll-margin-top: 0;
     background: #0b0d17;
     overflow: hidden;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
 }
 
 .mission-header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     z-index: 10;
     padding: 80px 20px 20px;
-    flex-shrink: 0;
     pointer-events: none; /* Let clicks pass through to slider if needed */
 }
 
 .fullscreen-slider-container {
     width: 100%;
-    flex: 1;
+    height: 100%;
     position: relative;
     overflow: hidden;
 }
@@ -10614,6 +10615,7 @@ section:empty {
     position: relative;
     width: 100vw;
     height: 100vh;
+    scroll-margin-top: 0;
     overflow: hidden;
     background-color: #0b0d17;
     margin: 0;
@@ -11405,8 +11407,8 @@ section:empty {
     background: var(--color-bg-deep);
     overflow: hidden;
     padding: 0;
-    scroll-margin-top: 70px; /* Offset for fixed navbar */
-    height: calc(100vh - 70px);
+    scroll-margin-top: 0;
+    height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -11415,12 +11417,8 @@ section:empty {
 .gallery-header {
     text-align: center;
     padding: 80px 20px 40px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    position: relative;
     z-index: 10;
-    pointer-events: none;
 }
 
 .gallery-eyebrow {
@@ -11673,27 +11671,35 @@ section:empty {
 
 /* ── Film-strip reel decoration ── */
 .gallery-filmstrip {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    gap: 6px;
-    padding: 15px 20px;
-    height: 100px; /* Fixed height for the filmstrip area */
+    gap: 4px;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    height: auto;
+    max-width: 50%; /* Prevent it from crossing the entire screen */
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    flex-shrink: 0;
+    z-index: 20;
 }
 
 .gallery-filmstrip::-webkit-scrollbar { display: none; }
 
 .gallery-thumb {
     flex-shrink: 0;
-    width: 90px;
-    height: 60px;
+    width: 45px;
+    height: 30px;
     object-fit: cover;
-    border: 2px solid rgba(0, 243, 255, 0.15);
-    border-radius: 4px;
+    border: 1px solid rgba(0, 243, 255, 0.15);
+    border-radius: 3px;
     cursor: pointer;
     opacity: 0.45;
     transition: opacity 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
@@ -11734,12 +11740,15 @@ section:empty {
     }
 
     .gallery-filmstrip {
-        padding: 20px 10px 40px;
+        bottom: 15px;
+        right: 15px;
+        max-width: 90%;
+        padding: 8px;
     }
 
     .gallery-thumb {
-        width: 68px;
-        height: 46px;
+        width: 36px;
+        height: 24px;
     }
 
     .gallery-header {
