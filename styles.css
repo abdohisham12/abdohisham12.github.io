@@ -1,8 +1,8 @@
 /* Global Styles */
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px;
-    /* Account for sticky navigation */
+    scroll-padding-top: 70px;
+    /* Account for fixed navigation bar (matches nav-bar min-height) */
     overflow-x: hidden;
     /* Prevent horizontal scroll */
 }
@@ -3985,7 +3985,7 @@ a:hover {
 
 .experience {
     background-color: #09151a;
-    padding: 30px;
+    padding: 10px 30px 30px;
     margin: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -6483,7 +6483,7 @@ p {
 /* Experience Cards Styles */
 .experience-section {
     margin-bottom: 60px;
-    padding: 40px 20px;
+    padding: 15px 20px 40px;
     background: linear-gradient(135deg, rgba(0, 146, 204, 0.02) 0%, transparent 50%, rgba(0, 146, 204, 0.02) 100%);
     border-radius: 15px;
     position: relative;
@@ -7619,15 +7619,20 @@ img.image-error::after {
 }
 
 /* Improved Section Transitions */
-section {
-    scroll-margin-top: 70px;
-    /* Account for fixed header */
-}
+/* scroll-padding-top on <html> handles fixed-header offset globally.
+   Individual sections no longer need scroll-margin-top. */
 
 /* Better Visual Hierarchy - Section Spacing */
 section:not(:first-child) {
     margin-top: var(--spacing-2xl);
     padding-top: var(--spacing-lg);
+}
+
+/* Fullscreen sections should have no inter-section spacing */
+section.mission-archive-fullscreen,
+section#gallery {
+    margin-top: 0;
+    padding-top: 0;
 }
 
 /* Enhanced Button States */
@@ -10318,7 +10323,8 @@ section:empty {
     position: relative;
     width: 100vw;
     height: 100vh;
-    scroll-margin-top: 0;
+    scroll-margin-top: -70px;
+    /* Cancel html scroll-padding-top so section fills full viewport */
     background: #0b0d17;
     overflow: hidden;
     margin: 0;
@@ -10615,7 +10621,8 @@ section:empty {
     position: relative;
     width: 100vw;
     height: 100vh;
-    scroll-margin-top: 0;
+    scroll-margin-top: -70px;
+    /* Cancel html scroll-padding-top so section fills full viewport */
     overflow: hidden;
     background-color: #0b0d17;
     margin: 0;
@@ -11407,7 +11414,8 @@ section:empty {
     background: var(--color-bg-deep);
     overflow: hidden;
     padding: 0;
-    scroll-margin-top: 0;
+    scroll-margin-top: -70px;
+    /* Cancel html scroll-padding-top so section fills full viewport */
     height: 100vh;
     display: flex;
     flex-direction: column;

@@ -99,7 +99,9 @@ function initQuickNav() {
             const targetId = link.getAttribute('data-section');
             const targetSection = document.getElementById(targetId);
             if (targetSection) {
-                const navbarHeight = 80;
+                // Fullscreen sections fill the viewport; scroll to their top edge
+                const isFullscreen = targetSection.classList.contains('mission-archive-fullscreen') || targetSection.id === 'gallery';
+                const navbarHeight = isFullscreen ? 0 : 70;
                 const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
                 window.scrollTo({ top: targetPosition, behavior: 'smooth' });
             }
@@ -560,7 +562,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const targetId = link.getAttribute('href').substring(1);
                 const targetSection = document.getElementById(targetId);
                 if (targetSection) {
-                    const navbarHeight = 80;
+                    // Fullscreen sections (projects/gallery) fill the viewport;
+                    // scroll to their very top so their background fills the screen
+                    const isFullscreen = targetSection.classList.contains('mission-archive-fullscreen') || targetSection.id === 'gallery';
+                    const navbarHeight = isFullscreen ? 0 : 70;
                     const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
                     window.scrollTo({ top: targetPosition, behavior: 'smooth' });
                 }
@@ -3197,11 +3202,9 @@ if (document.readyState === 'loading') {
                 // Starting and ending positions for the model
                 var startPos, endPos;
                 if (flyType === 'superman') {
-                    // Fly from top-right to bottom-left across the screen
-                    startPos = { x: 3.0, y: 3.5, z: 0 };
-                    endPos = { x: -3.0, y: -2.0, z: 0 };
-                    // Rotate model to face the direction of flight
-                    model.rotation.y = -0.4;
+                    // Fly straight down from top-middle to bottom-middle
+                    startPos = { x: 0, y: 3.5, z: 0 };
+                    endPos = { x: 0, y: -2.5, z: 0 };
                 } else {
                     // Dance: slide in from right, stay, slide out left
                     startPos = { x: 4.0, y: 0, z: 0 };
