@@ -103,4 +103,15 @@ filterButtons.forEach((button) => {
     if (event.key === 'ArrowRight') showJourneyScene(activeJourney + 1);
   });
   showJourneyScene(0);
+
+  const aboutSlideshow = document.querySelector('[data-about-slideshow]');
+  const aboutSlides = aboutSlideshow ? [...aboutSlideshow.querySelectorAll('.about-slideshow-image')] : [];
+  if (aboutSlides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let aboutSlideIndex = 0;
+    window.setInterval(() => {
+      aboutSlides[aboutSlideIndex].classList.remove('is-active');
+      aboutSlideIndex = (aboutSlideIndex + 1) % aboutSlides.length;
+      aboutSlides[aboutSlideIndex].classList.add('is-active');
+    }, 6500);
+  }
 });
