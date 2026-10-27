@@ -114,4 +114,13 @@ filterButtons.forEach((button) => {
       aboutSlides[aboutSlideIndex].classList.add('is-active');
     }, 6500);
   }
+
+  const imageLightbox = document.querySelector('[data-image-lightbox]');
+  const expandImage = document.querySelector('.image-expand');
+  const closeLightbox = document.querySelector('[data-lightbox-close]');
+  expandImage?.addEventListener('click', () => imageLightbox?.showModal());
+  closeLightbox?.addEventListener('click', () => imageLightbox?.close());
+  imageLightbox?.addEventListener('click', (event) => {
+    if (event.target === imageLightbox) imageLightbox.close();
+  });
 });
