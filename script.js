@@ -116,6 +116,17 @@ if (aboutSlides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduc
     }, 6500);
 }
 
+const thesisSlideshow = document.querySelector('[data-thesis-slideshow]');
+const thesisSlides = thesisSlideshow ? [...thesisSlideshow.querySelectorAll('.thesis-slide')] : [];
+if (thesisSlides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let thesisSlideIndex = 0;
+    window.setInterval(() => {
+      thesisSlides[thesisSlideIndex].classList.remove('is-active');
+      thesisSlideIndex = (thesisSlideIndex + 1) % thesisSlides.length;
+      thesisSlides[thesisSlideIndex].classList.add('is-active');
+    }, 5000);
+}
+
 const imageLightbox = document.querySelector('[data-image-lightbox]');
 
 const filmoriaSlideshow = document.querySelector('[data-filmoria-slideshow]');
